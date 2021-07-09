@@ -1,0 +1,451 @@
+\chapter{Código fuente}
+\label{cha:codigo}
+
+
+
+A lo largo de todo este libro hemos estado viendo listados de código a diestra y siniestra, cada que se nos cruzaba un ejemplo o una demostración. Es tiempo de ver qué código se oculta detrás de los listados de código fuente... en código fuente\footnote{¿Será esto un ``códigoception''?}.
+
+
+
+\section{Paquete necesario}
+\label{sec:paquete_necesario}
+
+
+
+Primero que nada, como casi todo aquí en \LaTeX{}, se requiere un paquete adicional para hacer que el código fuente se despliegue con el resaltado de sintaxis que hemos venido manejando: el paquete \texttt{listings}. Sí, otra línea al preámbulo:
+
+\begin{lstlisting}[style=latex]
+\usepackage{listings} % Para incluir código fuente.
+\end{lstlisting}
+
+Sobre este paquete tenemos la documentación en \cite{bib:listings_package}, y algo sobre los lenguajes en \cite{bib:listings_language}. No obstante, ``lenguajes soportados'' hace referencia a lenguajes de programación, como C, VHDL, \TeX{} y Python, no al idioma en el que uno escribe el código.
+
+Vale, vale, uno escribe el código en inglés, sería muy raro escribir \texttt{función}, \texttt{mientras que}, y \texttt{flotante}. Me refiero al uso de cadenas de texto con mensajes en español, o los comentarios que colocamos en el código fuente.
+
+A lo que iba: si quieres hacer que el paquete \texttt{listings} soporte los caracteres del idioma español con un simple parámetro, como lo hicimos con el paquete \texttt{babel}, eso no va a suceder.
+
+
+
+\section{Traducción a español}
+\label{sec:codigo_traduccion}
+
+
+
+Para la traducción al español, y un correcto despliegue de los caracteres propios de nuestro idioma, se requieren dos cosas:
+\begin{enumerate}
+	\item Redefinir dos comandos que ponen texto en inglés en el documento.
+	\item Configurar los caracteres en español para que no generen un error.
+\end{enumerate}
+
+En esta sección nos haremos cargo del primer requisito: redefinir los comandos. Los dos comandos son, en primer lugar, el que coloca el nombre de cada listado y, en segundo lugar, el que crea la lista de listados. Para eso, en \texttt{package-conf.tex} se redefine lo siguiente:
+
+\begin{lstlisting}[style=latex]
+\renewcommand{\lstlistingname}{Listado}
+\renewcommand{\lstlistlistingname}{Índice de listados}
+\end{lstlisting}
+
+
+
+\section{Caracteres en español en el código}
+\label{sec:caracteres_en_espanol}
+
+
+
+Utilizar los caracteres en español en código es casi igual de fácil... casi. Lo bueno: solo tendrás que tener el código del listado \ref{lst:listing_encoding} (si no me crees, revisa \cite{bib:listing_encoding}) en el preámbulo.
+
+\begin{lstlisting}[style=latex,label=lst:listing_encoding,caption={Instrucción en preámbulo para incluir caracteres especiales en código}.]
+\lstset{
+    literate= % Lista de símbolos en español que marcarían un error.
+    {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1  {ó}{{\'o}}1  {ú}{{\'u}}1
+    {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1  {Ó}{{\'O}}1  {Ú}{{\'U}}1
+    {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1  {ò}{{\`o}}1  {ù}{{\`u}}1
+    {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1  {Ò}{{\`O}}1  {Ù}{{\`U}}1
+    {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1  {ö}{{\"o}}1  {ü}{{\"u}}1
+    {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1  {Ö}{{\"O}}1  {Ü}{{\"U}}1
+    {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1  {ô}{{\^o}}1  {û}{{\^u}}1
+    {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1  {Ô}{{\^O}}1  {Û}{{\^U}}1
+    {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1  {Æ}{{\AE}}1  {ß}{{\ss}}1
+    {ű}{{\H{u}}}1{Ű}{{\H{U}}}1{ő}{{\H{o}}}1{Ő}{{\H{O}}}1{¡}{{!`}}1
+    {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1   {å}{{\r a}}1 {Å}{{\r A}}1
+    {£}{{\pounds}}1           {«}{{\guillemotleft}}1
+    {»}{{\guillemotright}}1   {ñ}{{\~n}}1  {Ñ}{{\~N}}1 {¿}{{?`}}1
+}
+\end{lstlisting}
+
+Elaboremos un poco. Primero, la instrucción |\lstset| acepta una lista de parámetros, con el formato \texttt{key = value}, que sirven para determinar cómo se mostrará el código. En este caso, estamos utilizando solo un parámetro, llamado \texttt{literate}. A su vez, \texttt{literate} acepta una lista de valores, separados por espacio en blanco (que resulta innecesario tras recibir sus tres parámetros), con el formato:
+
+\begin{lstlisting}[style=latex]
+{texto original}{texto de reemplazo}{longitud del texto reemplazado}
+\end{lstlisting}
+
+Conociendo el formato podemos comprender cada una de las instancias de reemplazo en la lista: como el código incluido con el paquete \texttt{listings} no puede interpretar la \texttt{á}, es necesario sustituirla por \texttt{\textbackslash{}\textquotesingle{}a} (que solamente ocupará un carácter tras la sustitución).
+
+De esta manera, no es que el entorno del paquete \texttt{listings} pueda interpretar la \texttt{á} (o la \texttt{é}, o la \texttt{ñ}) sino que se hace un reemplazo del símbolo antes de que se intente colocar dentro del código fuente que se mostrará en el documento.
+
+
+
+\section{Opciones del paquete}
+\label{sec:opciones_de_listing}
+
+
+
+Sí, apenas hemos redefinido dos comandos e incluído soporte para varios caracteres del idioma español. Aún así, aún no agregaremos código. Antes de ello, veremos otros parámetros que podemos establecer con el |\lstset| de manera global.
+
+\subparagraph{language} Esta opción, de nuevo, hace referencia al lenguaje de programación del código fuente a ser introducido. Si tienes un lenguaje que vas a utilizar de manera única, entonces puedes colocarlo aquí. En caso de tener varios lenguajes de programación para usar en tu documento, recomiendo que uses el valor \texttt{language=\{\}} para definir que es texto plano, y posteriormente definir uno por uno.
+
+\subparagraph{numbers} Esta opción define si el listado tendrá números de línea y, si es así, en que lado del código aparecerán. Tiene tres posibles valores: \texttt{none}, \texttt{left}, y \texttt{right}. Recomiendo el valor global de \texttt{none} pues los únicos listados que deben aparecer con número de línea son aquellos en los cuales planeas usar tal referencia (¿para qué poner números de línea si no los mencionas?).
+
+\subparagraph{numbersep} Determina la separación de los números de línea respecto a su línea. Este documento usa el valor de \texttt{5pt} (para los contados listados que sí tienen números).
+
+\subparagraph{numberstyle} El estilo de los números determina cómo se muestran. Podemos cambiar el color del texto, la fuente, el tamaño. Para este documento cambié el tamaño y el color: |numberstyle=\tiny\color{codigo_numero_linea}|, donde el color es  |\colorlet{codigo_numero_linea}{Black!45}|, un derivado del negro.
+
+\subparagraph{frame} Permite colocar un recuadro alrededor de un listado. En este documento uso el valor |lines|, que coloca las líneas superior e inferior.
+
+\subparagraph{rulecolor} Este parámetro se usa en conjunto con el valor de |frame| pues permite seleccionar el color del recuadro mediante una instrucción |\color|. El valor del parámetro en este libro es |rulecolor=\color{codigo_linea_margen}|, donde el color es |\colorlet{codigo_linea_margen}{DeepPink!20}|.
+
+\subparagraph{backgroundcolor} Este parámetro también acepta un color (por lo que necesitamos del paquete \texttt{xcolor}). Dado que hay problemas con el interlineado, y en el rompimiento de líneas, recomiendo que no se utilice un color de fondo. Y, si este es necesario, se busquen otras alternativas para generar el fondo del entorno.
+
+\subparagraph{tabsize} Este parámetro indica cuántos espacios representará una tabulación. Lo establecí a cuatro con \texttt{tabsize=4}.
+
+\subparagraph{captionpos} Determina la posición de la leyenda. Los posibles valores son \texttt{b} para colocarla después del código, y \texttt{t} para colocarla antes del código. En este documento utilizo \texttt{captionpos=b}.
+
+\subparagraph{breaklines} Es una bandera de falso o verdadero que determina si las líneas muy largas se dividen automáticamente. Si no es así, desbordarán los márgenes, incluso la hoja, de tu documento. Lo recomendable es activar esta bandera, con \texttt{breaklines=true}.
+
+\subparagraph{postbreak} Una vez que se divide una línea de código muy larga, ¿cómo sabes que el contenido de la próxima línea en realidad era parte de la anterior, o si es una nueva e independiente? La respuesta a eso la da esta opción de \texttt{postbreak}, misma que nos permite agregar algún indicador para saber que dividimos una línea. En este documento se muestra una flecha roja (\textcolor{red}{$\hookrightarrow$}), misma que se logra con el valor de |postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}|.
+
+\subparagraph{upquote} ¿Recuerdas el poblema con las comillas que discutimos en el capítulo \ref{cha:lo_basico}? Bueno, resulta que también causan problemas en el código. Como lo más probable es que quieras que tus comillas se mantengan como comillas, sin cambiarse a su versión estilizada de apertura y clausura, debes activar la opción \texttt{upquote} con un \texttt{true} para garantizar que las comillas permanezcan tal como las capturas.
+
+\subparagraph{mathescape} Esta opción sirve si deseas incluir ecuaciones en el código pues permite que los símbolos de \$ te permitan ``escapar'' al entorno matemático. No obstante, esta opción no es recomendada si usas código que utiliza esos símbolos, como PHP. En este libro uso este modo ajustado a |true| para colocar puntos verticales con |$\vdots$|.
+
+\subparagraph{escapechar} Similar a la opción \texttt{mathescape}, pero para salir del código y meter código \LaTeX{} en general. Debes considerar qué símbolo puede servir para escapar del código. Por ejemplo, yo para el código \LaTeX{} de este libro podría usar el símbolo de barra ($\vert$), pero no sería buena idea si usara el lenguaje C porque el símbolo de \texttt{OR} es \texttt{$\vert\vert$}.
+
+\subparagraph{moretexcs} Esta opción es particular para los listados que utilizan código \LaTeX{} (como en esta obra). Dado que el resaltado de sintaxis solo reconoce las instrucciones núcleo de \LaTeX{}, sin tomar en cuenta las que son agregadas por paquetes o las creadas por nosotros mismos, este parámetro es el lugar donde colocas todas aquellas instrucciones precedidas por una \codigo{} para que sean coloreadas como palabras clave.
+
+Este proceso es tedioso y manual, teniendo que añadir cada instrucción que veas sin colorear. En mi caso, agregue las palabras agrupando por paquetes:
+
+\begin{lstlisting}[style=latex]
+moretexcs={
+    % textcomp
+    textquotesingle,
+    % graphicx
+    scalebox,graphicspath,includegraphics,
+    % xcolor
+    textcolor, colorlet, pagecolor, color, definecolor,
+      $\puntitoscodigo$
+}
+\end{lstlisting}
+
+\subparagraph{morekeywords} Similar a la opción |moretexcs|, pero aplicable para otros lenguajes de programación. Su sintaxis es:
+
+\begin{lstlisting}[style=latex]
+morekeywords={ palabra1, palabra2, ... }
+\end{lstlisting}
+
+
+
+\subparagraph{opciones de estilo} Aquí agrupo las opciones de fuente, tamaño y color de varios aspectos del código. Estas opciones son: \texttt{basicstyle} (texto en general), \texttt{commentstyle} (comentarios), \texttt{keywordstyle} (palabras clave), \texttt{stringstyle} (cadenas), e \texttt{identifierstyle} (variables, funciones). La configuración del estilo es la siguiente:
+
+\begin{lstlisting}[style=latex]
+basicstyle=\footnotesize\ttfamily\color{codigo_base},
+commentstyle=\itshape\color{codigo_comentarios},
+stringstyle=\color{codigo_cadena},
+keywordstyle=\bfseries\color{codigo_palabraclave},
+identifierstyle=\color{codigo_identificador},
+\end{lstlisting}
+
+El estilo base define el tamaño de fuente, con |\footnotesize|, además de usar la fuente de ancho fijo, con |\ttfamily|, para terminar estableciendo el color de texto al color \texttt{codigo\_base}. Los demás estilos heredan el uso de esta fuente, y solo dos estilos la cambian: los comentarios, que usan estilo cursiva (además de ancho fijo), y las palabras clave, que son negritas. Los otros cambios son de color, definidos con:
+
+\begin{lstlisting}[style=latex]
+\colorlet{codigo_base}{Black!75}
+\colorlet{codigo_cadena}{DarkGoldenrod!80}
+\colorlet{codigo_comentarios}{DarkGreen!80}
+\colorlet{codigo_palabraclave}{Navy!40!Black}
+\colorlet{codigo_identificador}{DarkRed!80}
+\end{lstlisting}
+
+¿Y por qué usar colores para código si realmente son solo alias? En caso de usar más de un lenguaje de programación puedes mantener los mismos colores para comentarios, el color \texttt{codigo\_comentarios}, y cambiar el color en una única instancia. De nuevo, solo es por comodidad.
+
+\subparagraph{} Tras este pequeño recorrido por las opciones del paquete \texttt{listings} terminamos con una configuración similar a la mostrada en el listado \ref{lst:opciones_listing}. Con esto, casi estamos listos para incluir código en nuestro documento. Casi.
+
+\begin{lstlisting}[style=latex,mathescape=false,label=lst:opciones_listing,caption={Opciones globales para listados.}]
+\lstset{
+    language={},
+    numbers=none,
+    numbersep=5pt,
+    numberstyle=\tiny\color{codigo_numero_linea},
+    backgroundcolor=\color{codigo_fondo},
+    basicstyle=\footnotesize\ttfamily\color{codigo_base},
+    commentstyle=\itshape\color{codigo_comentarios},
+    stringstyle=\color{codigo_cadena},
+    keywordstyle=\bfseries\color{codigo_palabraclave},
+    identifierstyle=\color{codigo_identificador},
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    frame=lines,
+    rulecolor=\color{codigo_linea_margen},
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    upquote=true,
+}
+\end{lstlisting}
+
+
+
+\section{Estilos}
+\label{sec:estilos_listing}
+
+
+
+Tras definir el estilo global con el que se incluirá el código, podemos empezar a construir estilos particulares para cada lenguaje de programación. Si recuerdas, la configuración global no tiene lenguaje definido (su valor es \texttt{language=\{\}}), por lo que no puedo incluir código de \LaTeX{} todavía.
+
+No obstante, puedo definir un nuevo estilo que herede la configuración global para un lenguaje en particular. Esto se logra mediante la instrucción |\lstdefinestyle|, la cual recibe como primer parámetro obligatorio el nombre del estilo y, después, la lista de opciones separadas por coma similar a |\lstset|.
+
+La definición del estilo \texttt{latex} es corta, y se muestra completa en el listado \ref{lst:estilo_latex} (bueno, sin toda las palabras agregadas por \texttt{moretexcs}). Básicamente, el lenguaje de programación se define como \TeX{} en la línea 2 (el valor entre llaves), en su variante de \LaTeX{} (el valor entre corchetes). Es decir, un lenguaje de programación puede tener variantes, mismas que se pueden expresar entre corchetes.
+
+Además, para este documento deseo hacer uso de \texttt{mathescape} en el código de \LaTeX{} (línea 3), y cambio el color del texto de \texttt{identifierstyle} al color base porque, de lo contrario, aparece mucho texto de color rojo (línea 4).
+
+Tal vez la línea más controversial sea la 5, porque usa el parámetro \texttt{texcsstyle}, mismo que no vimos listado anteriormente. En sí, es una opción particular para listados de \TeX{}, que se rige por las mismas reglas de \texttt{keywordstyle} (y por eso es una copia del valor). El símbolo de estrella, *, que se agrega es para que también la diagonal invertida sea coloreada.
+
+\begin{lstlisting}[style=latex,numbers=left,mathescape=false,label=lst:estilo_latex,caption={Estilo para lenguaje de programación \LaTeX{}.}]
+\lstdefinestyle{latex}{
+    language=[LaTeX]{TeX},
+    mathescape=true, % Usado para meter $\vdots$
+    identifierstyle=\color{codigo_base},
+    texcsstyle=*\bfseries\color{codigo_palabraclave},
+}
+\end{lstlisting}
+
+Aunque en su mayoría tengo código de \LaTeX{}, también los errores se muestran en un entorno de código, aunque el texto es de color rojo. La configuración del estilo de errores se llama, bueno, \texttt{errores}, y se define mediante la instrucción del listado \ref{lst:estilo_errores}.
+
+\begin{lstlisting}[style=latex,mathescape=false,label=lst:estilo_errores,caption={Estilo para mostrar errores de compilación de \LaTeX{}.}]
+\lstdefinestyle{errores}{
+    basicstyle=\footnotesize\ttfamily\color{DarkRed},
+    commentstyle=\color{DarkRed},
+    keywordstyle=\color{DarkRed},
+    identifierstyle=\color{DarkRed},
+    mathescape=false, % Esto no puede ser true para este estilo, por el texto 'Missing $ inserted' (luego se marca un error)
+}
+\end{lstlisting}
+
+Básicamente, el estilo \texttt{errores} muestra todo el texto en rojo. El comentario adicional es un recordatorio para no activar la opción \texttt{mathescape} porque en los errores llega a salir el símbolo de \$. Adicionalmente, tengo el estilo llamado \texttt{advertencias}, similar a \texttt{errores} pero en amarillo, como se define en el listado \ref{lst:estilo_advertencias}.
+
+\begin{lstlisting}[style=latex,mathescape=false,label=lst:estilo_advertencias,caption={Estilo para mostrar advertencias de compilación de \LaTeX{}.}]
+\lstdefinestyle{advertencias}{
+    basicstyle=\footnotesize\ttfamily\color{DarkGoldenrod},
+    commentstyle=\color{DarkGoldenrod},
+    keywordstyle=\color{DarkGoldenrod},
+    identifierstyle=\color{DarkGoldenrod},
+    mathescape=false, % No marcar como true por uso de $.
+}
+\end{lstlisting}
+
+De nuevo, todos estos estilos heredan los parámetros establecidos previamente con el |\lstset| (claro, asumiendo que los estilos fueron definidos después), y solo sobreescriben los parámetros que son asignados nuevamente.
+
+
+
+\section{Código dentro de \LaTeX{}}
+\label{sec:codigo_dentro_de_latex}
+
+
+
+Después de configurar tantas cosas del paquete \texttt{listings}, tanto como para poder usar los acentos y las ñ, como la configuración de colores y otros aspectos de visualización a través de definiciones globales y propias de cada estilo, por fin podemos incluir código de una manera simple con el entorno \texttt{lstlisting}.
+
+Por ejemplo, el código para el listado \ref{lst:estilo_advertencias} se muestra en el listado \ref{lst:codigo_estilo_advertencias}, donde las líneas 1 a 6 son la configuración del listado \ref{lst:estilo_advertencias}, y las líneas 7 a 15 son el contenido que ya habías visto. Lo sé, es un tanto confuso hablar del código del código. Lo primero que hay que notar es que, contrario a las figuras y las tablas, las leyendas y etiquetas se definen dentro de los parámetros opcionales al entorno (entre corchetes).
+
+\lstinputlisting[style=latex,numbers=left,mathescape=false,label=lst:codigo_estilo_advertencias,caption={Código para el listado del estilo \texttt{advertencias}.}]{fragmentos/codigo_estilo_advertencias.tex}
+
+Como el estilo global no tiene lenguaje, para usar el estilo \texttt{latex} es necesario establecerlo como un parámetro en los corchetes, con \texttt{style=latex} (línea 2). Como el código tiene un símbolo de \$ (en la línea 13), y la configuración global dice que está activo el \texttt{mathescape}, es necesario decirle a \LaTeX{} que, para este caso, sobreescriba el valor global para desactivarlo (línea 3).
+
+¿Qué acaba de pasar? El listado \ref{lst:estilo_advertencias} tiene sintaxis de \LaTeX{}, que tiene activo el \texttt{mathescape}. Eso ocasionaría que el símbolo \$ que se encuentra en el comentario de la definición del estilo \texttt{advertencias} ocasionara un error. Es decir, la línea 13 es parte del código que queremos poner bonito, no está definiendo nada, al menos no respecto al estilo \texttt{latex} que estamos empleando.
+
+Continuemos. La referencia se define en la línea 4, siguiendo las mismas reglas de no usar espacios, con el prefijo de \texttt{lst:}. Por último, se muestra la leyenda entre llaves. Aunque en este caso no es necesario, lo más conveniente es siempre utilizar las llaves al momento de definir la leyenda de un \texttt{lstlisting}.
+
+Pero, ¿por qué usar llaves? Resulta que el entorno \texttt{lstlisting} recibe una lista de parámetros separada por comas. En caso de que la leyenda tenga comas, y no esté encerrada entre llaves, \LaTeX{} pensará que la leyenda acabó y lo que sigue es otro parámetro. Si el texto que le sigue a la coma resulta no ser el nombre de un parámetro reconocido, \LaTeX{} arrojará el siguiente error:
+
+\begin{lstlisting}[style=errores]
+Package keyval Error: con error undefined.
+\end{lstlisting}
+
+Lo que siguió a la coma fueron las palabras \texttt{con error.}, en la leyenda:
+
+\begin{lstlisting}[style=latex, numbers=none]
+caption=Estilo para mostrar advertencias de compilación de \LaTeX, con error.
+\end{lstlisting}
+
+El punto es: incluso si tu leyenda del listado no requiere llaves, igual ponlas. Mejor que sobren a que falten.
+
+Una vez hemos acabado de analizar el contenido de los parámetros opcionales entre corchetes del entorno \texttt{lstlisting}... pues, hemos acabado. El entorno se encarga de darle estilo a todo el contenido, y trata como código todo lo que esté adentro de él, hasta que se encuentre con el |\end{lstlisting}| (línea 15 del listado \ref{lst:codigo_estilo_advertencias}).
+
+
+\section{Código de archivo externo}
+\label{sec:codigo_archivo_externo}
+
+
+
+Por supuesto, incluir código dentro del mismo archivo de \LaTeX{} funciona con definiciones de funciones o pequeños fragmentos que se utilizarán de manera didáctica. ¿Qué pasa cuando debemos incluir un archivo de 500 líneas completamente? ¿Y qué pasa si ese archivo cambia? ¿Tenemos que volver a editar nuestro archivo fuente para actualizar los cambios al código?
+
+Por fortuna, tenemos una solución a todo lo anterior: la inclusión de archivos externos. Es decir, se puede agregar código fuente de manera análoga a como \texttt{graphicx} incluye las figuras, por nombre de archivo. En lugar de usar el entorno \texttt{lstlisting} se usa la instrucción |\lstinputlisting|, misma que recibe los mismos parámetros opcionales que el entorno \texttt{lstlisting}, y como parámetro requerido pide el nombre del archivo a incluir al completo.
+
+De hecho, el listado \ref{lst:codigo_estilo_advertencias} se incluyó mediante archivo externo gracias a esta instrucción porque, de lo contrario, el |\end{lstlisting}| del código a mostrar terminaría el entorno, cuando la intención era mostrar la línea en pantalla.
+
+El código para incluir el listado \ref{lst:codigo_estilo_advertencias} se muestra en el listado \ref{lst:codigo_incluir_estilo_advertencias}. Nótese que los parámetros separados por comas (líneas 2 a 5 del listado \ref{lst:codigo_incluir_estilo_advertencias}) son similares a los parámetros del entorno \texttt{lstlisting} (líneas 2 a 5 del listado \ref{lst:codigo_estilo_advertencias}). Donde difieren es en la línea 6, donde la instrucción |\lstinputlisting| solamente toma el nombre de archivo para copiar su contenido a nuestro documento (en contraste con todo el código copiado manualmente de las líneas 7 a 14 del listado \ref{lst:codigo_estilo_advertencias}).
+
+\begin{lstlisting}[style=latex,label=lst:codigo_incluir_estilo_advertencias,caption={Uso de la instruccion \ttlatex{lstinputlisting} para incluir archivos de código.}]
+\lstinputlisting[
+	style=latex,
+	mathescape=false,
+	label=lst:codigo_estilo_advertencias,
+	caption={Código para el listado del estilo \texttt{advertencias}.}
+]{fragmentos/codigo_estilo_advertencias.tex}
+\end{lstlisting}
+
+Así como el paquete \texttt{graphicx} nos brindaba la oportunidad de definir el directorio base para buscar las imágenes, con |\graphicspath|, el paquete \texttt{listings} permite definir el directorio donde se buscará el código con la opción |inputpath|. Dicha opción puede ser configurada globalmente en el primer |\lstset|, o de manera local a cada llamada a |\lstinputlisting|. Si no se define, \LaTeX{} buscará los archivos tomando como raíz el directorio del archivo que estés compilando.
+
+
+
+\section{Resaltado de líneas}
+\label{sec:resaltado_de_lineas}
+
+
+
+Pero no solamente podemos resaltar la sintaxis, también podemos resaltar líneas dentro de nuestro código, en caso de querer llevar nuestra atención hacía una línea (o líneas) en particular. Por ejemplo, en el listado \ref{lst:listado_linea_resaltada} se resalta la línea 4, lo cual constituye la única diferencia respecto al listado \ref{lst:codigo_incluir_estilo_advertencias}.
+
+\begin{lstlisting}[style=latex,numbers=left,label=lst:listado_linea_resaltada,caption={Demostración de listado con línea resaltada.},
+linebackgroundcolor={%
+    \ifnum \value{lstnumber} =  4 \color{codigo_linea_resaltada}
+    \else \color{codigo_fondo}
+    \fi % Tantos \fi como líneas subrayadas.
+}]
+\lstinputlisting[
+    style=latex,
+    mathescape=false,
+    label=lst:codigo_estilo_advertencias,
+    caption={Código para el listado del estilo \texttt{advertencias}.}
+]{fragmentos/codigo_estilo_advertencias.tex}
+\end{lstlisting}
+
+No obstante, la función de resaltar líneas no es propia del paquete \texttt{listings}. Es necesario cargar otro paquete, denominado \texttt{lstlinebgrd}, para agregar la opción \texttt{linebackgroundcolor} a los parámetros aceptados por los entornos de \texttt{listings}.
+
+El problema con resaltar líneas de código es que... bueno... implica un poco más de programación de \LaTeX{}. No mucho, solo lo suficiente como para confundirnos. Ahora bien, el código para el listado \ref{lst:listado_linea_resaltada}, con la línea resaltada, se muestra en el listado \ref{lst:codigo_linea_resaltada}, con los cambios resaltados.
+
+Las líneas 5-9 son las necesarias para resaltar una línea. En la línea 5 se declara el parámetro \texttt{linebackgroundcolor}, mismo que recibirá la lista de líneas a ser coloreadas. Es importante notar que se abren llaves para recibir las instrucciones, y se cierran en la línea 9, al final de todo.
+
+\lstinputlisting[
+	style=latex,
+	mathescape=false,
+    numbers=left,
+	label=lst:codigo_linea_resaltada,
+	caption={Código para resaltar líneas.},
+	linebackgroundcolor={
+		\ifnum \value{lstnumber} =  5 \color{codigo_linea_resaltada}
+		\else \ifnum \value{lstnumber} =  6 \color{codigo_linea_resaltada}
+		\else \ifnum \value{lstnumber} =  7 \color{codigo_linea_resaltada}
+		\else \ifnum \value{lstnumber} =  8 \color{codigo_linea_resaltada}
+		\else \ifnum \value{lstnumber} =  9 \color{codigo_linea_resaltada}
+		\else \color{codigo_fondo}
+		\fi\fi\fi\fi\fi % Tantos \fi como líneas subrayadas.
+	}
+]{fragmentos/codigo_con_una_linea_resaltada.tex}
+
+Lo ideal sería pasar solamente una lista de líneas por resaltar, como en la impresora: \texttt{1}, o \texttt{5-9}, incluso \texttt{1, 5-9}... la verdad, no es el caso. Tendremos que hacer una evaluación del número de línea por cada línea que querramos resaltar, y eso es precisamente lo que pasa en la línea 6, con el siguiente código:
+
+\begin{lstlisting}[style=latex]
+\ifnum \value{lstnumber} =  4 \color{codigo_linea_resaltada}
+\end{lstlisting}
+
+\noindent que se podría leer como ``Si el número de línea es igual a 4, entonces cambia el color de fondo'' (la primera línea es la 1, de ahí seguimos contando línea por línea hasta llegar a la de interés). Por supuesto, hay que utilizar instrucciones de \LaTeX{} para que el compilador nos entienda. Parte por parte de la línea, tenemos:
+\begin{itemize}
+	\item |\ifnum| es una instrucción para comparar dos números enteros.
+	\item |\value| provee el valor entero del argumento que recibe.
+	\item \texttt{lstnumber} es el número de línea que el entorno de código está procesando.
+	\item \texttt{4} es la constante, el número de línea que deseamos resaltar.
+	\item |\color| es la instrucción que asignará el nuevo color de fondo de línea.
+\end{itemize}
+
+En teoría, eso debería ser suficiente para resaltar la línea 4, dejando intactas todas las demás. El problema es que cualquier línea que no sea la 4 pierde el color de fondo. Es decir, utilizar el parámetro \texttt{linebackgroundcolor} implica ignorar el parámetro \texttt{backgroundcolor} (una razón más para evitar el uso de \texttt{backgroundcolor}).
+
+Por esta razón existe la línea 7 (aún estamos en el listado \ref{lst:codigo_linea_resaltada}): el |\else| indica que, en caso de que la línea no vaya a ser resaltada según las condiciones anteriores, el color de fondo debe ser \texttt{codigo\_fondo}.
+
+Para finalizar tenemos la línea 8, misma que debe cerrar todos los |\ifnum| abiertos con un |\fi| por |\ifnum|. Por eso tengo el comentario de recordatorio: tiene que haber tantos |\fi| como líneas resaltadas: una línea resaltada = un |\fi|.
+
+Como ejemplo final de esta sección, el listado \ref{lst:listado_lineas_resaltadas} muestra el valor del parámetro \texttt{linebackgroundcolor} usado para el listado \ref{lst:codigo_linea_resaltada}, donde se resaltaron cinco líneas. Las líneas 2 a 6 muestran un |\ifnum| por cada una de las líneas resaltadas del listado \ref{lst:codigo_linea_resaltada}, la línea 7 muestra el |\else| usado para recolorear el fondo, y cerramos con los condicionales en la línea 8, con un total de cinco |\fi|.
+
+Es importante mencionar que los |\ifnum| no van separados por comas. De hecho, dentro de todo el parámetro de \texttt{linebackgroundcolor} no hay necesidad de comas.
+
+\begin{lstlisting}[style=latex,label=lst:listado_lineas_resaltadas,caption={Parámetro \texttt{linebackgroundcolor} con varias líneas resaltadas.}]
+linebackgroundcolor={
+	\ifnum \value{lstnumber} =  5 \color{codigo_linea_resaltada}
+	\else \ifnum \value{lstnumber} =  6 \color{codigo_linea_resaltada}
+	\else \ifnum \value{lstnumber} =  7 \color{codigo_linea_resaltada}
+	\else \ifnum \value{lstnumber} =  8 \color{codigo_linea_resaltada}
+	\else \ifnum \value{lstnumber} =  9 \color{codigo_linea_resaltada}
+	\else \color{codigo_fondo}
+	\fi\fi\fi\fi\fi % Tantos \fi como líneas subrayadas.
+}
+\end{lstlisting}
+
+
+\subsection{Un error en la Mac}
+\label{sub:un_error_en_la_mac}
+
+
+
+Al tratar de compilar este documento en MacOS, en lugar de Linux Mint, surgieron los siguientes errores:
+
+\begin{lstlisting}[style=errores]
+/usr/local/texlive/2020/texmf-dist/tex/latex/lstaddons/lstlinebgrd.sty:36: Package Listings Error: Numbers none unknown. [...Error{Listings}{Numbers #1 unknown}\@ehc}}]
+LaTex para tesis de ingeniería.tex:17: LaTeX Error: File `hyperref.sty' not found. [\usepackage]
+\end{lstlisting}
+
+El primer error  se debe a un problema de actualización del paquete \texttt{listings} que no se propagó al paquete \texttt{lstlinebgrd}, según se documenta en \cite{bib:error_lstlinebgrd}. Aparentemente, se cambió el símbolo \texttt{\&} por unos \texttt{:} en el paquete \texttt{listing}, y lo mismo debió haber pasado con \texttt{lstlinebgrd}, motivo de que todo nuestro trabajo se fuera a la... *ahem* lejos.
+
+Debido a este problema de versiones, el código fuente de este libro incluye el archivo \texttt{lstlinebgrd.sty} en el mismo directorio del archivo principal del proyecto. Si el compilador encuentra un archivo de paquete en el mismo directorio, entonces ya no busca en el directorio del sistema.
+
+Por supuesto, si te ha ocurrido el error anterior, deberás limpiar todos los archivos temporales antes de volver a compilar. De lo contrario, incluso con el archivo del paquete ya corregido, volverás a ver el mismo error.
+
+¿Y qué hay del segundo error, con el paquete \texttt{hyperref}? No existe tal error, era un problema derivado del problema con las versiones de \texttt{lstlinebgrd.sty}.
+
+
+
+\section{Más parámetros sobre números de línea}
+\label{sec:mas_parametros_sobre_numeros_de_linea}
+
+
+
+Existen algunos parámetros más que permiten modificar el comportamiento de los números de línea en los listados. Las siguientes opciones son dignas de consideración si no quieres numerar todas las líneas.
+
+\subparagraph{stepnumber} Determina cada cuántas líneas se coloca un número de línea.
+
+\subparagraph{numberfirstline} Este parámetro se usa en conjunto con \texttt{stepnumber} porque determina si la primera línea se numera, independientemente de cada cuántas líneas se deba poner un número.
+
+\subparagraph{firstnumber} Si trabajas con fragmentos de código, lo más probable es que tu código no empiece en la línea 1. En caso de ser así, puedes especificar en cuál número inicia tu listado.
+
+\subparagraph{numberblanklines} En caso de no querer las líneas en blanco numeradas, puedes establecer este parámetro como \texttt{false} (de manera predeterminada es \texttt{true}).
+
+\subparagraph{}~\newline
+\indent Un ejemplo con números de línea cada 4, empezando en el número 414, se muestra en el listado \ref{lst:listado_firstnumber}. Nótese que la primera línea numerada es la 416. Es decir, no es la cuarta línea dentro del listado, que sería la 417, sino que es la primera línea múltiple de 4 dentro del listado ($416/4 = 104$, un entero, no hay residuo).
+
+En caso de activar la opción \texttt{numberfirstline} entonces podríamos ver el número 414 también, pues es la primera línea dentro del listado. El resto de los números continuarián igual.
+
+\lstinputlisting[
+	style=latex,
+    numbers=left,
+	label=lst:listado_firstnumber,
+	caption={Listado con \texttt{firstnumber} y \texttt{stepnumber} definidos.},
+	firstnumber=414,
+	stepnumber=4
+]{fragmentos/codigo_firstnumber.tex}
+
+
+
+\section*{Resumen}
+
+
+
+En este capítulo vimos un entorno para incluir código dentro de nuestro archivo \texttt{.tex} (el entorno \texttt{lstlisting}) y una instrucción para incluir todo el código de un archivo externo (la instrucción |\lstinputlisting|).
+
+Claro, nos llevamos una buena parte del capítulo viendo cómo configurar el paquete \texttt{listings}, desde el soporte para caracteres en español hasta el estilo del código dentro de nuestro documento, para que a la hora de meter código todo estuviera listo.
+
+Por último vimos cómo resaltar líneas dentro del código en caso de querer hacer énfasis en una parte en particular. Proceso que, sí, he de admitir es bastante impráctico y tedioso.
+
+Lo bueno es que ya casi acabamos con las instrucciones para el contenido. Solo falta ver cómo incluir fuentes bibliográficas.

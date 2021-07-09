@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,mexico]{babel} % Paquete para utilizar el idioma español.
+\usepackage{hyperref}              % Paquete para usar vínculos.
+
+\title{Enlaces}
+\author{Carlos Ramos}
+\date{Enero 2021}
+
+\begin{document}
+
+\maketitle
+
+\section{Esta es una sección de ejemplo}
+\label{sec:ejemplo}
+
+La sección anterior solo está para demostrar que si la referenciamos mediante un \texttt{\textbackslash{}ref\{sec:ejemplo\}} no se ve del todo bien: \ref{sec:ejemplo}.
+
+\subsection{Una subsección}
+\label{sub:ejemplo}
+
+La subsección \ref{sub:ejemplo} solo sirve para seguir demostrando el punto: un cuadro rojo que no se ve bonito, tal es el comportamiento predeterminado de \texttt{hyperref}.
+
+\section{Tablas}
+\label{sec:tablas}
+
+Aquí está la tabla \ref{tab:ejemplo}, misma que no
+
+\begin{table}[ht!]
+	\centering
+	\begin{tabular}{lll}
+		x & o & x \\
+		o & x & o \\
+		o & o & x
+	\end{tabular}
+	\caption{Ejemplo de tabla a referenciar.}
+	\label{tab:ejemplo}
+\end{table}
+
+\end{document}

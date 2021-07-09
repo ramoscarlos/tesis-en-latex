@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,mexico]{babel} % Paquete para utilizar el idioma español.
+
+\title{Listas}
+\author{Carlos Ramos}
+\date{Noviembre 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Listas sin orden}
+
+Esto es una lista sin orden:
+
+\begin{itemize}
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item No importa el número.
+	\item Son viñetas y ya.
+\end{itemize}
+
+\section{Listas con orden}
+
+\begin{enumerate}
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item Aquí sí hay números.
+	\item Cuatro, cuatro.
+\end{enumerate}
+
+\section{Listas anidadas}
+
+\begin{enumerate}
+	\item Primera lista.
+	\item Sigue siendo la misma.
+	\item Aquí abro otra:
+	\begin{itemize}
+		\item Segundo nivel.
+		\item Todavía segundo...
+		\item Sigo bajando:
+		\begin{itemize}
+			\item Tercer nivel.
+			\item 2do sin orden.
+			\item Bajamos:
+			\begin{enumerate}
+				\item Ordenada.
+				\item Otro dos.
+			\end{enumerate}
+		\end{itemize}
+		\item Vuelvo a 2do nivel.
+	\end{itemize}
+	\item Elemento cuatro.
+\end{enumerate}
+
+\end{document}

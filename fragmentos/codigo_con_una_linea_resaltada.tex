@@ -1,0 +1,17 @@
+\begin{lstlisting}[
+	style=latex,
+	label=lst:listado_linea_resaltada,
+	caption={Demostración de listado con línea resaltada.},
+	linebackgroundcolor={
+		\ifnum \value{lstnumber} =  4 \color{codigo_linea_resaltada}
+		\else \color{codigo_fondo}
+		\fi % Tantos \fi como líneas subrayadas.
+	}
+]
+\lstinputlisting[
+	style=latex,
+	mathescape=false,
+	label=lst:codigo_estilo_advertencias,
+	caption={Código para el listado del estilo \texttt{advertencias}.}
+]{ejemplos/codigo_estilo_advertencias.tex}
+\end{lstlisting}

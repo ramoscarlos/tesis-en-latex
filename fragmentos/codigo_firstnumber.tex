@@ -1,0 +1,17 @@
+\begin{lstlisting}[
+	style=latex,
+	label=lst:listado_firstnumber,
+	caption={Listado con \texttt{firstnumber} y \texttt{stepnumber} definidos.},
+	firstnumber=414,
+	stepnumber=4
+]
+linebackgroundcolor={
+	\ifnum \value{lstnumber} =  5 \color{codigo_linea_resaltada}
+	\else \ifnum \value{lstnumber} =  6 \color{codigo_linea_resaltada}
+	\else \ifnum \value{lstnumber} =  7 \color{codigo_linea_resaltada}
+	\else \ifnum \value{lstnumber} =  8 \color{codigo_linea_resaltada}
+	\else \ifnum \value{lstnumber} =  9 \color{codigo_linea_resaltada}
+	\else \color{codigo_fondo}
+	\fi\fi\fi\fi\fi % Tantos \fi como líneas subrayadas.
+}
+\end{lstlisting}

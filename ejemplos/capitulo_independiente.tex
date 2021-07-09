@@ -1,0 +1,76 @@
+\documentclass[10pt]{book}
+
+% Valor de los márgenes usados para la compensación.
+\newcommand{\margenIzquierdo}{0.6875in} % Margen a la izquierda del documento.
+\newcommand{\margenDerecho}{0.6875in} % Margen a la derecha del documento.
+\newcommand{\margenSuperior}{0in} % Margen a la derecha del documento.
+
+\usepackage[utf8]{inputenc}        % Acentos directo en LaTeX.
+\usepackage[spanish,mexico]{babel} % Paquete para utilizar el idioma español, con el texto "tabla".
+\usepackage{changepage}            % Para ajustar el margen del código en portada.
+\usepackage[svgnames]{xcolor}      % Colores para el código, portada, y otros.
+\usepackage{geometry}              % Permite modificar los márgenes del documento.
+\usepackage{lipsum}
+
+\geometry{ % Tamaño de hoja basado en No Starch Press.
+    letterpaper,
+    tmargin=\margenSuperior, % Margen superior.
+    bmargin=0.80in, % Margen inferior.
+    lmargin=\margenIzquierdo, % Margen izquierdo.
+    rmargin=\margenDerecho % Margen derecho.
+}
+\usepackage[Bjornstrup]{fncychap}  % Cambia el formato del título de cada capítulo.
+
+% Colores para encabezado de capítulo.
+\colorlet{FondoCapitulo}{DeepPink!40!Black}
+\colorlet{TextoCapitulo}{White}
+
+\renewcommand\DOCH{ % DOCH aplica para los capitulos con número y nombre.
+\begin{adjustwidth}{-\margenIzquierdo}{-\margenDerecho}
+  \nointerlineskip%
+  \vspace{-91pt}%
+  \settowidth{\py}{\CNoV\thechapter}%
+  \addtolength{\py}{\margenDerecho}%
+  \addtolength{\py}{0.05in}%
+  \fboxsep=0pt%
+  \colorbox{FondoCapitulo}{\rule{0pt}{1.75in}\parbox[b]{1.01\paperwidth}{\hfill}}%
+  \kern-\py\raise20pt%
+  \hbox{\color{TextoCapitulo}\CNoV\thechapter}\\%
+\end{adjustwidth}
+}
+\renewcommand\DOTI[1]{ % DOTI es para \chapter
+\begin{adjustwidth}{-\margenIzquierdo}{0in}
+  \nointerlineskip%
+  \fboxsep=\myhi%
+  \vskip-0.20in%
+  \colorbox{FondoCapitulo}{\parbox[t]{\paperwidth}{\CTV\FmTi{\color{TextoCapitulo}#1}\kern\margenDerecho\kern0.055in}}\par\nobreak%
+  \vskip-1ex%
+  \colorbox{FondoCapitulo}{\rule{0pt}{10pt}\parbox[b]{\paperwidth}{\hfill}}%
+  \vskip 30pt%
+\end{adjustwidth}
+}
+\renewcommand\DOTIS[1]{ % DOTIS aplica para los capítulos sin número y sin nombre (\chapter*).
+\begin{adjustwidth}{-\margenIzquierdo}{0in}
+  \fboxsep=0pt
+  \colorbox{FondoCapitulo}{\rule{0pt}{120pt}\parbox[b]{1.01\paperwidth}{\hfill}}\\%
+  \nointerlineskip%
+  \fboxsep=\myhi%`
+  \vskip-1ex%
+  \colorbox{FondoCapitulo}{\parbox[t]{\paperwidth}{\CTV\FmTi{\color{TextoCapitulo}#1}\kern\margenDerecho}}\par\nobreak%
+  \vskip-1ex%
+  \colorbox{FondoCapitulo}{\rule{0pt}{10pt}\parbox[b]{\paperwidth}{\hfill}}%
+  \vskip 30pt%
+\end{adjustwidth}
+}
+
+\begin{document}
+
+\chapter{Capítulo numerado de muestra}
+
+\lipsum\lipsum
+
+\chapter*{Capítulo sin numerar de muestra}
+
+\lipsum\lipsum
+
+\end{document}

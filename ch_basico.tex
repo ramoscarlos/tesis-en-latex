@@ -1,0 +1,739 @@
+\chapter{Lo básico para redacción}
+\label{cha:lo_basico}
+
+
+Asumiré que leíste el capítulo \ref{cha:introduccion} y sabes utilizar el botón \emph{Recompilar} en Overleaf, o que sabes cómo compilar un documento por tus propios medios (si no es así, ahora es un buen momento para regresar a la sección \ref{sec:un_primer_documento}).
+
+De aquí en delante, no habrá muchas imágenes ni explicaciones paso a paso, simplemente las instrucciones utilizadas y su resultado, dentro del mismo documento.
+
+
+
+\section{El idioma español}
+\label{sec:el_idioma_espanol}
+
+
+
+Aunque ya tenemos el paquete \texttt{inputenc} para introducir caracteres del idioma español, los textos de las figuras aparecen como \emph{Figure}, y el del índice como \emph{Contents}. Además, \LaTeX{} está usando las reglas de segmentación de palabras del idioma inglés (puedes buscar el tema como \emph{hyphenation}).
+
+Para traducir estos diversos textos, y separar bien las palabras, hay que utilizar otro paquete\footnote{Espero que ya vayas captando que así se resuelve la vida en \LaTeX{}}: \texttt{babel}, y debe ser configurado con la opción \texttt{spanish}. Como, por alguna extraña razón, traduce ``Table'' como ``Cuadro'', es necesario agregar alguna de estas opciones:
+\begin{itemize}
+	\item \texttt{es-tabla}, la cual sirve para traducir ``Cuadro'' como ``Tabla'', como debería ser.
+	\item \texttt{mexico}, que incluye el ajuste de \texttt{es-tabla}, entre otros más.
+\end{itemize}
+
+Para este libro, yo utilicé la opción \texttt{mexico}. En caso de querer colocar dos valores dentro de un comando de \LaTeX{} es necesario separarlos por coma, por lo que los dos valores a ser pasados al paquete \texttt{babel} se enlistan como \texttt{spanish,mexico}:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\usepackage[spanish,mexico]{babel} % Idioma español, texto "Tabla".
+\end{lstlisting}
+
+Si quieres saber más respecto a la opción \texttt{mexico}, consulta \cite{bib:opciones_spanish}.
+
+
+
+\section{Formato}
+\label{sec:formato}
+
+
+
+A lo largo del capítulo anterior ya utilizamos \emph{texto en cursiva}, \textbf{texto en negritas}, y \texttt{texto en fuente de ancho fijo}, sin informar qué instrucciones fueron necesarias. La tabla \ref{tab:instrucciones_estilo} muestra las instrucciones correspondientes, con un ejemplo... más el subrayado, que esperemos no tengas que utilizar en exceso. Según se aprecia en el ejemplo, el estilo se aplica al contenido que existe entre llaves (\{ y \}).
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{lll}
+\hline
+\multicolumn{1}{c}{\textbf{Si queremos...}} & \multicolumn{1}{c}{\textbf{Usamos...}} & \multicolumn{1}{c}{\textbf{Y resulta...}}   \\
+\hline
+Texto en cursiva    & |\emph{¡Qué estilo!}|         & \emph{¡Qué estilo!}             \\
+Texto en negritas   & |\textbf{Hola :D}|            & \textbf{Hola :D}                \\
+Texto de ancho fijo & |\texttt{suma = 42 + 16;}|    & \texttt{suma = 42 + 16;}        \\
+Texto subrayado     & |\underline{subrayado...}|    & \underline{subrayado...}        \\
+\hline
+\end{tabular}
+\caption{Cursivas, negritas, subrayado, y ancho fijo en \LaTeX.} % Leyenda de la tabla.
+\label{tab:instrucciones_estilo}
+\end{table}
+
+
+
+\subsection{Una nota sobre \ttlatex{emph} y \ttlatex{textit}}
+\label{sub:una_nota_sobre_emph_y_textit}
+
+
+
+Hay otra intrucción en \LaTeX{} que puede hacer letras cursivas\footnote{Varias, de hecho...}. Quizá te topes con la instrucción |\textit|, pues también imprime cursivas en pantalla. No obstante, se prefiere el uso de |\emph| debido a que se puede anidar con negritas, además de otras consideraciones que no son de mucho interés \cite{bib:emph}.
+
+En resumen, puedes utilizar |\textit| para cursivas, pero se recomienda más |\emph| (recomendación hecha también por Overleaf \cite{bib:overleaf_emph}).
+
+
+
+\section{Espacio en blanco en \LaTeX}
+\label{sec:espacio_en_blanco_en_latex}
+
+
+
+Hemos de recordar que \LaTeX{} no es un editor \emph{WYSIWYG}. ¿Y eso qué? Que, en Word, si das un \texttt{Enter}, tienes una nueva línea. Si das dos \texttt{Enter}, tienes dos nuevas líneas. Y si das cincuenta \texttt{Enter}, posiblemente llegues a una nueva página.
+
+En \LaTeX{}, un \texttt{Enter} es un simple espacio. Dos \texttt{Enter} son un cambio de párrafo. Cincuenta \texttt{Enter} siguen siendo un cambio de párrafo. ¿Por qué? Porque \LaTeX{} se basa en instrucciones para posicionar el texto, no en el espacio en blanco. Tanto así que el compilador colapsa el espacio en blanco al momento de traducir tus instrucciones a PDF. Eso implica que los saltos de línea, los espacios, las tabulaciones... todo se colapsa a uno solo. Lo que es más, tú nunca llegas a tener una idea visual de dónde se producirá un cambio de página hasta que ves el PDF producido. De momento, para ver los efectos del espacio en \LaTeX{} tenemos el fragmento del listado \ref{lst:fragmento_espacios}, con el símbolo \lstinline[showspaces=true,columns=fixed]! ! para señalar donde hay espacios en blanco.
+
+\begin{lstlisting}[style=latex,numbers=left,showspaces=true,label=lst:fragmento_espacios,caption={Fragmento de texto para demostración de espacio en blanco.}]
+[Hola,            aquí         hay         mucho,          	
+pero mucho]       			
+        	
+           		
+[           espacio                    ]
+       	
+            	
+                    	
+[				¿No crees?]   	
+\end{lstlisting}
+
+A pesar de que el fragmento cuenta con nueve líneas, en el PDF se traducen a:
+
+\begin{displayquote}{}
+[Hola,            aquí         hay         mucho,          	
+pero mucho]       			
+        	
+           		
+[           espacio                    ]
+       	
+            	
+                    	
+[				¿No crees?]   	
+\end{displayquote}
+
+¿Qué pasó? Como dijimos anteriormente, \LaTeX{} cuenta un salto de línea como un espacio, razón por la cual las primeras dos líneas del fragmento en el listado \ref{lst:fragmento_espacios} se colapsaron a una sola. Donde había dos o más saltos de línea se produjo un cambio de párrafo. Sobre los demás espacios... bueno, se colapsaron a uno solo. Es decir, no importa si separas una palabra con uno o veinte espacios, \LaTeX{} los colapsará a uno solo. Lo bueno de esto es que ya no tendrás que preguntarte si el espacio entre dos palabras es de uno o dos espacios, o preguntarte por qué se subraya algo con color azul (te estoy viendo a ti, Word).
+
+Fuera de juego, \LaTeX{} nos trae un beneficio: puedes usar todo el espacio en blanco que quieras para acomodar tu documento al estar editando. Claro, todo don trae una maldición: ¿ahora cómo se supone que uno inserte espacios de más?
+
+La respuesta viene de la mano de instrucciones y caracteres especiales, obvio. Así es esto en \LaTeX{}, y espero que ya te estés acostumbrando a ese hecho. Si quieres espacios en blanco, usas el carácter \textbf{\textasciitilde} (sí, la virguilla o tilde de la eñe). Para tener muchos espacios, cambiamos el texto a:
+
+\begin{lstlisting}[style=latex,numbers=none]
+[Hola,~~~~~~~~~~~~aquí~~~~~~~~~hay~~~~~~~~~mucho~~~~~~~~~~~
+pero mucho]~~~~~~~~~~~~~~~~~
+\end{lstlisting}
+
+\noindent Lo que ya nos da el resultado esperado en los espacios entre palabras:
+
+\begin{displayquote}{}
+[Hola,~~~~~~~~~~~~aquí~~~~~~~~~hay~~~~~~~~~mucho~~~~~~~~~~~
+pero mucho]~~~~~~~~~~~~~~~~~
+\end{displayquote}
+
+¿Y qué hay de las tabulaciones? Siempre son un problema. ¿A cuántos espacios equivale una tabulación? ¿Qué comando se utiliza? Aunque hay varios, como |\quad|, recomiendo simplemente usar cuatro tildes consecutivas (|~~~~|) cada vez.
+
+¿Y para insertar líneas adicionales? Se puede utilizar la instrucción |\newline| según la cantidad de líneas que queramos colocar, como se muestra en el listado \ref{lst:espacio}.
+
+\begin{lstlisting}[style=latex,label=lst:espacio,caption={Espacio en blanco en \LaTeX{}.}]
+[Hola,~~~~~~~~~~~~aquí~~~~~~~~~hay~~~~~~~~~mucho~~~~~~~~~~~
+pero mucho]~~~~~~~~~~~~~~~~~
+\newline\newline
+[~~~~~~~~~~~espacio~~~~~~~~~~~~~~~~~~~~]
+\newline
+\newline
+[~~~~~~~~~~~~~~~~¿No crees?]
+\end{lstlisting}
+
+Ya sea que pongamos ambas instrucciones |\newline| en la misma línea, o cada una en su propia línea, el resultado es el mismo, se muestran dos saltos de línea:
+
+\begin{displayquote}{}
+[Hola,~~~~~~~~~~~~aquí~~~~~~~~~hay~~~~~~~~~mucho~~~~~~~~~~~
+pero mucho]~~~~~~~~~~~~~~~~~
+\newline\newline
+[~~~~~~~~~~~espacio~~~~~~~~~~~~~~~~~~~~]
+\newline
+\newline
+[~~~~~~~~~~~~~~~~¿No crees?]
+\end{displayquote}
+
+Empero, |\newline| no es el único comando utilizado para realizar saltos de línea, puede que llegues a ver su ``gemelo'' malvado, la instrucción \codigo{\textbackslash}. ¿Por qué malvado? En algunas ocasiones puede ocurrir algún error como el siguiente:
+
+\begin{lstlisting}[style=errores]
+Missing number, treated as zero. [[~~~~~~~~~~~espacio~~~~~~~~~~~~~~~~~~~~]]
+Illegal unit of measure (pt inserted). [[~~~~~~~~~~~espacio~~~~~~~~~~~~~~~~~~~~]]
+Argument of \language@active@arg~ has an extra }. [[~~~~~~~~~~~espacio~~~~~~~~~~~~~~~~~~~~]]
+Paragraph ended before \language@active@arg~ was complete. [[~~~~~~~~~~~espacio~~~~~~~~~~~~~~~~~~~~]]
+Missing number, treated as zero. [[~~~~~~~~~~~~~~~~¿No crees?]]
+Illegal unit of measure (pt inserted). [[~~~~~~~~~~~~~~~~¿No crees?]]
+\end{lstlisting}
+
+¿Y qué es todo eso? ¿Qué significa? ¿Por qué pasó? Simplemente cambié los |\newline| por \codigo{\textbackslash} en el listado \ref{lst:espacio}... y se desató el pandemónium. En conclusión: si quieres una nueva línea, usa |\newline|. Sí, es más escribir respecto a \codigo{\textbackslash}, pero da menos dolores de cabeza (adelante, trata de descrifrar el texto de ese error).
+
+Por supuesto, también el comando |\newline| puede darte ocasionalmente dolores de cabeza, cuando la línea anterior no tiene nada de contenido. El error será:
+
+\begin{lstlisting}[style=errores]
+LaTeX Error: There's no line here to end.
+\end{lstlisting}
+
+\noindent y esto quiere decir que no hay nada a lo que anclarse, a lo que agregar nueva línea. Puedes acercar el |\newline| al párrafo anterior, o simplemente escribir una tilde previo al comando, con \texttt{\textasciitilde}|\newline| (así, ese espacio será la línea a terminar).
+
+
+
+\section{Texto entre comillas}
+\label{sec:texto_entre_comillas}
+
+
+
+En nuestro primer documento, la figura \ref{fig:overleaf_mi_primer_documento} mostró el título como \textbf{''}LaTeX para tesis de ingeniería\textbf{''} (énfasis en las comillas, porque ambas son de cierre).
+
+La verdad es que cuando usas el símbolo \textbf{\texttt{"}} nunca sabes qué esperar. En el mejor de los casos, el compilador te mostrará dos comillas de cierre, que no es lo óptimo pero no está mal. Como ejemplo, el siguiente texto:
+
+\begin{displayquote}
+La palabra "Hola" no tiene ningún problema, excepto que en realidad quiero ``Hola'', y Overleaf muestra ''Hola'', sin mencionar que escribí \underline{\texttt{"Hola"}\texttt{ no}} pero no aparece el espacio.
+\end{displayquote}
+
+La cosa se pone algo peor cuando empiezas la frase con una vocal:
+
+\begin{displayquote}
+"Alto ahí", me dijo el oficial (y sí, esto que acaba de suceder fue escribiendo el texto \underline{\texttt{"}\texttt{Alto"}}). Y, sí, en Overleaf eso se ve como ''Alto ahí''...
+\end{displayquote}
+
+Para evitar confusiones, se utiliza un doble acento grave (\`{ }) para las comillas de apertura y doble apóstrofe (\textquotesingle) para las comillas de clausura.
+
+Si se desean comillas simples, solamente utilizamos un acento grave de apertura, y una apóstrofe de clausura. Esto se muestra resumido en la tabla \ref{tab:comillas}.
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{lll}
+\hline
+\multicolumn{1}{c}{\textbf{Si queremos...}} & \multicolumn{1}{c}{\textbf{Usamos...}} & \multicolumn{1}{c}{\textbf{Y resulta...}}   \\
+\hline
+Comillas dobles  & \`{ }\`{ } y \textquotesingle\textquotesingle & ``Texto entre comillas dobles'' \\
+Comillas simples & \`{ } y \textquotesingle                      & `Texto entre comillas simples'  \\
+\hline
+\end{tabular}
+\caption{Comillas dobles y simples en \LaTeX.} % Leyenda de la tabla.
+\label{tab:comillas}
+\end{table}
+
+Todo muy bonito pero... ¿y si quiero usar unas simples y llanas comillas rectas?
+
+
+
+\subsection{¿Y las comillas rectas?}
+\label{sub:comillas_rectas}
+
+
+
+La verdad es que la cosa se complica un poco cuando se quieren usar comillas dobles o simples como tal, porque, como hemos visto:
+\begin{itemize}
+  \item las comillas altas (\textquotedbl) se comportan extraño y
+  \item las comillas simples se transforman en comillas de cierre (no rectas).
+\end{itemize}
+
+Entonces, ¿cómo le hacemos? Para no batallar, incluimos dos paquetes \cite{bib:quotes}:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\usepackage{textcomp}    % Permite usar \textquotesingle
+\usepackage[T1]{fontenc} % Permite usar \textquotedbl.
+\end{lstlisting}
+
+¿Y dónde van estas dos instrucciones? En el preámbulo. ¿Dónde es éso? Todo el espacio antes del |\begin{document}|. Nosotros colocaremos esas dos líneas justo debajo del paquete \texttt{inputenc}. El listado \ref{lst:uso_de_comillas} muestra el código completo del ejemplo\fuenteOverleaf{uso\_de\_comillas.tex}.
+
+\lstinputlisting[style=latex,numbers=left,label=lst:uso_de_comillas,caption=Uso de comillas en \LaTeX.]{ejemplos/uso_de_comillas.tex}
+
+Las líneas 3 y 4 del listado \ref{lst:uso_de_comillas} cargan los paquetes necesarios para usar las instrucciones para las comillas. En las líneas 28 y 29 se utilizan las comillas altas rectas, mediante |\textquotedbl|, mientras que las líneas 33 y 34 hacen uso de |\textquotesingle| para comillas simples rectas.
+
+
+
+\section{Escape de símbolos (el problema del guión bajo)}
+\label{sec:guion_bajo}
+
+
+
+Antes de que te suceda: un guión bajo sin ``escapar'' es una de las peores amenazas que puedes encontrar en tu documento. Si tu tesis incluye código, y en algún momento quieres hablar de la variable \texttt{saldo\_total}, te encontrarás con un desastre:
+
+\begin{lstlisting}[style=errores]
+Missing $ inserted
+Extra }, or forgotten $
+LaTeX Warning: Command \' invalid in math mode
+Missing $ inserted
+\end{lstlisting}
+
+Sí, todos esos mensajes de error. ¿Tu crimen? Escribir \texttt{saldo\_total} en tu documento cuando debió haber sido \texttt{saldo\textbackslash{}\_total}. Así es, el guión bajo (\_) es un carácter especial que se utiliza en ecuaciones, como veremos en el capítulo \ref{cha:ecuaciones}. De momento, basta decir que si deseas escribir un guión bajo, como texto, es necesario ``escapar'' el símbolo con una diagonal invertida, así: \texttt{\textbackslash{}\_}.
+
+Otros símbolos especiales son las llaves, y para escribirlas en texto se antepone una diagonal invertida (\textbackslash): \{ y \} en realidad se escribieron como \texttt{\textbackslash\{} y \texttt{\textbackslash\}}. A su vez, la diagonal invertida en texto se escribe como |\textbackslash|.
+
+
+
+\section{Entornos}
+\label{sec:entornos}
+
+
+
+Muchas de las instrucciones que veremos de aquí en delante estarán encerradas entre un |\begin| y un |\end|. A esta configuración se le llama ``entorno''. Por lo tanto, si hablamos del entorno \texttt{pewpew}, nos referimos a un segmento de código que luce así:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\begin{pewpew}
+Este es el contenido del entorno.
+\end{pewpew}
+\end{lstlisting}
+
+Dicho de otra forma, lo que va entre llaves después del |\begin| es el nombre del entorno que se va a utilizar, y todo lo que va entre el |\begin| y |\end| es su contenido (sí, todo lo que ves en este documento forma parte del entorno \texttt{document}).
+
+Si después de definir el entorno, existen corchetes, como en:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\begin{pewpew}[rawr]
+Este es el contenido del entorno.
+\end{pewpew}
+\end{lstlisting}
+
+\noindent entonces decimos que lo que está entre corchetes (\texttt{rawr}) es un argumento del entorno, y se manda para modificar lo que sea que el entorno tenga que realizar con el contenido.
+
+
+
+\section{Comentarios}
+\label{sec:comentarios}
+
+
+
+En \LaTeX{} solo hay una forma nativa para poner comentarios, y es con el símbolo de porcentaje (\%). Son comentarios de una sola línea, y todo lo que esté después de dicho símbolo no se toma en cuenta por el compilador de \LaTeX{}.
+
+El listado \ref{lst:comentarios} muestra comentarios en itálicas\footnote{Y en color verde, por si existe color en tu copia impresa o en tu dispositivo de lectura.}, gracias al resaltado de sintaxis, en varias líneas a través del documento\fuenteOverleaf{comentarios.tex}.
+
+Además,  hace uso del paquete \texttt{comment}, que permite que todo el contenido dentro del entorno \texttt{comment} sea ignorado (comentarios multilínea, por llamarlo de alguna forma).
+
+\lstinputlisting[label=lst:comentarios,style=latex,caption=Comentarios en \LaTeX.]{ejemplos/comentarios.tex}
+
+
+
+\section{Listas}
+\label{sec:listas}
+
+
+
+Respecto a las listas, hay dos opciones: con viñetas (sin orden) y enumeradas (con orden). Revisaremos estos dos tipos y su combinación en listas dentro de listas.
+
+
+
+\subsection{Listas sin orden}
+\label{sub:listas_sin_orden}
+
+
+
+Las listas sin orden se definen mediante el entorno \texttt{itemize}, donde cada viñeta se crea con una instrucción |\item|. A continuación se muestra el código en \LaTeX{} en la columna izquierda, y su resultado visual del lado derecho:
+
+\lstruleb\vspace{-5mm}
+\begin{multicols}{2}
+% Columna izquierda.
+\begin{lstlisting}[style=latex,frame={}]
+\begin{itemize}
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item No importa el número.
+	\item Son viñetas y ya.
+\end{itemize}
+\end{lstlisting}
+
+% Columna derecha.
+\columnbreak
+\begin{itemize}[nosep]
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item No importa el número.
+	\item Son viñetas y ya.
+\end{itemize}
+\end{multicols}
+\vspace{-7mm}\lstruleb
+
+
+\subsection{Listas ordenadas}
+\label{sub:listas_ordenadas}
+
+
+
+Las listas ordenadas siguen utilizando la instrucción |\item| para cada elemento dentro de la lista, pero dentro del entorno \texttt{enumerate}, como se muestra en el siguiente ejemplo:
+
+\lstruleb\vspace{-5mm}
+\begin{multicols}{2}
+% Columna izquierda.
+\begin{lstlisting}[style=latex,frame={}]
+\begin{enumerate}
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item Aquí sí hay números.
+	\item Cuatro, cuatro.
+\end{enumerate}
+\end{lstlisting}
+
+% Columna derecha.
+\columnbreak
+\begin{enumerate}
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item Aquí sí hay números.
+	\item Cuatro, cuatro.
+\end{enumerate}
+\end{multicols}
+\vspace{-7mm}\lstruleb
+
+El conteo empieza en el número 1 para cada nuevo entorno \texttt{enumerate}. Si quieres empezar en un número diferente puedes establecer el valor inicial del contador con la instrucción |\setcounter| y el nombre del contador que se quiere modificar. El contador del primer nivel utilizado por un entorno \texttt{enumerate} se llama \texttt{enumi}:
+
+\lstruleb\vspace{-5mm}
+\begin{multicols}{2}
+% Columna izquierda.
+\begin{lstlisting}[style=latex,frame={}]
+\begin{enumerate}
+	\setcounter{enumi}{8}
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item Aquí sí hay números.
+	\item Cuatro, cuatro.
+\end{enumerate}
+\end{lstlisting}
+
+% Columna derecha.
+\columnbreak
+\begin{enumerate}
+	\setcounter{enumi}{8}
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item Aquí sí hay números.
+	\item Cuatro, cuatro.
+\end{enumerate}
+\end{multicols}
+\vspace{-7mm}\lstruleb
+
+Si el contador se establece en 8, ¿por qué empieza en el número 9? Internamente, \LaTeX{} lleva control de sus contadores, y resulta que la instrucción |\item| le suma uno antes de imprimir tal número en el documento. Lo que quiero decir: si quieres empezar en el número $x$, establece el contador en $x - 1$.
+
+
+
+\subsection{Listas anidadas}
+\label{sub:listas_anidadas}
+
+
+
+Una lista anidada sucede cuando metemos una lista dentro de otra lista, y podemos anidar hasta cuatro niveles (aunque si tienes más allá de tres probablemente algo hiciste mal en tu síntesis).
+
+Para anidar una lista dentro de otra solamente coloca un entorno \texttt{itemize} o \texttt{enumerate} como el contenido de un |\item|, como se muestra en el ejemplo:
+
+\lstruleb\vspace{-5mm}
+\begin{multicols}{2}
+% Columna izquierda.
+\begin{lstlisting}[style=latex,frame={}]
+\begin{enumerate}
+	\item Primera lista.
+	\item Sigue siendo la misma.
+	\item Aquí abro otra:
+	\begin{itemize}
+		\item Segundo nivel.
+		\item Todavía segundo...
+		\item Sigo bajando:
+		\begin{itemize}
+			\item Tercer nivel.
+			\item 2do sin orden.
+			\item Bajamos:
+			\begin{enumerate}
+				\item Ordenada.
+				\item Otro dos.
+			\end{enumerate}
+		\end{itemize}
+		\item Vuelvo a 2do nivel.
+	\end{itemize}
+	\item Elemento cuatro.
+\end{enumerate}
+\end{lstlisting}
+
+% Columna derecha.
+\columnbreak
+\begin{enumerate}
+	\item Primera lista.
+	\item Sigue siendo la misma.
+	\item Aquí abro otra:
+	\begin{itemize}
+		\item Segundo nivel.
+		\item Todavía segundo...
+		\item Sigo bajando:
+		\begin{itemize}
+			\item Tercer nivel.
+			\item 2do sin orden.
+			\item Bajamos:
+			\begin{enumerate}
+				\item Ordenada.
+				\item Otro dos.
+			\end{enumerate}
+		\end{itemize}
+		\item Vuelvo a 2do nivel.
+	\end{itemize}
+	\item Elemento cuatro.
+\end{enumerate}
+\end{multicols}
+\vspace{-7mm}\lstruleb
+
+Sobre las listas anidadas anteriores se pueden hacer las siguientes observaciones:
+\begin{itemize}
+	\item El primer nivel tiene su propio contador, y se las arregla para mantener el número correcto para el último elemento a pesar de todas las listas intermedias.
+	\item El segundo nivel, a pesar de ser la segunda lista, sigue siendo el primer nivel no numerado. Por eso, su símbolo es el cuadro negro.
+	\item El tercer nivel es no numerado, pero cambia de símbolo para diferenciarse de la primer lista no numerada.
+	\item El cuarto nivel es ordenado, pero en lugar de números utiliza letras (y tenemos una \emph{b} en lugar de un \emph{2}).
+\end{itemize}
+
+Sí, \LaTeX{} se encarga de eso automáticamente. Y sí, hay forma para poder cambiar esos símbolos, pero no lo necesitas para lo básico de redacción. En caso de necesitarlo puedes consultar la documentación de Overleaf \cite{bib:overleaf_lists}.
+
+
+
+\section{Notas al pie}
+\label{sec:notas_al_pie}
+
+
+
+Puedes agregar información al documento creando notas al pie\footnote{Que espero tengan información útil, no como esta...} con la instrucción |\footnote|. Para la nota en este mismo párrafo, utilicé el siguiente código justo después de la palabra ``pie''\fuenteOverleaf{notas\_al\_pie.tex}:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\footnote{Que espero tengan información útil, no como esta...}
+\end{lstlisting}
+
+De manera predeterminada, \LaTeX{} muestra las notas numeradas, comenzando en 1. En el caso de un \texttt{book} o \texttt{report}, el contador se reinicia cada capítulo.
+
+
+
+\section{Tamaños de fuente}
+\label{sec:tamanos_de_fuente}
+
+
+
+Podemos ver que las notas al pie cuentan con un tamaño de fuente menor al del texto principal. ¿Qué tamaño de fuente es? Contrario a software como Microsoft Word, en \LaTeX{} solamente configuras el tamaño de fuente una vez, en la primer línea de tu documento, y de ahí en más te olvidas.
+
+Dicha configuración es una opción para la instrucción |\documentclass|. Por ejemplo, para este documento definí un tamaño base de \texttt{10pt}, con:
+
+\begin{lstlisting}[style=latex]
+\documentclass[10pt]{book}
+\end{lstlisting}
+
+Pero, ¿cómo se calcula el tamaño de los títulos? ¿y el de las secciones? ¿y el de las notas al pie? Otra instancia más de la indiferencia y la ignorancia que debes tener al usar \LaTeX{}: sabrá cómo, y no importa.
+
+En su lugar, \LaTeX{} brinda unidades relativas disponibles para tu uso, con los nombres de |\tiny|, |\scriptsize|, |\footnotesize|, |\small|, |\normalsize|, |\large|, |\Large|, |\LARGE|, |\huge|, y |\Huge|. La tabla \ref{tab:tamanos_fuente} tiene muestras de los tamaños de fuente (todos menos el tamaño regular).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccccccccccc}
+\multicolumn{3}{c}{\tiny Tamaño \codigo{tiny}} & \multicolumn{3}{c}{\scriptsize Tamaño \codigo{scriptsize}} & \multicolumn{3}{c}{\footnotesize Tamaño \codigo{footnotesize}} & \multicolumn{3}{c}{\small Tamaño \codigo{small}} \\
+\multicolumn{4}{c}{\large Tamaño \codigo{large}}         & \multicolumn{4}{c}{\Large Tamaño \codigo{Large}}         & \multicolumn{4}{c}{\LARGE Tamaño \codigo{LARGE}}        \\
+\multicolumn{6}{c}{{\huge Tamaño \codigo{huge}}} & \multicolumn{6}{c}{{\Huge Tamaño \codigo{Huge}}}\\
+\end{tabular}
+\caption{Muestra de los tamaños de fuente.}
+\label{tab:tamanos_fuente}
+\end{table}
+
+Para utilizar los tamaños de fuente puedes colocar el texto que quieres en el nuevo tamaño, encerrado entre llaves con la instrucción pertinente, como {\large\{\codigo{large} este texto que cambia de tamaño\}} o {\scriptsize\{\codigo{scriptsize} este otro\}}.
+
+De nuevo, en \LaTeX{} no es necesario obsesionarse por la fuente o el tamaño, tenemos instrucciones para diversos tamaños, y eso es más que suficiente.
+
+
+
+\section{Secciones}
+\label{sec:secciones}
+
+
+
+Como hablamos de una tesis, la clase de documento a utilizar será \texttt{book} o \texttt{report} (tal vez ni siquiera tengas opinión porque tu institución ya eligió, hace mucho, haciendo una plantilla que tienes que rellenar solamente).
+
+En la sección \ref{sub:clase_del_documento} vimos que la clase \texttt{article} no se divide por capítulos, mientras que un \texttt{book} o \texttt{report} sí. Pero, ¿qué más hay? Hablando de divisiones en \LaTeX{}, podemos encontrar las siguientes:
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{ll}
+\hline
+\multicolumn{1}{c}{\textbf{División}}     & \multicolumn{1}{c}{\textbf{Numeración}} \\
+\hline
+|\part|          & Parte I                        \\
+|\chapter|       & Capítulo 1                     \\
+|\section|       & Sección 1.1                    \\
+|\subsection|    & Subsección 1.1.1               \\
+|\subsubsection| & Subsubsección 1.1.1.1          \\
+\hline
+\end{tabular}
+\caption{Instrucciones para divisiones lógicas en un reporte o libro.} % Leyenda de la tabla.
+\label{tab:instrucciones_de_secciones}
+\end{table}
+
+Según la tabla \ref{tab:instrucciones_de_secciones}, hay una división arriba de un capítulo (llamada \emph{parte}). Si has leído un libro \emph{All-in-One} de la serie \emph{Para Dummies}, ya lo has visto en acción. En la figura \ref{fig:java_for_dummies} se muestra la tabla de contenido del libro \emph{Java All-in-One For Dummies, 5th Edition}, el cual muestra separaciones en \emph{libros} (o partes). En otras palabras, una parte es una forma de agrupar capítulos.
+
+Ahora, que existan niveles numerados, tres en \texttt{article}\fuenteOverleaf{secciones\_articulo.tex} y cuatro en \texttt{book}\fuenteOverleaf{secciones\_libro.tex}, para organizar el contenido, no significa que tengas que usarlos todos. A menos que tu tesis sea muy extensa, y me refiero a \emph{muy} extensa (ochenta páginas se siente como una eternidad, pero sigue sin contar como \emph{muy}), no veo motivo para que utilices más de tres instrucciones de la tabla \ref{tab:instrucciones_de_secciones}. Y, a menos que venga en la plantilla de tu institución, no existe |\part|.
+
+Si necesitas más de tres niveles, posiblemente tu síntesis o enfoque para el tema tiene algunas fallas (o est\'as cursando la licenciatura en derecho, en cuyo caso este libro no es para ti).
+
+Como ejemplo, a lo largo de este libro no utilizo la instrucción |\subsubsection|, ¿por qué lo haría? Tampoco utilizo |\part|, por lo que utilizo tres niveles únicamente: |\chapter|, |\section|, y |\subsection|.
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.95\linewidth]{img/java_for_dummies_300ppi.png}
+  \caption{Contenido del libro \emph{Java All-in-One For Dummies, 5th Edition}.}
+  \label{fig:java_for_dummies}
+\end{figure}
+
+
+
+\subsection{Párrafos y subpárrafos}
+\label{sub:parrafos_y_subparrafos}
+
+
+
+La documentación de Overleaf \cite{bib:overleaf_sections} maneja que hay siete niveles, en los que se incluyen |\paragraph| y |\subparagraph|. Decidí separarlos porque estos dos niveles no se numeran ni se presentan como títulos, aunque tienen sus aplicaciones. Como ejemplo, en la página \pageref{page:uso_subparrafos} utilizo |\subparagraph| para el listado de ventajas.
+
+\paragraph{Este texto es el argumento} de una instrucción |\paragraph|, misma que hace que el párrafo se separe verticalmente del contenido vecino, remueva la indentación, y use las negritas para su argumento. Puede ser útil para describir una lista de elementos con mucho texto. El código de este párrafo empieza con:
+
+\begin{lstlisting}[style=latex]
+\paragraph{Este texto es el argumento} de una instrucción...
+\end{lstlisting}
+
+
+\subparagraph{El subpárrafo} sigue los mismos lineamientos que el párrafo. Tiene un estilo visual similar al párrafo, aunque con indentación. Cualquiera de estas dos instrucciones puede servir para separar un poco los elementos. En código:
+
+\begin{lstlisting}[style=latex]
+\subparagraph{El subpárrafo} sigue los mismos lineamientos...
+\end{lstlisting}
+
+Las instrucciones de |\paragraph| o |\subparagraph| no requieren su argumento, e.g. |\subparagraph{}|. Usarlas de esta manera puede servir para separar visualmente bloques de texto. Como ejemplo, el párrafo siguiente empieza con un |\paragraph{}|.
+
+\paragraph{} Dado que este párrafo comenzó con un |\paragraph{}| hay más espacio vertical respecto al párrafo anterior. Además, no tiene la indentación regular porque ésta es removida por la instrucción. En su lugar, la pequeña sangría que se ve es la que corresponde al espacio entre el argumento que se coloca en negritas y el texto sucesor (aunque en este caso no hay nada en negritas).
+
+
+
+\subsection{Secciones no numeradas}
+\label{sub:secciones_no_numeradas}
+
+
+
+En caso que quieras tener secciones no numeradas, como es el caso del resumen al final de cada capítulo de este libro, se puede agregar una estrella o asterisco al final del comando. Por ejemplo, la sección de resumen sin numerar se crea con el código:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\section*{Resumen}
+\end{lstlisting}
+
+Esto no solo aplica para las secciones, o subsecciones, sino para otras instrucciones o entornos que también tienen su contador incluido.
+
+
+
+\section{Etiquetas y referencias}
+\label{sec:etiquetas_y_referencias}
+
+
+
+Al hacer referencia a la página \pageref{page:uso_subparrafos} en los párrafos anteriores (para un ejemplo de |\paragraph|), o a la tabla \ref{tab:instrucciones_de_secciones} (de las instrucciones de secciones), utilicé una combinación de dos instrucciones: una etiqueta (|\label|) para nombrar la sección (o figura, tabla, ecuación, código, lo que sea) y una referencia (|\ref| o |\pageref|) para obtener el número asociado a la etiqueta.
+
+Por ejemplo, para definir esta sección (Etiquetas y referencias) utilicé el código:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\section{Etiquetas y referencias}
+\label{sec:etiquetas_y_referencias}
+\end{lstlisting}
+
+Ya en el lugar donde quiera colocar el número de sección, utilizo la instrucción |\ref{sec:etiquetas_y_referencias}|, como aquí: \ref{sec:etiquetas_y_referencias}. También puedo referenciar este capítulo con |\ref{cha:lo_basico}|, lo que muestra el número \ref{cha:lo_basico}.
+
+Pero no solo eso, con |\pageref| sé que este capítulo comenzó en la página \pageref{cha:lo_basico}, usando la misma referencia:
+
+\begin{lstlisting}[style=latex,numbers=none,escapechar=!]
+\ref{cha:lo_basico}     % Muestra el número de capítulo, que es el !\comentario{\ref{cha:lo_basico}}!.
+\pageref{cha:lo_basico} % Muestra el número de página, que es la !\comentario{\pageref{cha:lo_basico}}!.
+\end{lstlisting}
+
+
+Como costumbre, agrega un |\label| a cada nuevo capítulo, sección, figura, lo que sea. ¿Los usarás todos? No. Pero más vale tenerlos a la mano si se te ocurre referenciarlos.
+
+
+
+\section{Separación en archivos}
+\label{sec:separacion_en_archivos}
+
+
+
+En \LaTeX{} es fácil generar muchos errores (hasta con un simple guión bajo), por lo que necesitamos métodos para aislar el dónde. Una forma de hacerlo es crear un archivo por cada capítulo, al menos, y luego mandarlos llamar a todos en el archivo principal mediante la instrucción |\input|.
+
+Este libro está organizado de esta manera, con cada uno de los capítulos en un archivo:
+\begin{itemize}
+	\item \texttt{ch\_intro.tex}
+	\item \texttt{ch\_basico.tex}
+	\item \texttt{ch\_figuras.tex}
+	\item etcétera...
+\end{itemize}
+
+Posteriormente, en el archivo \texttt{LaTeX para tesis de ingeniería.tex} (mi archivo principal) se mandan llamar como:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\input{ch_intro}
+\input{ch_basico}
+\input{ch_figuras}
+\input{ch_tablas}
+\input{ch_math}
+\input{ch_no_tan_basico}
+\input{ch_codigo_fuente}
+\input{ch_bibliografia}
+  $\puntitoscodigo$
+\end{lstlisting}
+
+Es importante hacer notar dos cosas:
+\begin{enumerate}
+	\item No se necesita agregar la extensión \texttt{.tex}. El archivo sí se llama \texttt{ch\_intro.tex}, pero el comando |\input| no la necesita.
+	\item No incluí el número de capítulo en el nombre de archivo. De esta manera puedo cambiar el orden, sin que luego los nombres de los archivos me causen conflicto. Es decir, no quiero preguntarme ``¿por qué el capítulo \texttt{ch04\_math} va antes que el capítulo \texttt{ch03\_figuras}?''
+\end{enumerate}
+
+Además, esta separación permite compilar más rápido cuando ya llevas avanzada la tesis. Simplemente comentas todos los |\input| de los capítulos finalizados (o que no estás editando de momento) y generas el PDF de lo mínimo necesario.
+
+
+
+\section{Estructura}
+\label{sec:estructura}
+
+
+
+Entendiendo las secciones, las etiquetas, y la separación en archivos, puedes comenzar a crear el esqueleto de tu documento solo con eso, e ir rellenando sección por sección. Como ejemplo, este capítulo comenzó en el archivo \texttt{ch\_basico.tex} con el siguiente contenido:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\chapter{Lo básico para redacción}
+\label{cha:lo_basico}
+
+\section{Formato}
+\label{sec:formato}
+
+\section{Texto entre comillas}
+\label{sec:texto_entre_comillas}
+
+\section{Comentarios}
+\label{sec:comentarios}
+
+\section{Listas}
+\label{sec:listas}
+
+\section{Notas al pie}
+\label{sec:notas_al_pie}
+  $\puntitoscodigo$
+\end{lstlisting}
+
+De ahí comencé a rellenar los espacios, a darme cuenta qué información necesitaba antes de llegar a tal sección, a subdividir, a quitar, a poner, pero en base a una guía.
+
+De igual forma, puedes empezar a crear tus archivos para tu tesis:
+\begin{itemize}
+	\item \texttt{ch\_intro.tex}, para poner la introducción. O tal vez sea el capítulo de ``Planteamiento del problema'' y uses el nombre \texttt{ch\_planteamiento.tex}.
+	\item Luego vienen los antecedentes, en \texttt{ch\_antecedentes.tex}.
+	\item De ahí, desarrollas todo el marco teórico, en \texttt{ch\_marco.tex}.
+	\item Los capítulos que siguen ya son propios de tu tesis, según tu especialidad y lo que necesites hacer.
+	\item Invariablemente, tendrás que presentar resultados, en \texttt{ch\_resultados.tex}.
+	\item Para finalizar con tus conclusiones, en \texttt{ch\_conclusiones.tex}.
+\end{itemize}
+
+Es más fácil realizar una tesis si lo piensas más en términos de rellenar el contenido de las secciones de seis o siete archivos, que como una tesis como tal.
+
+Así que, crea los archivos, establece algunas secciones, y rellénalas. Eso es todo.
+
+
+
+\newpage
+\section*{Resumen}
+
+
+
+\noindent En este capítulo aprendimos lo básico para escribir en \LaTeX{}:
+\begin{itemize}
+  \item Cómo configurar el documento para usar las reglas del idioma español.
+	\item Cómo poner negritas, itálicas, y fuente de ancho fijo.
+	\item Cómo usar las comillas (¿quién diría que sería tan difícil?).
+	\item Posibles problemas que puedes tener con símbolos especiales (recuerda siempre, siempre, siempre, escapar los guiones bajos al escribir ``texto normal'').
+	\item Cómo poner comentarios.
+	\item Cómo crear listas: sin orden, numeradas, y anidadas.
+	\item Cómo crear secciones y referencias.
+	\item Cómo separar el documento en múltiples archivos.
+\end{itemize}
+
+Con lo que hemos visto hasta aquí ya podrías escribir una novela. No obstante, en tu tesis probablemente necesites poner imágenes, que es lo que veremos en el siguiente capítulo.

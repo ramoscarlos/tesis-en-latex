@@ -1,0 +1,38 @@
+\begin{titlepage} % Elimina encabezado y pie de página.
+\pagecolor{FondoPortada}
+\color{TextoPortada}
+\vspace*{2.5cm}
+% Título
+\noindent\scalebox{9}{\textbf{\LaTeX{}}} % \LaTeX nos da la tipografia.
+\newline\vspace{0.5cm}
+\noindent\scalebox{4.5}{para tesis de ingeniería}
+\vspace{2.5cm}
+% Fragmento de código fuente en la portada.
+\begin{adjustwidth}{-\margenIzquierdo}{-\margenDerecho}
+\begin{mdframed}[
+	backgroundcolor=FondoCodigoPortada,
+	innertopmargin=0pt,
+	innerbottommargin=0pt,
+	innerrightmargin=0pt,
+	innerleftmargin=0pt
+]
+\begin{lstlisting}[style=portada]
+   \usepackage[spanish,mexico]{babel}
+   \begin{portada}
+      \author{Carlos Ramos}
+      \title{\LaTeX{} para tesis de ingeniería}
+   \end{portada}
+\end{lstlisting}
+\end{mdframed}
+\end{adjustwidth}
+\vspace{2.5cm}
+\noindent\rule{0.25\linewidth}{2pt}
+\vspace{1.25cm}
+% Texto al final.
+\noindent\textbf{\Large
+	Imágenes, ecuaciones, código, y referencias
+	\\[4pt] % Espacio entre cada línea.
+	Redacta tu tesis sin dolor de cabeza
+}
+\end{titlepage}
+\pagecolor{White} % Termina la portada, regresamos a hojas de color blanco.

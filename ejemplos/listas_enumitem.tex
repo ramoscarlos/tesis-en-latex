@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,mexico]{babel} % Paquete para utilizar el idioma español.
+\usepackage{lipsum[1]}                % Párrafos de lorem ipsum
+\usepackage{enumitem}              % Eliminar separación entre elementos de una lista.
+
+\title{Listas}
+\author{Carlos Ramos}
+\date{Noviembre 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Lista normal}
+
+\lipsum[1]
+
+\begin{itemize}
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item No importa el número.
+	\item Son viñetas y ya.
+\end{itemize}
+
+\lipsum[1]
+
+\section{Listas sin espacio entre elementos}
+
+\lipsum[1]
+
+\begin{enumerate}[noitemsep]
+	\item Primer elemento.
+	\item Segundo elemento.
+	\item Aquí sí hay números.
+	\item Cuatro, cuatro.
+\end{enumerate}
+
+\lipsum[1]
+
+\section{Lista sin espacio}
+
+\lipsum[1]
+
+\begin{enumerate}[nosep]
+	\item Primera lista.
+	\item Sigue siendo la misma.
+	\item Aquí abro otra:
+	\begin{itemize}
+		\item Segundo nivel.
+		\item Todavía segundo...
+		\item Sigo bajando:
+		\begin{itemize}
+			\item Tercer nivel.
+			\item 2do sin orden.
+			\item Bajamos:
+			\begin{enumerate}
+				\item Ordenada.
+				\item Otro dos.
+			\end{enumerate}
+		\end{itemize}
+		\item Vuelvo a 2do nivel.
+	\end{itemize}
+	\item Elemento cuatro.
+\end{enumerate}
+
+\lipsum[1]
+
+\end{document}

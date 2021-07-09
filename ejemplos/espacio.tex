@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,mexico]{babel} % Paquete para utilizar el idioma español.
+
+\title{Espacio en blanco}
+\author{Carlos Ramos}
+\date{Noviembre 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Demostración del espacio en blanco}
+
+En este primer fragmento tenemos mucho espacio en blanco en el código fuente, mismo que no se visualiza en el documento generado:
+
+[Hola,            aquí         hay         mucho,          	
+pero mucho]       			
+        	
+           		
+[           espacio                    ]
+       	
+            	
+                    	
+[				¿No crees?]   	
+
+~\newline
+\indent \^{} Agregamos una nueva línea aquí para que nos permita separar visualmente lo anterior de este nuevo párrafo. Requiere la tilde inicial para que no se queje de que ``no hay nada que terminar'' o algo así. Le damos un espacio en blanco para que la línea tenga contenido y pueda darnos una nueva línea.
+
+~\newline
+Sigamos. Por otro lado, en este nuevo ejemplo se utiliza el símbolo de la tilde en lugar de un espacio para que \LaTeX{} nos haga el favor de dejar los espacios tal y como los escribimos:
+
+[Hola,~~~~~~~~~~~~aquí~~~~~~~~~hay~~~~~~~~~mucho~~~~~~~~~~~
+pero mucho]~~~~~~~~~~~~~~~~~
+\newline\newline
+[~~~~~~~~~~~espacio~~~~~~~~~~~~~~~~~~~~]
+\newline
+\newline
+[~~~~~~~~~~~~~~~~¿No crees?]
+
+
+~\newline
+Ahora la pregunta es, ¿cuándo inicia un nuevo párrafo y cuándo no?
+
+
+% Lo volvemos a escribir, para demostrar que LaTeX hace párrafos naturales con dos Enter.
+Ahora la pregunta es, ¿cuándo inicia un nuevo párrafo y cuándo no?
+
+% Pero al forzar el salto de línea, no.
+~\newline
+\indent Ahora la pregunta es, ¿cuándo inicia un nuevo párrafo y cuándo no?
+
+\end{document}

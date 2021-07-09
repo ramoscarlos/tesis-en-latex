@@ -1,0 +1,133 @@
+\documentclass[10pt]{book}
+
+\usepackage[utf8]{inputenc}        % Acentos directo en LaTeX.
+\usepackage[T1]{fontenc}           % Hyphenation para palabras con acentos, y uso de \textquotedbl.
+\usepackage[spanish,mexico]{babel} % Paquete para utilizar el idioma español, con el texto "tabla".
+\usepackage{mdframed}              % Para colocar una caja de color (usada en portada).
+\usepackage{changepage}            % Para ajustar el margen del código en portada.
+\usepackage[svgnames]{xcolor}      % Colores para el código, portada, y otros.
+\usepackage{geometry}              % Permite modificar los márgenes del documento.
+\usepackage{listings}              % Para incluir código fuente.
+\usepackage{graphicx}              % Paquete para incluir imágenes y usar scalebox.
+
+% Declaración de colores de la pantalla.
+\colorlet{FondoPortada}{DeepPink!40!Black}
+\colorlet{TextoPortada}{White}
+\colorlet{FondoCodigoPortada}{Black!85!DeepPink}
+
+% Márgenes usados tanto en el paquete geometry como para la compensación del listado en portada.
+\newcommand{\margenIzquierdo}{0.6875in} % Margen a la izquierda del documento.
+\newcommand{\margenDerecho}{0.6875in} % Margen a la derecha del documento.
+
+% Definir márgenes del documento.
+\geometry{
+	letterpaper,
+    tmargin=0.625in, % Margen superior.
+    bmargin=0.80in, % Margen inferior.
+    lmargin=\margenIzquierdo, % Margen izquierdo.
+    rmargin=\margenDerecho % Margen derecho.
+}
+
+% Soporte de caracteres en español para los listados:
+\lstset{
+    literate= % Lista de símbolos en español que marcarían un error.
+    {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1  {ó}{{\'o}}1  {ú}{{\'u}}1
+    {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1  {Ó}{{\'O}}1  {Ú}{{\'U}}1
+    {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1  {ò}{{\`o}}1  {ù}{{\`u}}1
+    {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1  {Ò}{{\`O}}1  {Ù}{{\`U}}1
+    {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1  {ö}{{\"o}}1  {ü}{{\"u}}1
+    {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1  {Ö}{{\"O}}1  {Ü}{{\"U}}1
+    {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1  {ô}{{\^o}}1  {û}{{\^u}}1
+    {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1  {Ô}{{\^O}}1  {Û}{{\^U}}1
+    {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1  {Æ}{{\AE}}1  {ß}{{\ss}}1
+    {ű}{{\H{u}}}1{Ű}{{\H{U}}}1{ő}{{\H{o}}}1{Ő}{{\H{O}}}1
+    {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1   {å}{{\r a}}1 {Å}{{\r A}}1
+    {£}{{\pounds}}1           {«}{{\guillemotleft}}1
+    {»}{{\guillemotright}}1   {ñ}{{\~n}}1  {Ñ}{{\~N}}1 {¿}{{?`}}1
+}
+% Estilo del código LaTeX utilizado en la portada.
+\lstdefinestyle{portada}{
+    language=[LaTeX]{TeX},
+    numbers=none,
+    frame={},
+    basicstyle=\LARGE\ttfamily\color{TextoPortada},
+    backgroundcolor={},
+    keywordstyle=\color{DeepPink!50},
+    identifierstyle=\color{TextoPortada},
+    lineskip=20pt,
+}
+
+\begin{document}
+
+\begin{titlepage} % Elimina encabezado y pie de página.
+\pagecolor{FondoPortada}
+\color{TextoPortada}
+
+% Espacio en blanco al inicio de la página.
+% Se requiere usar \vspace* porque la instrucción \vspace no pone el espacio
+% si es lo primero que hay en la página (como en este caso).
+\vspace*{2.5cm}
+
+%------------------------------------------------
+%   Título de nuestra magna obra.
+%------------------------------------------------
+\noindent\scalebox{9}{\textbf{\LaTeX{}}}
+\newline\vspace{0.5cm}
+\noindent\scalebox{4.5}{para tesis de ingeniería}
+
+% Espacio entre el título y el código.
+\vspace{2.5cm}
+
+% Usamos el entorno adjustwidth para que el código ocupe todo el ancho de la hoja.
+% Es decir, le restamos el margen izquierdo y el margen derecho.
+% https://tex.stackexchange.com/a/594
+\begin{adjustwidth}{-\margenIzquierdo}{-\margenDerecho}
+
+% El entorno mdframed nos sirve para colocar un recuadro de color debajo del código.
+% Debido a que el backgroundcolor de un listado se puede comportar extraño con el
+% interlineado, el recuadro con mdframed nos da un resultado uniforme.
+\begin{mdframed}[
+	backgroundcolor=FondoCodigoPortada,
+	innertopmargin=0pt,
+	innerbottommargin=0pt,
+	innerrightmargin=0pt,
+	innerleftmargin=0pt
+]
+% Código a ser mostrado en portada, dentro del recuadro de color.
+\begin{lstlisting}[style=portada]
+   \usepackage[spanish,mexico]{babel}
+   \begin{portada}
+      \author{Carlos Ramos}
+      \title{\LaTeX{} para tesis de ingeniería}
+   \end{portada}
+\end{lstlisting}
+% Fin del recuadro de color.
+\end{mdframed}
+% Fin de la eliminación de los márgenes.
+\end{adjustwidth}
+
+% Espacio del código a la línea horizontal.
+\vspace{2.5cm}
+
+% Regla horizontal del 25% del ancho del texto, de un alto de 2pt.
+\noindent\rule{0.25\linewidth}{2pt}
+
+% Espacio entre la regla y el texto que va debajo.
+\vspace{1.25cm}
+
+% Textito al final de la página.
+\noindent\textbf{\Large
+	Imágenes, ecuaciones, código, y referencias
+	\\[4pt] % Espacio entre cada línea.
+	Redacta tu tesis sin dolor de cabeza
+}
+
+% Fin de la página de título.
+\end{titlepage}
+
+% Regresar el color de la página.
+\pagecolor{White}
+
+% Aquí podría empezar el contenido del documento.
+
+\end{document}

@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Portada para libros de programación.
+% LaTeX Template
+% Version 1.0 (01/17/2021)
+%
+% Este trabajo está basado en la plantilla "Minimalist Book Title Page",
+% misma que se puede encontrar en la página de LaTeX Templates:
+% https://www.latextemplates.com/template/minimalist-book-title-page
+%
+% Autor original:
+% Peter Wilson (herries.press@earthlink.net)
+% Modificaciones para LaTeX Templates por:
+% Vel (vel@latextemplates.com)
+% Inclusión del listado de código y traducción por:
+% Carlos Ramos
+%
+% Licencia:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+% This template can be used in one of two ways:
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{
+\fontfamily{cmr}\selectfont
+\begin{titlepage} % Elimina encabezado y pie de página.
+\vspace*{-0.625in} % Eliminar el espacio del margen superior.
+\begin{adjustwidth}{-\margenAdicional}{}
+\pagecolor{FondoPortada}
+\color{TextoPortada}
+
+\vspace*{25mm} % Whitespace at the top of the page
+
+%------------------------------------------------
+%   Title
+%------------------------------------------------
+
+\begin{center}
+\scalebox{9}{\LaTeX{}}\\
+\vspace{6pt}
+\scalebox{2.25}{para tesis de ingeniería}
+\end{center}
+
+\vspace*{30mm}
+
+% https://tex.stackexchange.com/a/594
+\begin{adjustwidth}{-\margenIzquierdo}{-\margenDerecho}
+\begin{mdframed}[
+	backgroundcolor=FondoCodigoPortada,
+	innertopmargin=1.25mm,
+	innerbottommargin=1.25mm,
+	innerrightmargin=0pt,
+	innerleftmargin=0pt
+]
+\begin{lstlisting}[style=portada]
+   \usepackage[spanish,mexico]{babel}
+   \begin{portada}
+      \author{Carlos Ramos}
+      \title{\LaTeX{} para tesis de ingeniería}
+   \end{portada}
+\end{lstlisting}
+\end{mdframed}
+\end{adjustwidth}
+
+\centering
+\vspace*{2\baselineskip}
+
+\noindent\rule{0.25\linewidth}{2pt}
+
+\vspace*{2\baselineskip}
+
+\noindent\textbf{\LARGE
+	Imágenes, ecuaciones, código, y referencias
+	\\[4pt]
+	Redacta tu tesis sin dolor de cabeza
+}
+
+\end{adjustwidth}
+\end{titlepage}
+}
+
+\pagecolor{White}

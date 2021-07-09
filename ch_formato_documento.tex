@@ -1,0 +1,496 @@
+\chapter{Formato del documento}
+
+
+
+El momento por fin ha llegado: es hora de dar formato al documento de \LaTeX{}. Dicha tarea resulta un tanto frustrante porque modificar el estilo es como una caja de sorpresas. Algunos cambios son fáciles de implementar, basta con agregar un paquete, y otros son tediosos, teniendo que colocar cincuenta líneas de instrucciones en el preámbulo para la configuración.
+
+Pero vayamos a ello. En este capítulo cambiaremos el interlineado, el encabezado y pie de página, el estilo de las leyendas debajo de las figuras, tablas, y listados, así como el espacio relativo a las listas. También cambiaremos el formato de las secciones, incluyendo títulos de capítulo, y hasta qué se despliega en el índice. Ah, y también agregaremos la portada (sí, la portada de este libro es código \LaTeX{}).
+
+
+
+\section{Espacio entre líneas}
+\label{sec:espacio_entre_lineas}
+
+
+
+Ajustar el espacio entre líneas se cuenta entre los cambios triviales. Solo es necesario agregar dos líneas. Una, en el archivo principal del proyecto, que carga el paquete:
+
+\begin{lstlisting}[style=latex]
+\usepackage{setspace} % Permite modificar el espacio entre líneas.
+\end{lstlisting}
+
+\noindent y la otra en el archivo \texttt{package-conf.tex}, para establecer el interlineado:
+
+\begin{lstlisting}[style=latex]
+\setstretch{1.25}
+\end{lstlisting}
+
+Si en lugar de un número arbitrario quieres doble espacio puedes utilizar el comando |\doublespacing|, o si el factor es de 1.5 existe el |\onehalfspacing|. Cualquiera de los dos se usaría en lugar del comando |\setstretch|.
+
+\begin{spacing}{0.85}
+Usar cualquiera de los comandos anteriores en el preámbulo afecta el interlineado de todo el documento. No obstante, también podemos reducir el interlineado de manera local con el entorno \texttt{spacing}, mismo que nos permite especificar el factor:
+\end{spacing}
+
+\begin{lstlisting}[style=latex]
+\begin{spacing}{0.85}
+% El contenido del párrafo anterior tiene menor espacio entre líneas.
+\end{spacing}
+\end{lstlisting}
+
+\begin{doublespace}
+Pero no solo tenemos ese entorno, que provocó un párrafo casi ilegible con el interlineado de 0.85. Existe un entorno propio para el interlineado a doble espacio, el entorno \texttt{doublespace}, usado para este párrafo:
+\end{doublespace}
+
+\begin{lstlisting}[style=latex]
+\begin{doublespace}
+% El contenido del párrafo anterior está a doble espacio.
+\end{doublespace}
+\end{lstlisting}
+
+
+
+\section{Encabezado y pie de página}
+\label{sec:encabezado_y_pie_de_pagina}
+
+
+
+\LaTeX{} brinda soporte para encabezado y pie de página, no es necesario otro paquete... pero que no sea necesario no implica que no vayamos a agregar uno, porque la verdad el paquete \texttt{fancyhdr} nos brinda más facilidades:
+
+\begin{lstlisting}[style=latex]
+\usepackage{fancyhdr} % Permite modificar encabezado y pie de página.
+\end{lstlisting}
+
+Y aquí es donde se empieza a poner un poco embrollado el asunto. Hay tres zonas en el encabezado (mismas al pie): izquierda (\emph{left}, \emph{L}), centro (\emph{C}), y derecha (\emph{right}, \emph{R}).
+
+Además, el encabezado puede variar en los documentos que imprimen sobre ambos lados de la hoja, por lo que podemos tener encabezado del lado par (\emph{even} o \emph{E}), y otro encabezado diferente para el lado impar (\emph{odd} u \emph{O}).
+
+Por lo tanto, hay seis posiciones posibles para el encabezado: \texttt{LE} (\emph{Left Even}), \texttt{CE} (\emph{Center Even}), \texttt{RE} (\emph{Right Even}), \texttt{LO} (\emph{Left Odd}), \texttt{CO} (\emph{Center Odd}), y \texttt{RO} (\emph{Right Odd}).
+
+Armados con el conocimiento sobre las secciones dentro del encabezado y pie podemos empezar a configurarlos en el preámbulo, en el archivo \texttt{package-conf.tex}. Empezamos determinando que el estilo de la página es \texttt{fancy}, para poder usar las instrucciones que facilita el paquete \texttt{fancyhdr}:
+
+\begin{lstlisting}[style=latex]
+\pagestyle{fancy}
+\end{lstlisting}
+
+Inmediatamente después eliminamos una línea horizontal en el encabezado propia de \texttt{fancyhdr}, y limpiamos cualquier cosa que haya en el encabezado y pie de página:
+
+\begin{lstlisting}[style=latex]
+\renewcommand{\headrule}{} % Remueve línea horizontal que usa fancyhdr.
+\fancyhead[LE,CE,RE,LO,CO,RO]{} % Remover todo lo del encabezado.
+\fancyfoot[LE,CE,RE,LO,CO,RO]{} % Remover todo lo del pie de página.
+\end{lstlisting}
+
+Las instrucciones |\fancyhead| y |\fancyfoot| son hermanas, pero la primera pone el contenido en el encabezado mientras la segunda lo hace al pie. El valor entre corchetes indica la sección, o secciones, a la que le vamos a cambiar el contenido, mientras que el valor entre llaves corresponde al nuevo texto que se imprimirá. Dejar vacío el contenido entre llaves remueve cualquier valor anterior.
+
+Justo debajo de lo anterior colocamos el contenido del listado \ref{lst:pieRO}... que puede ser un poco difícil de digerir. En la primera línea definimos que vamos a modificar el contenido del pie de página del lado derecho de una página impar (sí, todo eso).
+
+En la línea 2 se cambia el tamaño del texto para todo lo que se imprima en esta parte del pie, con |\footnotesize|. De las líneas 3 a 5 se trabaja con el color \texttt{PiePaginaCapitulo} para imprimir el nombre del capítulo (que se expresa mediante la instrucción |\leftmark|). En la línea 6 usamos la instrucción |\kern| para crear una separación horizontal de \texttt{10pt} respecto a lo que se imprima después. Finalmente, de las líneas 7 a 9 se usa el color \texttt{PiePaginaNumeroPagina} para imprimir en negritas el número de página, dado con |\thepage|.
+
+\begin{lstlisting}[style=latex,numbers=left,label=lst:pieRO,caption={Pie de página a la derecha de una página impar.}]
+\fancyfoot[RO]{ % Para el pie de página de una página impar, a la derecha.
+    \footnotesize % Todo el pie estará en este tamaño.
+    \textcolor{PiePaginaCapitulo}{ % Color para nombre de capítulo.
+        \leftmark % Imprimir el nombre del capítulo.
+    } % Fin de cambio de color
+    \kern10pt % Dejar un espacio de 10pt respecto a lo que siga.
+    \textcolor{PiePaginaNumeroPagina}{ % Color para número de página.
+        \textbf{\thepage} % Imprimir el número de página.
+    } % Fin del otro cambio de color.
+}
+\end{lstlisting}
+
+Para que el código del listado funcione correctamente falta la definición de los dos colores, también en el archivo \texttt{package-conf.tex}, que son derivados del negro:
+
+\begin{lstlisting}[style=latex]
+\colorlet{PiePaginaNumeroPagina}{Black!70}
+\colorlet{PiePaginaCapitulo}{Black!50}
+\end{lstlisting}
+
+\noindent y redefinir el comando |\chaptermark| para que se imprima solamente el nombre del capítulo con el comando |\leftmark|, con
+
+\begin{lstlisting}[style=latex]
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\end{lstlisting}
+
+No lo pienses demasiado, así se define en la página 19 de su documentación oficial \cite{bib:fancyhdr}. Continuamos con el texto al lado izquierdo de las páginas pares, cuyo código se muestra en el listado \ref{lst:pieLE}. En la línea 1 se determina que el texto siendo modificado es la parte izquierda del pie de página de una página par, mientras que en la línea 2 se declara el mismo tamaño de fuente que para el pie de la página impar. Las líneas 3 a 5 usan el color \texttt{PiePaginaNumeroPagina} para imprimir el número de página, y en la línea 6 viene algo que no vimos en la configuración anterior: un condicional.
+
+Este condicional, que abre en la línea 6 y cierra en la 11, evita que en el índice, y todas las páginas previas al capítulo 1, se imprima la leyenda ``Capítulo 0''. Por eso verifica que el valor de la variable |\chapter|, que guarda el número de capítulo actual, sea mayor a cero antes de imprimir.
+
+Para la impresión usamos dos comandos: |\chaptername| para imprimir ``Capítulo'' (es decir, la palabra ``Capítulo'', misma que varía según el idioma) y |\thechapter| para escribir el número de capítulo (línea 9).
+
+\begin{lstlisting}[style=latex,numbers=left,label=lst:pieLE,caption={Pie de página a la izquierda de una página par.}]
+\fancyfoot[LE]{ % Para el pie de página de un página par, a la izquierda.
+    \footnotesize % Todo el pie estará en este tamaño.
+    \textcolor{PiePaginaNumeroPagina}{
+        \textbf{\thepage} % Imprime el número de página.
+    }
+    \ifnum\value{chapter}>0 % \ifnum evita "Capítulo 0" en el índice.
+        \kern10pt % Espacio entre número de página y otro texto.
+        \textcolor{PiePaginaCapitulo}{
+            \chaptername~\thechapter % Imprime "Capítulo" y número.
+        }
+    \fi % Fin del \ifnum.
+}
+\end{lstlisting}
+
+Podrías pensar que ya acabamos, pero no. Existe el estilo de página \texttt{plain}, diferente a las dos páginas que acabamos de ajustar (estilo |fancy|), que no debe llevar ni encabezado ni pie. Como no lo hemos modificado todavía, sigue mostrando el estilo anterior con número de página centrado. Por lo tanto, debemos limpiar el estilo con:
+
+\begin{lstlisting}[style=latex]
+\fancypagestyle{plain}{
+  \fancyhead{} % Nada en el header.
+  \renewcommand*{\headrule}{} % Eliminar la regla horizontal.
+  \fancyfoot{} % Nada en el footer.
+}
+\end{lstlisting}
+
+Similar a lo que pasa con el ``Capítulo 0'' al inicio, los agradecimientos y la bibliografía terminan con el texto de ``Capítulo 10'' (o del último capítulo numerado). Para eliminar ese pie se redefine lo siguiente antes del capítulo de agradecimientos:
+
+\begin{lstlisting}[style=latex]
+\input{ch_formato_documento}
+
+\newpage % Mandamos a crear una nueva página tras el último capítulo,
+\fancyfoot[LE]{ % para eliminar el texto de "Capítulo #" en bibliografía
+	\textcolor{PiePaginaNumeroPagina}{\footnotesize\textbf{\thepage}}
+}
+
+\input{ch_agradecimientos}
+
+\bibliographystyle{ieeetr}
+\bibliography{bibliografia}
+\end{lstlisting}
+
+
+
+\section{Estilo de las leyendas}
+\label{sec:estilo_de_las_leyendas}
+
+
+
+Las leyendas son los textos debajo de las figuras, las tablas, y los listados. Su estilo predeterminado es tener el mismo tamaño y color que el texto normal, formato que no permite distinguir muy bien entre leyenda y texto (a pesar de la alineación centrada). Además, me parece que es demasiada la separación vertical que existe entre lo que se señala y la leyenda, por lo que también reduciré ese espacio.
+
+Para empezar, requerimos del paquete \texttt{caption} para cambiar los estilos. No obstante, hay un ligero problema al momento de editar esta configuración: aunque podemos cambiar el estilo de todas las leyendas en el mismo lugar, la separación vertical para figuras y tablas es diferente que la separación para listados.
+
+Con el afán de mantener el mismo espaciado para ambas instancias se define el valor del espacio deseado de \texttt{2pt} en un nuevo comando:
+
+\begin{lstlisting}[style=latex]
+\newcommand{\espacioleyenda}{2pt}
+\end{lstlisting}
+
+\noindent y de esta manera ya podemos cambiar el espaciado en un solo lugar aunque se use el valor en dos instancias, porque usaremos la referencia al valor almacenado en el comando/variable. El listado \ref{lst:leyendas} muestra las cinco líneas de código necesarias para cambiar el tamaño y color de las leyendas para figuras, tablas, y listados, y la separación vertical para figuras y tablas.
+
+La línea 1 define el color \texttt{Leyendas}, mismo que debe ser encapsulado por la instrucción |\DeclareCaptionFont| (línea 2) para poder ser utilizado para cambiar el color con |\captionsetup| (línea 3).
+
+En la línea 5 se define el espacio entre figura y leyenda, con el parámetro \texttt{skip} tomando el valor de nuestra variable definida previamente.
+
+\begin{lstlisting}[style=latex,numbers=left,label={lst:leyendas},caption={Configuración de las leyendas con paquete \texttt{caption}.}]
+\colorlet{Leyendas}{Black!85}
+\DeclareCaptionFont{color_leyenda}{\color{Leyendas}}
+\captionsetup{
+    font={small,color_leyenda}, % Color y tamaño de la leyenda.
+    skip=\espacioleyenda % Espacio entre leyenda y figura. Default=10pt.
+}
+\end{lstlisting}
+
+Finalmente, para los listados debemos agregar el parámetro \texttt{abovecaptionskip} en el |\lstset| general para cambiar este espacio entre leyenda y listado:
+
+\begin{lstlisting}[style=latex]
+\lstset{
+    language={},
+    numbers=none,
+    $\puntitoscodigo$
+	abovecaptionskip=\espacioleyenda % Espacio entre leyenda y listado.
+}
+\end{lstlisting}
+
+
+
+\section{Estilo de páginas en blanco}
+\label{sec:estilo_de_paginas_en_blanco}
+
+
+
+Ya configuramos los encabezados y pies de página, ¿no? ¿Es ésto un \emph{Déjà vu}? La verdad es que hay un ligero problema: en las páginas en blanco también se pone el encabezado y pie de página. Esto es especialmente cierto para los libros porque los capítulos empiezan siempre en página impar.
+
+Para quitar el encabezado de una página vacía, porque no tendría mucho sentido solo imprimir el encabezado en ella, se puede agregar un paquete:
+
+\begin{lstlisting}[style=latex]
+\usepackage{emptypage} % Para eliminar encabezado y pie de páginas vacías.
+\end{lstlisting}
+
+Eso es todo. Ese paquete se encarga de eliminar el encabezado y pie de página de todas las páginas vacías que existan en nuestro documento.
+
+
+
+\section{Espacio de listas}
+\label{sec:espacio_de_listas}
+
+
+
+Ah, las listas. El espacio entre cada elemento de la lista es una pesadilla. Por otra parte, el espacio que rodea una lista es más manejable. Este es otro aspecto que se puede personalizar fácilmente, con la ayuda del paquete \texttt{enumitem}:
+
+\begin{lstlisting}[style=latex]
+\usepackage{enumitem} % Eliminar separación entre elementos de una lista.
+\end{lstlisting}
+
+Aunque el paquete tiene muchas opciones \cite{bib:enumitem}, nos enfocaremos en dos solamente. Puedes eliminar tanto el espacio entre cada elemento de una lista como el espacio de la lista con el demás texto, o solamente eliminar el espacio entre elementos de la lista.
+
+Las instrucciones para realizar ambas tareas son las siguientes, mismas que van dentro del archivo \texttt{package-conf.tex}:
+
+\begin{lstlisting}[style=latex]
+\setlist{noitemsep} % Elimina espacio entre elementos solamente.
+\setlist{nosep}     % noitemsep + eliminar espacio circundante.
+\end{lstlisting}
+
+Para este libro se escogio el valor global de \texttt{noitemsep}. No obstante, se pueden hacer listas sin separación con el texto de manera local, como la siguiente:
+\begin{enumerate}[nosep]
+	\item Este elemento no está distanciado del párrafo que le precede.
+	\item Y eso es gracias a que la lista cuenta con la opción \texttt{nosep}.
+	\item El código de esta lista se muestra en el listado \ref{lst:lista_nosep} (justo debajo, sin espacio).
+\end{enumerate}
+
+\begin{lstlisting}[style=latex,label=lst:lista_nosep,caption={Lista enumerada con opción \texttt{nosep}.}]
+\begin{enumerate}[nosep]
+	\item Este elemento no está distanciado del párrafo que le precede.
+	\item Y eso es gracias a que la lista cuenta con la opción \texttt{nosep}.
+	\item El código de esta lista se muestra en el listado \ref{lst:lista_nosep}.
+\end{enumerate}
+\end{lstlisting}
+
+
+
+\section{La portada}
+\label{sec:la_portada}
+
+
+
+Para realizar la portada dentro de \LaTeX{} tomé como base la plantilla \emph{Minimalist Book Title Page} hecha por Peter Wilson\footnote{Disponible en \href{https://www.latextemplates.com/template/minimalist-book-title-page}{https://www.latextemplates.com/template/minimalist-book-title-page}}. A continuación describiré su contenido al completo, presentado en el listado \ref{lst:codigo_portada}, mismo que se incluye en el repositorio de esta obra y tiene su copia en Overleaf\fuenteOverleaf{portada.tex}.
+
+\lstinputlisting[
+	style=latex,
+	numbers=left,
+	label=lst:codigo_portada,
+	caption={Código de la portada.}
+]{fragmentos/portada.tex}
+
+La portada comienza y termina con el entorno \texttt{titlepage} (líneas 1 y 37), que se encarga de eliminar el encabezado y pie de página. La línea 2 define el color de la página, mientras que la línea 3 redefine el color del texto. Los colores son:
+
+\begin{lstlisting}[style=latex]
+\colorlet{FondoPortada}{DeepPink!40!Black}
+\colorlet{TextoPortada}{White}
+\colorlet{FondoCodigoPortada}{DeepPink!15!Black} % Fondo de código.
+\end{lstlisting}
+
+Después de ajustar los colores utilizamos la instrucción |\vspace*|, línea 4, para agregar espacio vertical al inicio de la página. La razón para utilizar |\vspace*| en lugar de |\vspace| aquí es porque |\vspace| no agrega el espacio vertical si no hay nada más en la página (lo cual es el caso en la portada, donde no hay texto previo).
+
+Esa instrucción añade \texttt{2.5cm} al margen superior antes de colocar el texto de ``\LaTeX'' en grande. De manera similar, se usa |\vspace| en las líneas 7, 9, 28, y 30 para separar verticalmente el contenido.
+
+El título se coloca en el documento en las líneas 6 y 8, con una separación de \texttt{0.5cm} entre ``\LaTeX'' y ``para tesis de ingeniería'' gracias a la línea 7, que realiza un cambio de línea y añade espacio vertical. Además, eliminamos la indentación automática con |\noindent| para evitar un margen adicional a la izquierda del título, y usamos |\scalebox| para aumentar el tamaño del texto más allá de lo que permiten las fuentes de \LaTeX{}. Nota: |\scalebox| pertenece al paquete \texttt{graphicx}.
+
+Para introducir el código necesitamos envolverlo en dos entornos más. El primero es \texttt{adjustwidth}, perteneciente al paquete \texttt{changepage}, el cual nos permite cambiar los márgenes horizontales del documento con sus dos parámetros: el primero para alterar el margen izquierdo, el segundo para alterar el margen derecho. En la línea 10 se restan estas cantidades de los márgenes establecidos por |\geometry|, que fueron redefinidos para utilizar un comando/constante que actualiza ambos usos:
+
+\begin{lstlisting}[style=latex]
+\newcommand{\margenIzquierdo}{0.6875in}
+\newcommand{\margenDerecho}{0.6875in}
+  $\vdots$
+\geometry{
+      $\vdots$
+    lmargin=\margenIzquierdo, % Margen izquierdo.
+    rmargin=\margenDerecho, % Margen derecho.
+      $\vdots$
+}
+  $\vdots$
+% Dentro del entorno titlepage
+\begin{adjustwidth}{-\margenIzquierdo}{-\margenDerecho}
+\end{lstlisting}
+
+El segundo entorno necesario, dentro del entorno \texttt{adjustwidth}, es \texttt{mdframed}, mismo que se define en un paquete con el mismo nombre. Dado que el \texttt{backgroundcolor} de un listado deja un ligero espacio entre líneas en algunas ocasiones, usarlo como parte de la portada no es confiable. Por este motivo se recomienda pintar un recuadro con el entorno \texttt{mdframed} (línea 11), sin ningún tipo de margen (líneas 13 a 16), usando el color \texttt{FondoCodigoPortada} (línea 12), definido anteriormente.
+
+Por fin, de las líneas 18 a 24 se incluye el listado. Nada nuevo, excepto que hay un estilo propio para la portada, que se define como:
+
+\begin{lstlisting}[style=latex]
+\lstdefinestyle{portada}{
+    language=[LaTeX]{TeX},
+    frame={},
+    basicstyle=\LARGE\ttfamily\color{TextoPortada},
+    backgroundcolor={},
+    keywordstyle=\color{DeepPink!50},
+    identifierstyle=\color{TextoPortada},
+    lineskip=20pt,
+}
+\end{lstlisting}
+
+\noindent Las diferencias respecto al estilo \texttt{latex} son:
+\begin{itemize}
+	\item Se removieron las líneas que rodean el listado, con \texttt{frame=\{\}}.
+	\item Se uso la fuente |\LARGE| para que ocupara más espacio el código.
+	\item Se eliminó el color de fondo en favor del recuadro del entorno \texttt{mdframed}.
+	\item Se cambiaron los colores de las palabras clave y los identificadores.
+	\item Se agregó separación entre líneas con la opción \texttt{lineskip=20pt}.
+\end{itemize}
+
+En la línea 29 se creo la regla horizontal del 25\% del ancho de la línea de texto, con una altura de \texttt{2pt}, con la instrucción |\rule{ancho}{alto}|. De las líneas 32 a 36 se imprimen las últimas dos líneas de texto de la portada en tamaño |\Large| (por ello son letras más pequeñas que el código fuente, dado que |\LARGE > \Large|).
+
+Tras terminar el entorno \texttt{titlepage}, se restaura el color blanco de las hojas en la línea 38. Caso contrario, todas las hojas del documento serían del color de la portada.
+
+
+
+\section{Numeración de subsecciones}
+\label{sec:numeracion_de_subsecciones}
+
+
+
+De manera predeterminada, \LaTeX{} numera hasta las subsecciones en un docummento tipo \texttt{book}. Pero, ¿y si no deseamos que sea así?
+
+Podemos eliminar la numeración de las subsecciones, ajustando el valor del contador \texttt{secnumdepth}. En caso de solo querer numerar partes y capítulos se usa el valor \texttt{0}. Para numerar hasta secciones, el valor es \texttt{1}, mientras que para incluir subsecciones en la numeración es \texttt{2}.
+
+Si deseamos eliminar los números de las subsecciones basta con incluir un |\setcounter| en el preámbulo:
+
+\begin{lstlisting}[style=latex]
+\setcounter{secnumdepth}{1} % 1 elimina la numeración en subsecciones.
+\end{lstlisting}
+
+
+
+\section{¿Hasta qué nivel se muestra en el índice?}
+\label{sec:nivel_indice}
+
+
+
+La lógica para decidir qué se muestra en el índice es similar a la numeración de subsecciones: la configuración se hace a través de un contador. De hecho, los valores son los mismos:
+\begin{enumerate}[nosep]
+	\item 0 muestra partes y capítulos.
+	\item 1 muestra partes, capítulos, y secciones.
+	\item 2 muestra partes, capítulos, secciones, y subsecciones.
+	\item 3 muestra partes, capítulos, secciones, subsecciones y subsubsecciones.
+\end{enumerate}
+
+Lo que cambia es el contador, cuyo nombre es \texttt{tocdepth}. Para este libro se imprimieron hasta las subsecciones, mismas que aparecen sin numeración, gracias al ajuste del contador a 2:
+
+\begin{lstlisting}[style=latex]
+\setcounter{tocdepth}{2} % Capítulos, secciones, y subsecciones en el índice.
+\end{lstlisting}
+
+
+
+\section{Estilo de los títulos de sección}
+\label{sec:estilo_de_los_titulos_de_seccion}
+
+
+
+El título de la sección puede que te confunda, pues parece que aplica solo para las secciones. No obstante, me refiero a que puedes editar el estilo de cualquier comando de sección, como lo son |\chapter|, |\section|, |\subsection|, y |\subsubsection|. No obstante, en esta sección nos limitaremos a |\section| y |\subsection|.
+
+Para modificar los estilos de los títulos de sección usaremos el paquete \texttt{titlesec}, del cual usaremos dos instrucciones: una para alterar el formato del título y la otra para alterar el espaciado que presenta.
+
+
+
+\subsection{La instrucción \ttlatex{titlespacing}}
+\label{sub:la_instruccion_titlespacing}
+
+
+
+La instrucción |\titlespacing*| nos permite configurar el espaciado de un comando de sección en sus cuatro direcciones: izquierda, arriba, abajo, y derecha (este último siendo opcional). Su formato es:
+
+\begin{lstlisting}[style=latex]
+\titlespacing{comando}{izquierda}{arriba}{abajo}[derecha]
+\end{lstlisting}
+
+No obstante, hay valores relativos que brinda el mismo paquete en relación a la unidad \texttt{ex} (véase \cite{bib:titlesec}). Para estos valores se utiliza el valor precedido de un *. Esta es el enfoque tomado para este libro, con el valor de:
+
+\begin{lstlisting}[style=latex]
+\titlespacing{\section}{-0.5in}{*4}{*1.5}
+\end{lstlisting}
+
+Sí, el margen izquierdo de una sección está recorrido media pulgada a la izquierda, razón por la que sobresale del margen. Antes del título de sección hay \texttt{4ex} (algo así como 6 milímetros) y después de él hay \texttt{1.5ex} (cerca de 2.25 milímetros). El margen derecho no fue necesario.
+
+
+
+\subsection{La instrucción \ttlatex{titleformat}}
+\label{sub:la_instruccion_titleformat}
+
+
+
+La instrucción |\titleformat| permite hacer muchas cosas. De hecho, su formato es un tanto monstruoso:
+
+\begin{lstlisting}[style=latex]
+\titleformat{comando}[forma]{formato}{etiqueta}{separación}{previo}[después]
+\end{lstlisting}
+
+Cuenta con seis argumentos requeridos y uno opcional. La flexibilidad que da es demasiada. Primero habría que conocer qué quiere decir cada uno de sus parámetros \cite{bib:titlesec}. No obstante, para modificar el formato de subsección solo queremos cambiar el formato, no todo lo demás.
+
+Por fortuna, existe una versión corta que nos permite cambiar únicamente dicho parámetro:
+
+\begin{lstlisting}[style=latex]
+\titleformat*{comando}{formato}
+\end{lstlisting}
+
+Entonces, para cambiar el estilo del título de subsección a itálicas, de tamaño |\Large| podemos utilizar:
+
+\begin{lstlisting}[style=latex]
+\titleformat*{\subsection}{\itshape\Large}
+\end{lstlisting}
+
+Finalmente, podemos modificar el espacio como lo hicimos con la sección, en unidades relativas:
+
+\begin{lstlisting}[style=latex]
+\titlespacing{\subsection}{0in}{*3}{*1.0}
+\end{lstlisting}
+
+
+
+\section{Estilo de capítulo}
+\label{sec:estilo_de_capitulo}
+
+
+
+Al hablar de ``estilo del capítulo'' me refiero a la forma en la que aparece el número de capítulo y el título. En la sección pasada omitimos la instrucción |\chapter|, y eso fue por una razón: juega con otras reglas y es el niño al que nadie quiere invitar a jugar porque es todo un lío su configuración.
+
+No obstante, es un estilo que se puede cambiar fácilmente con la ayuda de otro paquete:
+
+\begin{lstlisting}[style=latex]
+\usepackage[Bjornstrup]{fncychap} % Cambia el formato del título de capítulo.
+\end{lstlisting}
+
+El paquete cuenta con siete estilos: \texttt{Sonny}, \texttt{Lenny}, \texttt{Glenn}, \texttt{Conny}, \texttt{Rejne}, \texttt{Bjarne}, y \texttt{Bjornstrup}. Los ejemplos visuales de cada uno de los estilos están disponibles en \cite{bib:fncychap}. Para este libro se utilizó como base el estilo \texttt{Bjornstrup}, mismo que fue escogido al mandar pedir el paquete, pero entre corchetes puede ir cualquiera de los siete nombres.
+
+El estilo \texttt{Bjornstrup} se muestra en la figura \ref{fig:capitulo_bjornstrup}. Este estilo muestra una caja de color alrededor del título, con su número ligeramente fuera del margen\fuenteOverleaf{capitulo\_bjornstrup.tex}.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1.025\linewidth]{img/capitulo_bjornstrup_300ppi.png}
+	\caption{Título de capítulo con \texttt{fncychap} estilo \texttt{Bjornstrup}.}
+	\label{fig:capitulo_bjornstrup}
+\end{figure}
+
+Y así, con solo un paquete, podemos cambiar el estilo del título también.
+
+
+
+\section{Fuentes}
+\label{sec:fuentes}
+
+
+
+Para cambiar una fuente en \LaTeX{} se necesita un paquete, y dependiendo del paquete y las opciones son las fuentes que se cargan. Porque \LaTeX{} no usa una sola fuente, sino un conjunto.
+
+Por solo mencionar dos fuentes, tenemos la fuente ``regular'' y la de los entornos matemáticos. Eso nos lleva a buscar o una fuente con soporte para los símbolos matemáticos o una fuente para texto y otra para matemáticas.
+
+Puedes consultar las fuentes disponibles para su uso en \LaTeX{} en \cite{bib:catalogo_fuentes}. Para este documento yo utilicé el paquete \texttt{mathpazo} para fuente base y matemática, y el paquete \texttt{AnonymousPro} para la fuente de los listados:
+
+\begin{lstlisting}[style=latex]
+% Cambio de fuente base y matemática.
+\usepackage{mathpazo}
+% Cambio de fuente de ancho fijo (por una que soporta negritas e itálicas).
+\usepackage[ttdefault=true]{AnonymousPro}
+\end{lstlisting}
+
+
+
+\section*{Resumen}
+
+
+
+En este capítulo por fin le hemos dado un poco de formato a nuestro documento, cambiado el espaciado entre líneas y entre otros elementos del documento, como las leyendas con lo que referencian, las listas y cada uno de sus elementos, o las secciones con el texto sucesor.
+
+También le dimos formato al encabezado y pie de página, cambiando el color, el tamaño de fuente, y el texto a ser presentado, y eliminamos la numeración de las subsecciones y las desaparecimos del índice (¿quién las querría allí?).
+
+En nuestro aprendizaje vimos que la portada puede ser diseñada en \LaTeX{} y, por último, cambiamos el estilo del título de capítulo gracias a la inclusión del paquete \texttt{fncychap}.

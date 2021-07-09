@@ -1,0 +1,628 @@
+\lstDeleteShortInline|
+\lstMakeShortInline[style=latexi]!
+
+\chapter{Ecuaciones}
+\label{cha:ecuaciones}
+
+
+
+Aquí es donde separamos las tesis de ingeniería de las tesis de otras carreras: las hermosas matemáticas (que merecen una tipografía para hacerles justicia). Hace mucho tiempo, Word fallaba miserablemente para esto de las ecuaciones (ya ha mejorado bastante), y la única alternativa digna era utilizar \LaTeX{}. En fin.
+
+En este capítulo veremos que la diversidad de entornos matemáticos que \LaTeX{} ofrece, junto con la irrisoria cantidad de símbolos y la facilidad con la que podemos escribir ecuaciones (cuando sabemos cómo), brindan a \LaTeX{} un triunfo devastador sobre su contrincante Word.
+
+Vayamos a descubrir las posibilidades que \LaTeX{} nos ofrece, ya sea que necesitemos ecuaciones de álgebra booleana, evaluación de derivadas, álgebra lineal, expresiones de probabilidad... \LaTeX{} nos ofrece con abundancia.
+
+
+
+\section{Ecuaciones en línea con el texto}
+\label{sec:ecuaciones_en_linea}
+
+
+
+La forma más fácil de introducir ecuaciones en \LaTeX{} es incluirlas en el mismo texto, mediante un entorno que abre y cierra con símbolos de pesos (\texttt{\$}). Por ejemplo, si quiero hablar de la variable $x$, uso este entorno. Porque no es lo mismo una ``x'' de texto que una $x$ de matemáticas: cambia la fuente.
+
+Dicho de otra forma, yo puedo hablar de las variables $x$ y $y$ porque un entorno matemático tiene una fuente diferente que me permite distinguir qué cosas son matemáticas dentro del texto.
+
+Si escribo la ecuación de la recta, $y = mx + b$, fácilmente puedo ver dónde está la ecuación. Y no, no es lo mismo la fuente del entorno matemático al estilo en itálicas: $y = mx + b$ contra \emph{y = mx + b}. Por ejemplo, tenemos $=$ e \emph{=}; $+$ y \emph{+}; $b$ y \emph{b}. No dejes que las letras te engañen, son los símbolos matemáticos los que hacen la diferencia.
+
+No obstante, allí es donde acaban las similitudes. Porque ahora tenemos que evaluar el primer punto de la recta, $y_1$ (cuyo código es !$y_1$!). ¿Cómo colocas ese subíndice en texto en itálicas?
+
+Ahora por fin comprendes por qué \LaTeX{} tiene conflictos con los guiones bajos: son un símbolo que indica que el siguiente carácter es un subíndice. Cuando esta instrucción se hace fuera de un entorno matemático, \LaTeX{} no sabe qué hacer y genera un error.
+
+Esto es solo el principio. Podemos colocar varios caracteres como subíndice, con rodear el texto entre llaves, como en $y_{312}$ (cuyo código es !$y_{312}$!).
+
+Colocar un exponente es igual de trivial, con el uso del símbolo de intercalación, circunflejo, o ``gorrito'' (\^{}). Por ejemplo, una parábola en su forma general se define por $Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0$, lo cual escribimos en código en línea como !$Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0$!.
+
+A la hora de querer evaluar el valor del doceavo punto dentro de esa fórmula general basta con agregar los subíndices, sin importar si va primero exponente o subíndice: $Ax^2_{12} + Bx_{12}y_{12} + Cy_{12}^2 + Dx_{12} + Ey_{12} + F = 0$. El código es:
+
+\begin{lstlisting}[style=latex,mathescape=false]
+$Ax^2_{12} + Bx_{12}y_{12} + Cy_{12}^2 + Dx_{12} + Ey_{12} + F = 0$
+\end{lstlisting}
+
+
+
+\section{Letras griegas y otros símbolos}
+\label{sec:letras_griegas_y_otros_simbolos}
+
+
+
+Por supuesto, las matemáticas no son matemáticas si la $x$ no invita a todas sus compañeras de la Antigua Grecia al baile. Están las más conocidas y queridas, como $\alpha$ (!$\alpha$!), $\beta$ (!$\beta$!), y $\pi$ (!$\pi$!), y también otras conocidas pero odiadas, como $\Sigma$ (!$\Sigma$!). ¿Y cómo olvidar que para llegar a un resultado tenemos que colocar los tres puntitos del ``por lo tanto'' ($\therefore$, !$\therefore$!)?
+
+Por cierto, el símbolo $\therefore$ forma parte del paquete \texttt{amssymb}, por lo que debes verificar que esté presente en el preámbulo. De lo contrario, tendrás el siguiente error:
+
+\begin{lstlisting}[style=errores]
+Undefined control sequence. [...puntitos del ``por lo tanto'' ($\therefore]
+\end{lstlisting}
+
+Es importante mencionar que $\sigma$ (!$\sigma$!) y $\Sigma$ (!$\Sigma$!) son dos instrucciones diferentes, lo que aplica para aquellas letras del abecedario que tienen una mayúscula que no se incluye en nuestro alfabeto contemporáneo de uso común (la mayúscula de $\alpha$ es $A$).
+
+Si quieres usar \LaTeX{} para la teoría de conjuntos, se puede. Podemos poner la intersección de $A$ y $B$ con $A \cap B$ (!$A \cap B$!), o su unión con $A \cup B$ (!$A \cup B$!). Si $A = \{1, 3, 5\}$, y $B = \{1, 3, 5, 7\}$, entonces $A \subseteq B$ (!$A \subseteq B$!).
+
+¿Y las matemáticas discretas usadas ampliamente en electrónica digital? Si representamos la operación \texttt{AND} como una multiplicación que se hace al estar juntas las variables, \texttt{OR} con un signo de $+$, y \texttt{NOT} con una línea sobre el texto, podemos entender que $x = \overline{\overline{AB} + A\overline{C}D}$ es una expresión válida, cuyo código es:
+
+\begin{lstlisting}[style=latex,numbers=none,mathescape=false]
+$x = \overline{\overline{AB} + A\overline{C}D}$
+\end{lstlisting}
+
+Antes de perderme en más ejemplos, el punto es que \LaTeX{} tiene el símbolo que necesitas. Puedes consultar \cite{bib:math_symbols} para una lista de las letras en el alfabeto griego, y \cite{bib:math_symbols_subject} para más símbolos agrupados por asignatura. Como dije, hay muchos.
+
+
+
+\section{Ecuaciones sin referencia}
+\label{sec:ecuaciones_sin_referencia}
+
+
+
+Llega un momento en la vida en el que las ecuaciones son tan complejas para caber en línea con el texto y es necesario emigrar a lugares con más espacio. El siguiente entorno, o modo, lo llamaré ``entorno matemático sin referencia''. Es decir, es un entorno que ya nos asigna una línea completa para la ecuación, que centra el contenido, pero que no nos permite asignar una etiqueta para referencia.
+
+Como ejemplo de este entorno tenemos la paradoja de la dicotomía de Zenón, que es la sucesión infinita que converge a 1:
+
+\[
+\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \frac{1}{32} + \ldots = \sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\]
+
+El código de la sucesión anterior es:
+
+\begin{lstlisting}[style=latex,numbers=none,mathescape=false]
+\[
+\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \frac{1}{32} + \ldots = \sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\]
+\end{lstlisting}
+
+Es decir, el entorno matemático sin referencia abre con un \codigo{[} y cierra con un \codigo{]}. Esto automáticamente crea una línea nueva para la ecuación y centra su contenido. En sí, la (casi) única instrucción que utilizamos fue !\frac{numerador}{denominador}!. Dicha instrucción es un ejemplo de la diferencia entre ecuaciones en línea con el texto y el entorno independiente: el mismo !\frac{1}{2}! se muestra más pequeño ($\frac{1}{2}$) en el texto.
+
+Lo demás fueron dos nuevos símbolos: $\sum$ (!$\sum$!) e $\infty$ (!$\infty$!). Nótese que \LaTeX{} colocó automáticamente los límites debajo y encima del símbolo de sumatoria, en lugar de como subíndices y exponentes.
+
+Lo que nos queda por ver es ¿por qué usamos !\left(! y !\right)!?
+
+
+
+\section{Llaves y paréntesis}
+\label{sec:llaves_y_parentesis}
+
+
+
+La respuesta más simple viene de forma empírica. Este es el resultado al remover !\left! y !\right! de la ecuación pasada:
+
+\[
+\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \frac{1}{32} + \ldots = \sum_{n=1}^{\infty} (\frac{1}{2})^n = 1
+\]
+
+¿La diferencia? Sin el modificador, los paréntesis no se agrandan para cubrir completamente la fracción. La lección: en entornos matemáticos, acostumbra a colocar !\left(! y !\right)! a los símbolos de apertura y clausura que utilices. Esto incluye paréntesis, llaves, corchetes, barras verticales, y otros símbolos más, que puedes consultar en \cite{bib:math_brackets}.
+
+En caso de querer modificar manualmente el tamaño de los paréntesis, tienes cuatro modificadores de tamaño, que se muestran en la tabla \ref{tab:math_corchetes}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{ll}
+\hline
+\multicolumn{1}{c}{\textbf{La instrucción...}} & \multicolumn{1}{c}{\textbf{se ve...}} \\
+\hline
+!\big(!                        & $1 + \big( \frac{1}{2} \big)$         \\
+!\Big(!                        & $1 + \Big( \frac{1}{2} \Big)$         \\
+!\bigg(!                       & $1 + \bigg( \frac{1}{2} \bigg)$       \\
+!\Bigg(!                       & $1 + \Bigg( \frac{1}{2} \Bigg)$       \\
+\hline
+\end{tabular}
+\caption{Tamaños de paréntesis en \LaTeX.}
+\label{tab:math_corchetes}
+\end{table}
+
+
+
+\section{Ecuaciones con referencia}
+\label{sec:ecuaciones_con_referencia}
+
+
+
+Si quieres hacer referencia a una ecuación, como a la ecuación (\ref{eq:sucesion}), es necesario usar el entorno \texttt{equation}, como se muestra en el listado \ref{lst:entorno_equation}. Lo demás se mantiene igual, creas una etiqueta con !\label! y después la utilizas con !\ref!.
+
+\begin{equation}
+\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \frac{1}{32} + \ldots = \sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\label{eq:sucesion}
+\end{equation}
+
+No obstante, usar la instrucción !\ref{eq:sucesion}! retorna únicamente el número de la ecuación, no los paréntesis. Ya dependerá de tu plantilla, o de tu institución, si debes agregar paréntesis a cada referencia a ecuación, o si así sin uso de paréntesis es el modo de referencia adecuado.
+
+A lo largo de este capítulo, yo agrego los paréntesis de forma manual, escribiendo !(\ref{eq:sucesion})! para obtener la referencia con paréntesis.
+
+\begin{lstlisting}[style=latex,caption={Código para ecuación con referencia.},label=lst:entorno_equation]
+\begin{equation}
+\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \frac{1}{32} + \ldots = \sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\label{eq:sucesion}
+\end{equation}
+\end{lstlisting}
+
+
+
+\section{Texto en entorno matemático}
+\label{sec:texto_en_entorno_matematico}
+
+
+
+Si por alguna razón debes escribir texto ``normal'' dentro de un entorno matemático, debes recordar que la fuente cambió y puede no tener todos los símbolos disponibles. Por ejemplo, la ecuación (\ref{eq:dolares}) muestra la tasa de cambio entre dólares y pesos... pero no se ve muy bien. La fuente es el primero de los problemas, dado que las cursivas no es un formato deseado para el texto.
+
+\begin{equation}
+tasa_{MXN} = \frac{pesos}{dólares} = \frac{2,968.24 MXN}{150 USD} \approx 19.78
+\label{eq:dolares}
+\end{equation}
+
+El segundo problema es que ``dólares'' contiene una \texttt{ó} y no se puede desplegar con la fuente del entorno matemático, por lo que arroja la adevertencia:
+
+\begin{lstlisting}[style=advertencias]
+Command \' invalid in math mode on input line 159.
+\end{lstlisting}
+
+Para resolver este problema podemos utilizar !\mbox!, que permite mostrar texto en fuente del documento dentro del espacio matemático. Agregando !\mbox!, como se muestra en el listado \ref{lst:entorno_equation2}, se obtiene la ecuación (\ref{eq:dolares2}).
+
+\begin{equation}
+\mbox{tasa}_{\mbox{MXN}} = \frac{\mbox{pesos}}{\mbox{dólares}} = \frac{2,968.24 \mbox{MXN}}{150 \mbox{USD}} \approx 19.78
+\label{eq:dolares2}
+\end{equation}
+
+En la ecuación ya se puede observar la fuente regular y la ``ó'' en la palabra ``dólares''. No obstante, queda un problemita más: no existe espacio entre el monto y la moneda (entre el número y el texto ``MXN'' o ``USD'') a pesar de que en el código sí aparece.
+
+\begin{lstlisting}[style=latex,caption={Código con texto usando \texttt{\textbackslash{}mbox}.},label=lst:entorno_equation2]
+\begin{equation}
+\mbox{tasa}_{\mbox{MXN}} = \frac{\mbox{pesos}}{\mbox{dólares}} = \frac{2,968.24 \mbox{MXN}}{150 \mbox{USD}} \approx 19.78
+\label{eq:dolares2}
+\end{equation}
+\end{lstlisting}
+
+Esto es porque \LaTeX{} es aún más estricto con el espacio en blanco en los entornos matemáticos y simplemente elimina todo. Para mostrar espacios tenemos dos alternativas: o agregar el espacio dentro del !\mbox!, como !\mbox{ MXN}!, o utilizar el caracter de !~! entre el monto y la moneda (i.e. !150~\mbox{USD}!).
+
+
+
+\section{Casos}
+\label{sec:casos}
+
+
+
+Uno de los escenarios donde requerimos usar texto plano dentro de un entorno matemático es en \texttt{cases}. Este entorno sirve para mostrar las condiciones de una función, un caso clásico para definir los valores de $f$ en base a $x$. Por ejemplo, la ecuación (\ref{eq:uso_de_cases}) muestra los valores de la variable $\phi_{xx}$ en base al valor de $i$.
+
+\begin{equation}
+\phi_{xx} \approx
+\begin{cases}
+	\displaystyle \frac{-2 \phi_{0} + 2\phi_{1}}{\Delta x^2}  &  \mbox{ para } i = 0, \\
+	\displaystyle \frac{\phi_{i-1} - 2 \phi_{i} + \phi_{i+1}}{\Delta x^2}  &  \mbox{ para } i = 1, \ldots, N - 2, \\
+	\displaystyle \frac{2\phi_{N-2} - 2 \phi_{N-1}}{\Delta x^2}  &  \mbox{ para } i = N - 1 \\
+\end{cases}
+\label{eq:uso_de_cases}
+\end{equation}
+
+El listado \ref{lst:math_cases} es el encargado de la ecuación (\ref{eq:uso_de_cases}), donde las líneas 1, 8, y 9 se encargan de crear un entorno \texttt{equation} y su etiqueta para referencias. En la segunda línea empiezan los casos al definir la variable !\phi_{xx}! para recibir el valor dependiendo de las condiciones. La línea 3 abre el entorno \texttt{cases}, mismo que se manejará como una tabla: un ampersand separará las ``columnas'' y dos diagonales invertidas separarán los posibles valores dependientes de $i$, las ``filas''. El uso de los ampersand nos permite que todos los textos ``para $i$'' se muestren alineados perfectamente.
+
+\begin{lstlisting}[style=latex,numbers=left,caption={Uso del entorno \texttt{cases}.},label=lst:math_cases]
+\begin{equation}
+\phi_{xx} \approx
+\begin{cases}
+	\displaystyle \frac{-2 \phi_{0} + 2\phi_{1}}{\Delta x^2}  &  \mbox{ para } i = 0, \\
+	\displaystyle \frac{\phi_{i-1} - 2 \phi_{i} + \phi_{i+1}}{\Delta x^2}  &  \mbox{ para } i = 1, \ldots, N - 2, \\
+	\displaystyle \frac{2\phi_{N-2} - 2 \phi_{N-1}}{\Delta x^2}  &  \mbox{ para } i = N - 1 \\
+\end{cases}
+\label{eq:uso_de_cases}
+\end{equation}
+\end{lstlisting}
+
+Lo único que resta especificar es la instrucción !\displaystyle!. La ecuación (\ref{eq:uso_de_cases2}) responde empíricamente a la pregunta: el segundo elemento fue desprovisto de dicha instrucción y se muestra en un tamaño un poco más pequeño. Según se explica en \cite{bib:math_displaystyle}, esta instrucción evita que salgamos del modo de visualización matemática. ¿Ah? Que no tratará de encoger las ecuaciones como si tuvieran que caber en línea con el texto.
+
+\begin{equation}
+\phi_{xx} \approx
+\begin{cases}
+	\displaystyle \frac{-2 \phi_{0} + 2\phi_{1}}{\Delta x^2}  &  \mbox{ para } i = 0, \\
+	\frac{\phi_{i-1} - 2 \phi_{i} + \phi_{i+1}}{\Delta x^2}  &  \mbox{ para } i = 1, \ldots, N - 2, \\
+	\displaystyle \frac{2\phi_{N-2} - 2 \phi_{N-1}}{\Delta x^2}  &  \mbox{ para } i = N - 1 \\
+\end{cases}
+\label{eq:uso_de_cases2}
+\end{equation}
+
+
+
+\section{Ecuaciones multilínea}
+\label{sec:ecuaciones_multilinea}
+
+
+
+Vamos a expandir la sucesión de la ecuación (\ref{eq:sucesion}) a los primeros quince términos, como se muestra en la ecuación (\ref{eq:sucesion2}), con su código en el listado \ref{lst:sucesion2}. Sí, ocurre un desbordamiento. La ecuación no cabe en la línea a pesar de que los términos en código fuente están distribuidos en cinco líneas. Incluso ignora el \codigo{\textbackslash{}} al final de la línea 4, no hay salto de línea presente. Es necesario resolver un problema así porque, vamos, sabes que es completamente posible que tengas que lidiar con expresiones largas.
+
+\begin{equation}
+ \frac{1}{2}   +\frac{1}{4}    +\frac{1}{8}    +\frac{1}{16}
++\frac{1}{32}  +\frac{1}{64}   +\frac{1}{128}  +\frac{1}{256}
++\frac{1}{512} +\frac{1}{1024} +\frac{1}{2048} +\frac{1}{4096}\\
++\frac{1}{8192}+\frac{1}{16384}+\frac{1}{32768}+\ldots
+= \sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\label{eq:sucesion2}
+\end{equation}
+
+\begin{lstlisting}[style=latex,numbers=left,caption={Sucesión con términos que desbordan una línea.},label=lst:sucesion2]
+\begin{equation}
+ \frac{1}{2}   +\frac{1}{4}    +\frac{1}{8}    +\frac{1}{16}
++\frac{1}{32}  +\frac{1}{64}   +\frac{1}{128}  +\frac{1}{256}
++\frac{1}{512} +\frac{1}{1024} +\frac{1}{2048} +\frac{1}{4096}\\
++\frac{1}{8192}+\frac{1}{16384}+\frac{1}{32768}+\ldots
+= \sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\label{eq:sucesion2}
+\end{equation}
+\end{lstlisting}
+
+Una posible respuesta es utilizar el entorno matemático \texttt{multline}, como muestra el listado \ref{lst:multline}, para producir la ecuación (\ref{eq:sucesion3}). El código dentro del entorno es idéntico al listado \ref{lst:sucesion2}, lo único que cambia es el entorno, de \texttt{equation} a \texttt{multline}. No obstante, \texttt{multline} lo único que hace es dejar todas las líneas alineadas a la izquierda, con la última alineada hacia la derecha, lo que no resulta exactamente agradable a la vista.
+
+\begin{multline}
+ \frac{1}{2}   +\frac{1}{4}    +\frac{1}{8}    +\frac{1}{16}
++\frac{1}{32}  +\frac{1}{64}   +\frac{1}{128}  +\frac{1}{256}
++\frac{1}{512} +\frac{1}{1024} +\frac{1}{2048} +\frac{1}{4096}\\
++\frac{1}{8192}+\frac{1}{16384}+\frac{1}{32768}+\ldots
+= \sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\label{eq:sucesion3}
+\end{multline}
+
+\begin{lstlisting}[style=latex,caption={Sucesión en dos líneas.},label=lst:multline]
+\begin{multline}
+ \frac{1}{2}   +\frac{1}{4}    +\frac{1}{8}    +\frac{1}{16}
++\frac{1}{32}  +\frac{1}{64}   +\frac{1}{128}  +\frac{1}{256}
++\frac{1}{512} +\frac{1}{1024} +\frac{1}{2048} +\frac{1}{4096}\\
++\frac{1}{8192}+\frac{1}{16384}+\frac{1}{32768}+\ldots
+= \sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\label{eq:sucesion3}
+\end{multline}
+\end{lstlisting}
+
+
+
+\section{Entorno \texttt{split}}
+\label{sec:entorno_split}
+
+
+
+Una mejor respuesta al problema de ecuaciones que ocupan más de una línea, al menos en términos estéticos, es el entorno \texttt{split}. En este caso, contrario al \texttt{multline}, no se trata de un reemplazo del entorno \texttt{equation} sino de un entorno \texttt{split} dentro del entorno \texttt{equation}, como se muestra en el listado \ref{lst:split}.
+
+\begin{lstlisting}[style=latex,numbers=left,caption={Sucesión en dos líneas, centradas.},label=lst:split]
+\begin{equation}
+\begin{split}
+  \frac{1}{2}    + \frac{1}{4}     + \frac{1}{8}    + \frac{1}{16}
++ \frac{1}{32}   + \frac{1}{64}    + \frac{1}{128}  + \frac{1}{256}
++ \frac{1}{512}  &\\
++ \frac{1}{1024} + \frac{1}{2048}  + \frac{1}{4096} + \frac{1}{8192}
++ \frac{1}{16384}+ \frac{1}{32768} + \ldots
+&=\sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\label{eq:sucesion4}
+\end{split}
+\end{equation}
+\end{lstlisting}
+
+Para el entorno \texttt{split} seguimos la misma lógica que para las tablas (entorno \texttt{tabular}) y los casos (entorno \texttt{cases}), usando los \texttt{\&} para separar columnas y los \codigo{\textbackslash{}} para separar las líneas de la ecuación.
+
+¿Cuáles serán las columnas? Como quiero que ambas líneas se muestren alineadas respecto al signo de igualdad, $=$, la primer columna se rompe después del $\frac{1}{512}$, dejando la segunda columna vacía para pasar directo a la segunda línea (en el listado, línea 5), donde la segunda columna se empieza con $=$, en la línea 8 del listado. El resultado visual se muestra en la ecuación (\ref{eq:sucesion4}).
+
+\begin{equation}
+\begin{split}
+  \frac{1}{2}    + \frac{1}{4}     + \frac{1}{8}    + \frac{1}{16}
++ \frac{1}{32}   + \frac{1}{64}    + \frac{1}{128}  + \frac{1}{256}
++ \frac{1}{512}  &\\
++ \frac{1}{1024} + \frac{1}{2048}  + \frac{1}{4096} + \frac{1}{8192}
++ \frac{1}{16384}+ \frac{1}{32768} + \ldots
+&=\sum_{n=1}^{\infty} \left(\frac{1}{2}\right)^n = 1
+\label{eq:sucesion4}
+\end{split}
+\end{equation}
+
+
+
+\section{Entorno \texttt{align}}
+\label{sec:entorno_align}
+
+
+
+Pero, ¿qué pasa si quiero varias ecuaciones, cada una con su referencia, dentro del mismo entorno? Dado que eso no sería una sola ecuación o expresión a lo largo de varias líneas, cambiamos del entorno \texttt{equation} al entorno \texttt{align}, lo que nos da una referencia por cada ecuación, con referencias de la (\ref{eq:i_1}) a la (\ref{eq:i_4}).
+
+\begin{align}
+I_1(x,y)&=I'(x,y)+I''(x,y)+2\sqrt{I'(x,y)I''(x,y)}\cos(\phi(x,y)), \label{eq:i_1}\\
+I_2(x,y)&=I'(x,y)+I''(x,y)-2\sqrt{I'(x,y)I''(x,y)}\sin(\phi(x,y)), \label{eq:i_2}\\
+I_3(x,y)&=I'(x,y)+I''(x,y)-2\sqrt{I'(x,y)I''(x,y)}\cos(\phi(x,y)), \label{eq:i_3}\\
+I_4(x,y)&=I'(x,y)+I''(x,y)+2\sqrt{I'(x,y)I''(x,y)}\sin(\phi(x,y)). \label{eq:i_4}
+\end{align}
+
+El listado \ref{lst:align} muestra las cuatro ecuaciones y sus referencias individuales. Tenemos que $I_1$ tiene el número (\ref{eq:i_1}), la $I_2$ tiene el número (\ref{eq:i_2}), mientras que $I_3$ se muestra en (\ref{eq:i_3}) y, por último, $I_4$ se referencia por (\ref{eq:i_4}).
+
+Para lograr estas referencias, las etiquetas de cada ecuación se colocan antes de la próxima ecuación en el entorno. Es decir, las etiquetas van antes de \codigo{\textbackslash{}}. En el ejemplo, la etiqueta !\label{eq:i_1}! de la línea 3 pertenece a la primera ecuación, en la línea 2 del listado \ref{lst:align}, debido a que está antes del primer conjunto de diagonales invertidas.
+
+\begin{lstlisting}[style=latex,numbers=left,caption={Entorno \texttt{align} para múltiples ecuaciones numeradas.},label=lst:align]
+\begin{align}
+I_1(x,y)&=I'(x,y)+I''(x,y)+2\sqrt{I'(x,y)I''(x,y)}\cos(\phi(x,y)),
+	\label{eq:i_1}\\
+I_2(x,y)&=I'(x,y)+I''(x,y)-2\sqrt{I'(x,y)I''(x,y)}\sin(\phi(x,y)),
+	\label{eq:i_2}\\
+I_3(x,y)&=I'(x,y)+I''(x,y)-2\sqrt{I'(x,y)I''(x,y)}\cos(\phi(x,y)),
+	\label{eq:i_3}\\
+I_4(x,y)&=I'(x,y)+I''(x,y)+2\sqrt{I'(x,y)I''(x,y)}\sin(\phi(x,y)).
+	\label{eq:i_4}
+\end{align}
+\end{lstlisting}
+
+Si deseas las ecuaciones alineadas sin numeración individual, puedes utilizar el entorno \texttt{align*}. Hace lo mismo que \texttt{align} pero sin generar las referencias \cite{bib:math_align}.
+
+
+
+\section{Evaluación de derivada}
+\label{sec:evaluacion_de_derivada}
+
+
+
+Al evaluar una derivada se utiliza el símbolo de la barra vertical, pero si lo aplicamos directamente a una fracción, este no se redimensionará correctamente:
+
+\lstrulet
+\noindent \begin{minipage}{0.75\linewidth}
+\vspace{1.5mm}
+\begin{lstlisting}[style=latex,frame={}]
+\[ \frac{d \phi}{dx}|_{x = 0} = 1 \]
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}{0.25\linewidth}
+\[ \frac{d \phi}{dx}|_{x = 0} = 1 \]
+\end{minipage}
+\lstruleb
+
+También vimos que utilizando un !\right|! podríamos resolver el problema, excepto que el siguiente código:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\[ \frac{d \phi}{dx}\right|_{x = 0} = 1 \]
+\end{lstlisting}
+
+\noindent genera el siguiente error:
+
+\begin{lstlisting}[style=errores]
+Extra \right. [\[ \frac{d \phi}{dx}\right|]
+\end{lstlisting}
+
+Eso nos deja con dos opciones:
+\begin{enumerate}
+	\item Usar un modificador de tamaño de manera manual.
+	\item Utilizar el modificador automático incluyendo un !\left.! (incluye punto).
+\end{enumerate}
+
+Resulta que el comando !\left.! se encarga de abrir la instrucción, pero sin impresión a pantalla. Por lo tanto, para evitar el redimensionamiento manual podemos colocar la evaluación con el siguiente código:
+
+\lstrulet
+\noindent \begin{minipage}{0.7\linewidth}
+\vspace{1.5mm}
+\begin{lstlisting}[style=latex,frame={}]
+\[ \left.\frac{d \phi}{dx}\right|_{x = 0} = 1 \]
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}{0.3\linewidth}
+\[ \left.\frac{d \phi}{dx}\right|_{x = 0} = 1 \]
+\end{minipage}
+\lstruleb
+
+
+\section{Ecuaciones lado a lado}
+\label{sec:ecuaciones_lado_a_lado}
+
+
+
+Yo sé, poco a poco se van haciendo más complicadas las ecuaciones en \LaTeX{}, pero cosas más feas te encontrarás en tu tesis, probablemente, así que vamos con un ejemplo un poco más complicado para colocar ecuaciones lado a lado.
+
+Retomamos el ejemplo anterior, de evaluación de derivadas en un valor específico, para representar dos condiciones de frontera, descritas en (\ref{eq:condiciones_segunda_derivada_x_1}) y (\ref{eq:condiciones_segunda_derivada_x_2}).
+
+Dado que se usan tres columnas, de diferente tamaño cada una, utilizamos el entorno \texttt{minipage}. ¿Por qué tres columnas? Porque quise colocar la palabra ``y'' entre ambas ecuaciones, y para esa sola letra es necesario tener un \texttt{minipage} a parte.
+
+Cabe aclarar que el entorno \texttt{minipage} no es un entorno matemático sino un entorno utilizado para crear columnas. Aquí lo estamos utilizando para crear tres columnas de diferentes tamaños, dos de las cuales contendrán entornos matemáticos.
+
+\noindent\begin{minipage}{0.425\linewidth}
+	\begin{equation}
+		\left.\frac{d \phi}{dx}\right|_{x = x_1}
+			\approx \frac{\phi_{1} - \phi_{-1}}{2 \Delta x} = 0
+		\label{eq:condiciones_segunda_derivada_x_1}
+	\end{equation}
+\end{minipage}
+\begin{minipage}{0.10\linewidth}
+	\begin{center}
+		\vspace{20pt} y
+	\end{center}
+\end{minipage}
+\begin{minipage}{0.425\linewidth}
+	\begin{equation}
+		\left. \frac{d \phi}{dx}\right|_{x = x_2}
+			\approx \frac{\phi_{N} - \phi_{N - 2}}{2 \Delta x} = 0
+		\label{eq:condiciones_segunda_derivada_x_2}
+	\end{equation}
+\end{minipage} \vspace{7pt}
+
+En el listado \ref{lst:math_minipage} se muestra el código de las tres columnas. De las líneas 1 a 7 está el primer \texttt{minipage}, con una anchura del 42.5\% de la línea de texto, según se establece en el parámetro de anchura del entorno (línea 1). Dentro del \texttt{minipage} insertamos la ecuación mediante un \texttt{equation}, y todo discurre con normalidad, hasta el cierre del \texttt{minipage} en la línea 7.
+
+De ahí se contruye el segundo \texttt{minipage} en la línea 8, con una anchura del 10\% de la línea de texto, que se cierra en la línea 12. Dentro de este \texttt{minipage} se crea un entorno \texttt{center} para centrar la ``y'', misma que se tiene que desplazar un poco verticalmente para que parezca centrada respecto a la altura de las ecuaciones que la envuelven. Este espacio vertical se coloca con !\vspace{unidad de medida}!. El valor de \texttt{20pt} fue un valor provisto a prueba y error, hasta que visualmente me satisfizo el resultado.
+
+Finalmente se crea el tercer y último \texttt{minipage}, de las líneas 13 a la 19, con una anchura del 42.5\%, para un total del 95\%. Es necesario dejar algo de margen por el espacio que \LaTeX{} deja entre cada \texttt{minipage}, de lo contrario la última columna sobresaldrá del margen del texto. Este valor, al igual que el del espacio vertical, fue colocado de manera experimental respecto al resultado visual.
+
+\begin{lstlisting}[style=latex,numbers=left,caption={Uso de \texttt{minipage} para ecuaciones lado a lado.},label=lst:math_minipage]
+\begin{minipage}{0.425\linewidth}
+	\begin{equation}
+		\left.\frac{d \phi}{dx}\right|_{x = x_1}
+			\approx \frac{\phi_{1} - \phi_{-1}}{2 \Delta x} = 0
+		\label{eq:condiciones_segunda_derivada_x_1}
+	\end{equation}
+\end{minipage}
+\begin{minipage}{0.10\linewidth}
+	\begin{center}
+		\vspace{20pt} y
+	\end{center}
+\end{minipage}
+\begin{minipage}{0.425\linewidth}
+	\begin{equation}
+		\left. \frac{d \phi}{dx}\right|_{x = x_2}
+			\approx \frac{\phi_{N} - \phi_{N - 2}}{2 \Delta x} = 0
+		\label{eq:condiciones_segunda_derivada_x_2}
+	\end{equation}
+\end{minipage} \vspace{1pt}
+\end{lstlisting}
+
+
+
+\section{Matrices}
+\label{sec:matrices}
+
+
+
+Tal vez el problema que tienes que resolver llega a un punto donde el álgebra lineal es inevitable y tienes que tratar con un sistema de ecuaciones de la forma $Ax = b$, donde $A$ es la matriz de coeficientes, $b$ es el vector de constantes, y $x$ son las incógnitas que imposibilitan la resolución de la tesis y seguir adelante con la vida. Lo anterior se puede expresar con la ecuación (\ref{eq:sistema_ax_b}), misma que en código \LaTeX{} puede resultar un poco compleja, así que vayamos por partes.
+
+\begin{equation}
+\underbrace{
+\left(
+\begin{array}{ccccc}
+a_{0, 0}   & a_{0, 1}   & \hdots & a_{0, n-2}   & a_{0, n-1}   \\
+a_{1, 0}   & a_{1, 1}   & \hdots & a_{1, n-2}   & a_{1, n-1}   \\
+\vdots     & \vdots     & \ddots & \vdots       & \vdots       \\
+a_{n-2, 0} & a_{n-2, 1} & \hdots & a_{n-2, n-2} & a_{n-2, n-1} \\
+a_{n-1, 0} & a_{n-1, 1} & \hdots & a_{n-1, n-2} & a_{n-1, n-1} \\
+\end{array}
+\right)
+}_{A}
+\underbrace{
+\left(
+\begin{array}{c}
+x_0 \\ x_1 \\ \vdots \\ x_{n-2} \\ x_{n-1} \\
+\end{array}
+\right)
+}_{x}
+=
+\underbrace{
+\left(
+\begin{array}{c}
+b_{0} \\ b_{1} \\ \vdots \\ b_{n-2} \\ b_{n-1}
+\end{array}
+\right)
+}_{b}
+\label{eq:sistema_ax_b}
+\end{equation}
+
+Para el contenido de la matriz se utiliza el entorno \texttt{array}, mismo que es similar al \texttt{tabular} dado que recibe la cantidad de términos y su alineación como único parámetro, y los términos se separan por \& y las ecuaciones en el sistema por un \codigo{\textbackslash{}}. No obstante, el \texttt{array} contiene únicamente los coeficientes, no los paréntesis o corchetes que denotan que el contenido es una matriz. Para eso hay que agregar las instrucciones !\left(! y !\right)!, como sigue:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\left(
+\begin{array}{ccccc}
+a_{0, 0}   & a_{0, 1}   & \hdots & a_{0, n-2}   & a_{0, n-1}   \\
+a_{1, 0}   & a_{1, 1}   & \hdots & a_{1, n-2}   & a_{1, n-1}   \\
+\vdots     & \vdots     & \ddots & \vdots       & \vdots       \\
+a_{n-2, 0} & a_{n-2, 1} & \hdots & a_{n-2, n-2} & a_{n-2, n-1} \\
+a_{n-1, 0} & a_{n-1, 1} & \hdots & a_{n-1, n-2} & a_{n-1, n-1} \\
+\end{array}
+\right)
+\end{lstlisting}
+
+Las instrucciones !\vdots!, !\ddots!, y !\hdots! son para colocar puntos verticales, diagonales, y horizontales, respectivamente. Ahora, para colocar una llave debajo de cualquier ecuación se utiliza la instrucción !\underbrace{contenido}!, y para colocar texto debajo de esa llave se utiliza el subíndice con el guión bajo, como
+
+\lstrulet
+\noindent\begin{minipage}{0.7\linewidth}
+\begin{lstlisting}[style=latex,frame={}]
+\[ \underbrace{y = mx + b}_{\mbox{Recta}} \]
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}{0.3\linewidth}
+\[ \underbrace{y = mx + b}_{\mbox{Recta}} \]
+\end{minipage}\vspace{2mm}
+\lstruleb
+
+Para los vectores $x$ y $b$ se pueden colocar todos los términos en un solo renglón de código, separados por \codigo{\textbackslash{}}, como sigue:
+
+\begin{lstlisting}[style=latex,numbers=none]
+\begin{array}{c}
+x_0 \\ x_1 \\ \vdots \\ x_{n-2} \\ x_{n-1} \\
+\end{array}
+\end{lstlisting}
+
+\noindent rodeados de sus !\left(! y !\right)! respectivos, y su !\underbrace! para denotar el nombre del vector, y listo: el resultado final del código de la matriz se muestra en el listado \ref{lst:math_ax_b}.
+
+\begin{lstlisting}[style=latex,caption={Uso de \texttt{array} para matrices.},label=lst:math_ax_b]
+\begin{equation}
+\underbrace{
+\left(
+\begin{array}{ccccc}
+a_{0, 0}   & a_{0, 1}   & \hdots & a_{0, n-2}   & a_{0, n-1}   \\
+a_{1, 0}   & a_{1, 1}   & \hdots & a_{1, n-2}   & a_{1, n-1}   \\
+\vdots     & \vdots     & \ddots & \vdots       & \vdots       \\
+a_{n-2, 0} & a_{n-2, 1} & \hdots & a_{n-2, n-2} & a_{n-2, n-1} \\
+a_{n-1, 0} & a_{n-1, 1} & \hdots & a_{n-1, n-2} & a_{n-1, n-1} \\
+\end{array}
+\right)
+}_{A}
+\underbrace{
+\left(
+\begin{array}{c}
+x_0 \\ x_1 \\ \vdots \\ x_{n-2} \\ x_{n-1} \\
+\end{array}
+\right)
+}_{x}
+=
+\underbrace{
+\left(
+\begin{array}{c}
+b_{0} \\ b_{1} \\ \vdots \\ b_{n-2} \\ b_{n-1}
+\end{array}
+\right)
+}_{b}
+\label{eq:sistema_ax_b}
+\end{equation}
+\end{lstlisting}
+
+
+
+\section{Más matemáticas}
+\label{sec:mas_matematicas}
+
+
+
+Hay muchos entornos matemáticos disponibles, e infinidad de paquetes para diversas aplicaciones, tantos que no acabaríamos nunca. Por ejemplo, está el paquete \texttt{mathtools} para utilizar sub y superíndices del lado izquierdo de un símbolo (e.g. $\prescript{238}{92}{\mathbf{U}}$), cosa especialmente útil para química \cite{bib:overleaf_mathtools}, con el código:
+
+\begin{lstlisting}[style=latex,numbers=none,mathescape=false]
+\prescript{238}{92}{\mathbf{U}}
+\end{lstlisting}
+
+También existe el paquete \texttt{cancel}, con documentación en \cite{bib:math_cancel}, para cuando quieres indicar que estás eliminando un término de la ecuación, por ejemplo:
+
+\[ z = \frac{\cancel{x} y}{4 \cancel{x}} = \frac{y}{4} \]
+\newline
+Su código es:
+\begin{lstlisting}[style=latex,numbers=none,mathescape=false]
+\[ z = \frac{\cancel{x} y}{4 \cancel{x}} = \frac{y}{4} \]
+\end{lstlisting}
+
+Además, existe una gran biblioteca de ejemplos en Overleaf de los cuales podrías tomar prestado código e inspiración (guiño, guiño). Puedes consultarla en el sitio \href{https://es.overleaf.com/gallery/tagged/math}{https://es.overleaf.com/gallery/tagged/math}. Si no encuentras algo similar a lo que necesitas allí, nunca falla la comunidad de Stack Exchange para usuarios de \TeX{}, en \href{https://tex.stackexchange.com/}{https://tex.stackexchange.com/}, aunque requiere conocimiento del idioma inglés.
+
+El punto es: si para alguna aplicación en particular no te sirven los entornos aquí expuestos, posiblemente haya otros paquetes y entornos que resuelvan tu problema. Si tras mucho buscar no encuentras la respuesta, puedes contactarme a través de la plataforma de LeanPub, en \href{https://leanpub.com/tesis-en-latex/email_author/new}{https://leanpub.com/tesis-en-latex/email\_author/new} para encontrar solución al problema. Y, quién sabe, quizá agregar otra sección a este capítulo.
+
+
+
+\section*{Resumen}
+
+
+
+En este capítulo vimos que hay varios entornos matemáticos, que sirven para diversos usos. Empezamos con ecuaciones en línea con el texto, encerradas entre signos de pesos (\texttt{\$}), para después empezar a usar un entorno matemático sin referencia, rodeado de \codigo{[} y \codigo{]}.
+
+Posteriormente, entramos en otros entornos matemáticos, como \texttt{equation} para una ecuación con referencia, \texttt{cases} para describir los valores de una función en base a condiciones, \texttt{multline} para quebrar una expresión larga en varias líneas, \texttt{split} para un mayor control a la hora de separar la expresión en varias líneas, \texttt{align} para colocar varias ecuaciones dentro del mismo entorno, y \texttt{array} para describir matrices y vectores.
+
+Además vimos otros temas como los símbolos matemáticos, el tamaño de los paréntesis, cómo colocar dos ecuaciones en un renglón, y cómo expresar la evaluación de una derivada.
+
+Dado que el mundo de las matemáticas es vasto, considera este capítulo una introducción a las matemáticas en \LaTeX{}, un punto de inicio que te permitirá encontrar tu camino hacia las representaciones necesarias en tu tesis.
+
+\lstDeleteShortInline!
+\lstMakeShortInline[style=latexi]|

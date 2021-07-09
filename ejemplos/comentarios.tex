@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{comment}        % Sirve para usar el entorno "comment"
+
+\title{Ejemplo de comentarios}
+\author{Carlos Ramos}
+\date{Noviembre 2020}
+
+\begin{document}
+\maketitle
+
+% Aquí va un comentario desde el inicio de la línea.
+
+Este texto sí se imprime %, pero esto ya no porque es comentario.
+
+Incluso con % otro porcentaje % ya no podemos regresar a texto normal.
+
+\begin{comment}
+Y todo esto es un comentario, que puede que se vea como comentario,
+o no, dependiendo del editor que estés utilizando.
+
+Podemos meter muchas instrucciones de \LaTeX{} aquí, pero igual no se
+van a tomar en cuenta.
+
+\textbf{Esto debería estar en negritas, pero está comentado}
+\end{comment}
+
+Es difícil ver el resultado en PDF, pero confío en que verás
+el código fuente.
+
+\end{document}

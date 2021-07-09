@@ -1,0 +1,535 @@
+\chapter{Más allá de lo básico}
+\label{cha:no_tan_basico}
+
+
+
+Ahora que sabemos escribir texto y darle formato, e incluir imágenes, tablas, y ecuaciones, es tiempo de entrar en aspectos no tan básicos de \LaTeX{} que mejorarán la calidad final de nuestro documento o nos ayudarán a ser más eficientes al momento de escribir la tesis.
+
+Comenzamos con entornos útiles, mismos que ya se han utilizado a lo largo del libro, para luego conocer un poco más del preámbulo para la modificación de parámetros globales, así como la definición de nuevas instrucciones.
+
+
+
+\section{Citas}
+\label{sec:citas}
+
+
+
+Me refiero a ``cita'' en la siguiente acepción:
+
+\begin{displayquote}
+Reproducción de las palabras dichas o escritas por alguien con el fin de apoyar o confirmar algo que se dice\footnote{Tercer definición provista por Google, en \href{https://www.google.com/search?q=definir+cita}{https://www.google.com/search?q=definir+cita}.}.
+\end{displayquote}
+
+\noindent y no en el sentido de... bueno, concertar una reunión romántica con una persona de interés (que, por inclusión, ya no se hace referencia a ``persona del sexo opuesto'').
+
+Por ejemplo, la definición anterior es una cita hecha en el entorno \texttt{displayquote}, que requiere del paquete \texttt{csquotes}. Es decir, el código necesario fue:
+
+\begin{lstlisting}[style=latex]
+% Agregar el siguiente paquete en el preámbulo:
+\usepackage{csquotes} % Mostrar citas de manera bonita, con sangrado.
+
+\begin{displayquote}
+Reproducción de las palabras dichas o escritas por alguien con el fin de apoyar o confirmar algo que se dice.
+\end{displayquote}
+\end{lstlisting}
+
+
+
+\section{Columnas con \texttt{multicol}}
+\label{sec:columnas_multicol}
+
+
+
+En caso de querer $n$ columnas de la misma anchura se puede utilizar el entorno \texttt{multicols}, el cual viene en un paquete casi con el mismo nombre: \texttt{multicol}. Las siguientes dos columnas están hechas gracias a un entorno \texttt{multicols}:
+
+\lstrulet\vspace{-9mm}\begin{multicols}{2}
+Esta es la columna izquierda de un entorno \texttt{multicols}. El código base para este tipo de entornos se muestra en la columna derecha: el único parámetro obligatorio del entorno \texttt{multicols} es el número de columnas. Cada columna puede terminar de dos formas. La primera, de forma automática, dejando que \LaTeX{} divida el contenido lo más equitativamente posible. La segunda, de manera manual, utilizando la instrucción |\columnbreak| para terminar la columna actual.
+
+\begin{lstlisting}[style=latex,frame={}]
+\begin{multicols}{num de columnas}
+Contenido de la primera columna.
+
+\columnbreak
+
+Contenido de la segunda columna.
+
+\columnbreak
+
+   .
+   .
+
+Contenido de la n columna...
+\end{multicols}
+\end{lstlisting}
+\end{multicols}\vspace{-6mm}\lstruleb
+
+No obstante, si usamos más |\columnbreak| que el número de columnas establecido no se generará un error: el resultado será contenido mal colocado en las páginas. Lo que sí genera un error es olvidar el único parámetro obligatorio del entorno, que nos obsequia el siguiente texto de error:
+
+\begin{lstlisting}[style=errores]
+Missing number, treated as zero. [E]
+\end{lstlisting}
+
+
+
+\section{Columnas con \texttt{minipage}}
+\label{sec:columnas_minipage}
+
+
+
+El problema con el entorno \texttt{multicols} es que hace que cada columna tenga la misma anchura, dada por la siguiente fórmula \cite{bib:multicol_multirow}:
+
+\[
+\mbox{anchura} = \frac{\mbox{\codigo{linewidth}} - (\mbox{cantidad de columnas} - 1) \times \mbox{separación entre columnas}}{\mbox{cantidad de columnas}}
+\]
+
+Si queremos columnas asimétricas, alguna de diferente ancho que las demás, es necesario hacer uso del entorno \texttt{minipage}, mismo que ya utilizamos en la sección \ref{sec:ecuaciones_lado_a_lado} para colocar ecuaciones lado a lado.
+
+Al contrario que \texttt{multicols}, donde un entorno genera las $n$ columnas, para hacer columnas con \texttt{minipage} requerimos un entorno por columna, cada uno con su longitud determinada, y nosotros somos responsables de dar con el 100\% del ancho.
+
+\noindent\begin{minipage}{0.58\linewidth}
+Por ejemplo, esta columna tiene un ancho del 58\% del ancho de línea, mientras que el código del lado derecho abarca el 42\% restante. No obstante, no se puede distinguir muy bien dónde acaba la primera columna y empieza la segunda.
+\end{minipage}
+\begin{minipage}{0.42\linewidth}
+\begin{lstlisting}[style=latex,frame={}]
+\begin{minipage}{0.58\linewidth}
+Contenido en texto.
+\end{minipage}
+\begin{minipage}{0.42\linewidth}
+Código del texto.
+\end{minipage}
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{0.20\linewidth}
+Otro problema de este entorno es que, si no usas |\noindent|...
+\end{minipage}
+\begin{minipage}{0.45\linewidth}\vspace{2pt}
+toda la línea de entornos aparece con la indentación, lo que hace que las columnas sobresalgan del lado derecho, como en este ilegible ejemplo.
+\end{minipage}
+\begin{minipage}{0.35\linewidth}
+Por lo tanto, hay que remover la indentación antes del primer \texttt{minipage} para evitar este desbordamiento.
+\end{minipage}
+
+\vspace{10pt}
+Si no pudiste leer lo anterior, te entiendo. El entorno \texttt{minipage} no se separa de manera vertical del párrafo anterior, y tampoco coloca espacios entre columnas. Las cuatro líneas que sobresalen del margen derecho gracias a la indentación pertenecen a tres columnas, de longitudes de 20\%, 45\%, y 35\% de la línea (sabiendo esto, ya puedes leerlas).
+
+Entonces, al utilizar \texttt{minipage} debes tener en cuenta esos tres detalles:
+\begin{enumerate}
+	\item La indentación hace que el margen izquierdo esté desplazado, lo que provoca un margen derecho sobresaliente. Es necesario removerla con un |\noindent|.
+	\item No hay espacio vertical antes o después de un \texttt{minipage}. Si todo el contenido aparece sin separación, se puede agregar manualmente espacio vertical mediante |\vspace{10pt}|, o cualquier unidad y cantidad que parezca pertinente.
+	\item Hay que considerar la división entre columnas de manera manual, lo que se puede realizar con \texttt{minipage} adicionales.
+\end{enumerate}
+
+\vspace{-3mm}\lstrulet
+\noindent\begin{minipage}{0.02\linewidth}
+1 2 3 4 5 6 7 8 9
+\end{minipage}
+\begin{minipage}{0.01\linewidth}
+\end{minipage}
+\begin{minipage}{0.47\linewidth}
+La numeración a la derecha es un \texttt{minipage} del 2\% de la línea, mientras que el código ocupa el 46\%. Aunque esta columna de texto bien podría ocupar el 52\% restante, se optó por hacer columnas para separar visualmente el contenido, del 1\% a la izquierda, del 3\% a la derecha. El código de las columnas se muestra en la columna derecha.
+\end{minipage}
+\begin{minipage}{0.04\linewidth}
+\end{minipage}
+\begin{minipage}{0.46\linewidth}
+\begin{lstlisting}[style=latex,frame={}]
+\begin{minipage}{0.02\linewidth}
+1 2 3 4 5 6 7 8 9
+\end{minipage}
+\begin{minipage}{0.01\linewidth}
+\end{minipage}
+\begin{minipage}{0.47\linewidth}
+Columna de texto.
+\end{minipage}
+\begin{minipage}{0.04\linewidth}
+\end{minipage}
+\begin{minipage}{0.46\linewidth}
+\end{lstlisting}
+\end{minipage}
+\newline\lstruleb
+
+\vspace{5pt}
+Para terminar esta sección, este párrafo se muestra visualmente separado del conjunto de columnas anterior gracias a un |\vspace{5pt}|.
+
+
+\section{El preámbulo}
+\label{sec:preambulo}
+
+
+
+A lo largo de esta obra se ha hecho solo una cosa en el preámbulo: agregar, agregar, y volver a agregar paquetes. No obstante, sus funciones van más allá: es donde se dan todas las instrucciones de cómo se debe crear el documento.
+
+¿Por qué en el preámbulo? Porque es donde \LaTeX{} toma las decisiones globales, aquellas que afectarán todo el documento. Por ejemplo, en el preámbulo es donde se define el tipo de documento (\texttt{article}, \texttt{book}, \texttt{report}, entre otros) mediante la instrucción |\documentclass|.
+
+Esa sola instrucción cambia cómo se crea el documento, desde la primera página: el \texttt{article} inicia el contenido de su primera sección inmediatamente bajo el título y autor, mientras que el \texttt{book} y \texttt{report} tienen una portada, dejando el contenido para después. Además, \texttt{book} y \texttt{report} son diferentes porque la clase \texttt{book} se encarga de que cada capítulo comience en una página impar (página a la derecha de un libro físico abierto). Estas decisiones las tiene que saber \LaTeX{} de antemano para saber donde introducir páginas en blanco, por ejemplo.
+
+Otra decisión global se tomó al agregar el paquete \texttt{babel}, con la opción de \texttt{mexico}. Lo que esta instrucción le dijo a \LaTeX{} fue algo como ``usa las reglas de separación de palabras del idioma español, y a los entornos \texttt{table} los llamas \emph{tabla}''.
+
+Pero no todos los paquetes agregados impactan visualmente a nuestro documento. Algunos paquetes, como \texttt{csquotes}, agregan instrucciones para darnos más entornos con los cuales trabajar, pero no pasa nada si no los usamos.
+
+Si hasta este momento hemos definido al preámbulo como ``el lugar ese donde se agregan los paquetes'', es momento de dar una definición un poco más completa:
+
+\begin{displayquote}
+El preámbulo es el espacio previo a la instrucción |\begin{document}| donde se añaden paquetes para extender la funcionalidad de \LaTeX{} y se realizan diversas configuraciones que pueden afectar todo el documento, según nuestras necesidades.
+\end{displayquote}
+
+Estas configuraciones pueden ser modificación de parámetros de ciertos paquetes, redefinición de instrucciones, o creación de nuevas. Antes de ver qué se puede hacer en este espacio, creamos un nuevo documento adicional que será llamado \texttt{package-conf.tex}, o como quieras llamarlo, donde irán todas las instrucciones que le queramos dar a \LaTeX{}. Sí, la configuración en el preámbulo puede convertirse en algo monstruoso, así que es mejor separarlo de una buena vez.
+
+Agregar un archivo para configuración implica un cambio en el archivo principal, como se muestra en el listado \ref{lst:preambulo}. En la línea 7 se muestra la inclusión del archivo \texttt{package-conf.tex} (recuerda que la extensión no se coloca en la instrucción |\input|), mismo que debe ir después de la declaración de todos los paquetes, y antes de iniciar el entorno \texttt{document}.
+
+\begin{lstlisting}[style=latex,numbers=left,caption={Estructura de archivos para incluir configuración en el preámbulo.},label=lst:preambulo,
+linebackgroundcolor={%
+	\ifnum \value{lstnumber} =  7 \color{codigo_linea_resaltada}
+	\else \color{codigo_fondo}
+	\fi % Tantos \fi como líneas subrayadas.
+}]
+\documentclass[12pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,mexico]{babel}
+% \usepackage{Más paquetes...}
+
+\input{package-conf}
+
+\author{Carlos Ramos}
+
+\begin{document}
+
+% Portada y otras instrucciones previas a los capítulos...
+
+\input{ch_intro}
+% \input{Más capítulos...}
+
+\end{document}
+\end{lstlisting}
+
+
+
+\section{Márgenes del documento}
+\label{sec:margenes}
+
+
+
+Para cambiar los márgenes del documento requerimos de otro paquete:
+
+\begin{lstlisting}[style=latex]
+\usepackage{geometry}
+\end{lstlisting}
+
+Aunque al incluir los paquetes se pueden establecer los nuevos márgenes, mi preferencia es realizar la configuración con una instrucción aparte, que se incluirá en el archivo \texttt{package-conf.tex} (porque debe estar después de incluir el paquete pero antes del |\begin{document}|).
+
+La instrucción a utilizar es |\geometry|, la cual tiene muchas opciones de configuración (las cuales se pueden ver en \cite{bib:geometry_package}). Las opciones que necesitamos para configurar los márgenes son cuatro:
+\begin{enumerate}
+	\item \texttt{tmargin}, para el margen superior (del inglés \emph{top margin}).
+	\item \texttt{bmargin}, para el margen inferior (del inglés \emph{bottom margin}).
+	\item \texttt{rmargin}, para el margen derecho (del inglés \emph{right margin}).
+	\item \texttt{lmargin}, para el margen izquierdo (del inglés \emph{left margin}).
+\end{enumerate}
+
+Y esto aplica específicamente para este libro digital, cuyo objetivo no es ser impreso. En caso de ser así, tendría que considerar que las páginas se imprimen por ambos lados, y que el documento tendrá un lomo, por lo que el margen interno (cercano al lomo) es diferente al margen externo (la parte de la hoja que tomamos para dar la vuelta a la página). Para expresar eso tenemos las opciones de \texttt{inner} para margen interno, y \texttt{outer} para margen externo. La opción de \texttt{twoside} permite establecer que los parámetros que se prefieren son \texttt{inner} y \texttt{outer} sobre \texttt{left} y \texttt{right}.
+
+No obstante, ¿los márgenes se dan respecto a qué tamaño de hoja? De manera predeterminada, \LaTeX{} utiliza el tamaño de papel A4, aunque muchos más se pueden utilizar. Por ejemplo, está la opción \texttt{letterpaper}, \texttt{legalpaper}, \texttt{a0paper}, \texttt{a1paper}, \texttt{b4paper}, y más (la lista completa está en la sección 5.1 de \cite{bib:geometry_package}). Incluso se puede definir un tamaño personalizado, con las opciones \texttt{paperwidth} y \texttt{paperheight}.
+
+Para una tesis se recomienda el tamaño carta, y ya dependerá de los requisitos si es impresión por un lado o por dos. Como ejemplo, se establece el tipo de papel como tamaño carta, con márgenes inferior y superior de 2cm, y márgenes laterales de 3cm, con la instrucción:
+
+\begin{lstlisting}[style=latex]
+\geometry{
+	verbose,letterpaper,     % Tamaño carta, con mensajes de advertencia.
+	tmargin=2cm,bmargin=2cm, % Margen superior e inferior.
+	lmargin=3cm,rmargin=3cm  % Margen izquierdo y derecho.
+}
+\end{lstlisting}
+
+La opción \texttt{verbose} indica que se debe mostrar una advertencia en terminal cuando algo en el texto salga de los márgenes establecidos. En sí, es un opción que ayuda al momento de estar redactando y compilando el documento, para captar más rápido algunos problemas de visualización antes de verlos realmente en el PDF.
+
+
+
+\section{Colores}
+\label{sec:colores}
+
+
+
+No todo en \LaTeX{} es texto de color negro, podemos incluir colores, \textcolor{red}{como en este pedazo de línea}, o \textcolor{blue}{este otro}. En código, el texto anterior luce como:
+
+\begin{lstlisting}[style=latex]
+\textcolor{red}{como en este pedazo de línea}, % texto en color rojo.
+o \textcolor{blue}{este otro}.                 % texto en color azul.
+\end{lstlisting}
+
+Es decir, la instrucción |\textcolor| recibe dos parámetros necesarios: primero el color, después el texto que sufrirá el cambio.
+
+Pero, ¿qué colores están definidos? ¿será acaso que la instrucción |\textcolor| y los colores están definidos sin tener que agregar otro paquete? ¡Por favor! Espero que no hayas hecho esa pregunta, obviamente pertenece a otro paquete: \texttt{xcolor}. Respecto a la primera pregunta, la documentación en \cite{bib:xcolor_package} muestra la lista de colores base siempre disponibles en su sección 4, replicada aquí debajo:
+
+\begin{multicols}{5}
+\noindent\fcolorbox{black}{black}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{black}\\
+\fcolorbox{black}{blue}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{blue}\\
+\fcolorbox{black}{brown}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{brown}\\
+\columnbreak
+\fcolorbox{black}{cyan}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{cyan}\\
+\fcolorbox{black}{darkgray}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{darkgray}\\
+\fcolorbox{black}{gray}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{gray}\\
+\fcolorbox{black}{green}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{green}\\
+\columnbreak
+\fcolorbox{black}{lightgray}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{lightgray}\\
+\fcolorbox{black}{lime}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{lime}\\
+\fcolorbox{black}{magenta}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{magenta}\\
+\fcolorbox{black}{olive}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{olive}\\
+\columnbreak
+\fcolorbox{black}{orange}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{orange}\\
+\fcolorbox{black}{pink}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{pink}\\
+\fcolorbox{black}{purple}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{purple}\\
+\fcolorbox{black}{red}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{red}\\
+\columnbreak
+\fcolorbox{black}{teal}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{teal}\\
+\fcolorbox{black}{violet}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{violet}\\
+\fcolorbox{black}{white}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{white}\\
+\fcolorbox{black}{yellow}{\rule{0pt}{4pt}\rule{4pt}{0pt}}~\emph{yellow}\\
+\end{multicols}
+
+No obstante, esos colores no son suficientes. El mismo paquete define otros colores, definidos en espacios de nombres como \texttt{dvipsnames}, \texttt{svgnames}, o \texttt{x11names}. Para este documento yo elegí los colores presentes en \texttt{svgnames}, por lo tanto, esta es la manera de incluir el paquete:
+
+\begin{lstlisting}[style=latex]
+\usepackage[svgnames]{xcolor} % Colores para el código, portada, etc.
+\end{lstlisting}
+
+Por supuesto, de momento no parece algo demasiado útil, ¿por qué querríamos cambiar el color de una línea de texto así? ¿qué aplicaciones tiene? Un primer ejemplo es la portada de este documento, la cual fue hecha con \LaTeX{}. Para ello, el color de la página fue cambiado, al igual que el color del texto. Dichos cambios se realizaron con las siguientes instrucciones:
+
+\begin{lstlisting}[style=latex]
+\pagecolor{DeepPink!40!Black} % Cambia el color de fondo de la página.
+\color{White}                 % Cambia el color de fonde del texto.
+\end{lstlisting}
+
+La instrucción |\pagecolor| sirve para cambiar el color de la página, y la instrucción |\color| cambia el color del texto. Ambas reciben un único parámetro obligatorio: el color.
+
+Los colores utilizados fueron tres, \texttt{DeepPink}, \texttt{Black}, y \texttt{White}, los cuales están definidos en el espacio de nombres \texttt{svgnames} (los colores básicos son \texttt{black} y \texttt{white}, todo en minúsculas).
+
+No obstante, el color de fondo no se define exclusivamente mediante \texttt{DeepPink}, sino que es \texttt{DeepPink!40!Black}, ¿qué significa? Para eso se tendría que entender el modelo de color de \LaTeX{}, que se explica en \cite{bib:latex_colors} y \cite{bib:xcolor_model}, pero lo básico se puede entender con la siguiente formulita:
+
+\[
+\texttt{DeepPink!40!Black} = 40\%~\texttt{DeepPink} + 60\%~\texttt{Black}
+\]
+
+Es decir, lo que hacemos en esa mezcla es oscurecer el color \texttt{DeepPink}. Si quisieramos realizar la operación contraria, de hacerlo más claro, podemos omitir el segundo color pues automáticamente se mezcla con blanco:
+
+\[
+\texttt{DeepPink!40} = 40\%~\texttt{DeepPink} + 60\%~\texttt{White}
+\]
+
+Una vez que tienes un color que te gusta, puedes asignarle un nombre. Por ejemplo, a esta mezcla la podemos llamar \texttt{FondoPortada} usando la instrucción |\colorlet|:
+
+\begin{lstlisting}[style=latex]
+\colorlet{FondoPortada}{DeepPink!40!Black}
+\end{lstlisting}
+
+Así puedes generar toda tu paleta de colores, con referencia a tus colores propios. Estas definiciones van en el preámbulo, después de agregar el paquete \texttt{xcolor}. Sí: en el archivo \texttt{package-conf.tex}. Así es como empieza a crecer.
+
+Con esa nueva definición podemos cambiar el código de la portada para usar nuestro nuevo color:
+
+\begin{lstlisting}[style=latex]
+\pagecolor{FondoPortada} % Cambia el color de fondo de la página.
+\color{White}            % Cambia el color de fonde del texto.
+\end{lstlisting}
+
+También podemos definir colores que no se basen en otro color, mediante su valor de RGB (cantidad de rojo, verde, y azul). Por ejemplo, si usamos el modelo \texttt{rgb} podemos utilizar valores de cada color entre 0 y 1, por lo que la siguiente instrucción crea un gris tenue, 96\% blanco:
+
+\begin{lstlisting}[style=latex]
+\definecolor{Resaltado}{rgb}{0.96, 0.96, 0.96}
+\end{lstlisting}
+
+En sí, podemos utilizar la instrucción |\definecolor| para definir un color desde cero, o la |\colorlet| para derivar un color nuevo en base a una mezcla de otros existentes.
+
+
+
+\section{Enlaces}
+\label{sec:enlaces}
+
+
+
+En este documento, las referencias a figuras, tablas, código, y ecuaciones están enlazadas a aquello a lo que hacen referencia. Es decir, al dar clic sobre un numerito, este te lleva a la sección, figura, etcétera, a lo que hagan referencia.
+
+Esta característica es algo completamente inútil en un libro impreso (obviamente, espero), pero este PDF está diseñado para ser un documento digital, y las referencias se muestran en color diferente al texto normal. Esto se hace gracias a tres cosas:
+\begin{enumerate}
+	\item El uso del paquete \texttt{hyperref}.
+	\item La configuración de cómo se muestran los enlaces a referencias.
+	\item El color diferente, que podemos definir gracias al paquete \texttt{xcolor}.
+\end{enumerate}
+
+Es decir, \LaTeX{} no provee esos enlaces de manera predeterminada, pero la inclusión del paquete \texttt{hyperref} hace toda la magia por nosotros. Con agregar la instrucción |\usepackage{hyperref}| se crean todos los enlaces a las referencias, con un solo problemita: se ven algo feas.
+
+Sin configuración apropiada, las referencias se muestran encerradas en recuadros rojos que no son exactamente agradables a la vista, como se ve en \cite{bib:overleaf_hyperref}. Por fortuna, podemos cambiar cómo se muestran gracias a la instrucción |\hypersetup|.
+
+En lugar de subrayar los enlaces, podemos cambiarlos de color con la opción de \texttt{colorlinks}. También, como los URLs\footnote{En español son \emph{LRU}, o ``localizador de recursos uniforme''... pero dudo que alguien los llame así.} pueden ser muy largos, activamos la opción de \texttt{breaklinks} para permitirle al compilador romper los enlaces en varias líneas, en caso de ser necesario.
+
+Por último, establecemos el color de los enlaces a páginas web, de las citas, y de los otros elementos al mismo color, el color \texttt{Enlaces}:
+
+\begin{lstlisting}[style=latex]
+\hypersetup{
+	colorlinks,        % Usamos color en lugar de caja roja.
+	breaklinks,        % Permite dividir el enlace si es muy largo.
+	urlcolor=Enlaces,  % Color a páginas web con \url.
+	citecolor=Enlaces, % Color de referencias con \cite.
+	linkcolor=Enlaces  % Color de \ref y \footnote.
+}
+\end{lstlisting}
+
+Y el color \texttt{Enlaces} lo definimos en el mismo preámbulo, antes del |\hypersetup|:
+
+\begin{lstlisting}[style=latex]
+\colorlet{Enlaces}{FondoPortada}
+\end{lstlisting}
+
+Sí, el color \texttt{Enlaces} puede ser solamente un alias de otro color (en este caso, de \texttt{FondoPortada}). No obstante, si posteriormente quiero cambiar el color de los enlaces, puedo hacerlo desde el |\colorlet|, en lugar de buscar el |\hypersetup|.
+
+
+
+\section{Texto resaltado}
+\label{sec:texto_resaltado}
+
+
+
+En caso de requerir resaltar texto en tu documento puedes utilizar la instrucción |\hl| (reducción de \emph{highlight}), que viene incluida con el paquete \hl{\texttt{soul}}. Para resaltar la palabra \hl{\texttt{soul}} se utilizó el código |\hl{\texttt{soul}}|. El discreto color amarillo es el valor predeterminado del resaltado, cual si fuera marcatextos.
+
+No obstante, para el idioma español se requiere el paquete \texttt{soulutf8} para que la instrucción |\hl| acepte acentos. En sí, \texttt{soulutf8} es un parche sobre el paquete \texttt{soul} que añade algo de compatibilidad con UTF-8 (así lo dice la misma documentación oficial del paquete en \cite{bib:soulutf8_package}). Solo usa \texttt{soulutf8} en lugar de \texttt{soul} solamente.
+
+El comando \instruccionlatex{hl\{texto\}} solo funciona si un paquete de color ha sido cargado (como el \texttt{xcolor}). Si el amarillo chillante no parece demasiado útil, se puede cambiar a un color más discreto en cualquier parte del documento, incluyendo el preámbulo para hacer el cambio global. Aquí podemos cambiar al gris claro definido previamente:
+
+\sethlcolor{Resaltado}
+\begin{lstlisting}[style=latex]
+\sethlcolor{Resaltado}
+\end{lstlisting}
+
+Esto nos permite usar un fondo sutil para resaltar código, como la instrucción \hl{\texttt{\textbackslash{}hl}} o \hl{\texttt{\textbackslash{}usepackage}}. Aunque si lo discreto no es lo nuestro, podemos elegir el color \texttt{DeepPink} para cambiar de color otra vez:
+\begin{lstlisting}[style=latex]
+\sethlcolor{DeepPink}
+\end{lstlisting}
+
+\sethlcolor{DeepPink}
+\noindent y luego proceder a \hl{resaltar este texto con color rosa}. También podemos alterar un solo resaltado encerrando el contenido entre llaves junto con el cambio de color, |{\sethlcolor{green} \hl{texto resaltado en verde}}|, lo que resulta en {\sethlcolor{green} \hl{texto resaltado en verde}} que no afecta al siguiente \hl{resaltado}.
+
+\sethlcolor{Resaltado}
+\noindent Podemos resumir el uso del resaltado con las siguientes instrucciones:
+\begin{lstlisting}[style=latex]
+\usepackage{soulutf8} % Colocar en el preámbulo para poder resaltar.
+
+\sethlcolor{Resaltado} % Cambia el color de resaltado de aquí en delante.
+{\sethlcolor{Resaltado} cambio de una vez}  % Cambia el color solo aquí.
+\hl{texto} % Instrucción para resaltar texto.
+\end{lstlisting}
+
+
+
+\section{Definición de instrucciones}
+\label{sec:Definicion_de_instrucciones}
+
+
+
+Supongamos ahora que se quiere establecer como estándar que el texto de ancho fijo aparezca resaltado por un leve tono de gris. Eso implica el uso de dos instrucciones en serie: |\texttt{\hl{texto en ancho fijo resaltado}}|. Dos instrucciones, dos pares de llaves a cerrar.
+
+Con el fin de evitar errores con las llaves, podemos unificar los dos comandos en uno mediante la definición de una nueva instrucción, misma que podríamos llamar |\texttthl| (lo sé, no es mi fuerte el nombrar funciones).
+
+Esto es afortunadamente posible dado que \LaTeX{} permite definir comandos propios mediante la instrucción |\newcommand|, la cual requiere dos parámetros:
+\begin{enumerate}
+	\item El nombre del nuevo comando.
+	\item Lo que el nuevo comando va a realizar.
+\end{enumerate}
+
+De manera opcional recibe el número de argumentos que recibe el nuevo comando. En código, el formato general es:
+
+\begin{lstlisting}[style=latex]
+\newcommand{nombre}[cantidad de argumentos]{acción que realiza}
+\end{lstlisting}
+
+Seguimos con la idea del comando |\texttthl|, mismo que recibe el texto a ser resaltado (un único argumento), y lo pasa a través de las otras dos instrucciones (|\hl| y |\texttt|):
+
+\begin{lstlisting}[style=latex]
+\newcommand{\texttthl}[1]{\texttt{\hl{#1}}}
+\end{lstlisting}
+
+Aquí, el \texttt{\#1} indica la posición del primer argumento recibido (lo que nosotros escribiremos en el primer par de llaves al usar nuestra instrucción): va a ir encerrado por las instrucciones |\texttt| y |\hl|.
+
+Podemos no parar allí. Con ese comando definido, podemos definir otro más: la |\instruccionlatex|. Básicamente, esta nueva instrucción es un |\texttthl| con una diagonal invertida antes de nuestro único argumento:
+
+\begin{lstlisting}[style=latex]
+\newcommand{\instruccionlatex}[1]{\texttthl{\textbackslash{}#1}}
+\end{lstlisting}
+
+Así podemos ir incrementando gradualmente nuestros comandos propios, hasta crear una biblioteca personal de instrucciones y estilos, construyendo uno sobre otro dependiendo nuestras necesidades. Incluso se pueden crear alias si consideramos que |\instruccionlatex| es mucho para escribir:
+
+\begin{lstlisting}[style=latex]
+\newcommand{\hll}[1]{\instruccionlatex{#1}}
+\end{lstlisting}
+
+Es decir, creamos el comando |\hll| (que se puede leer como \emph{highlight \LaTeX{}}) como un alias de |\instruccionlatex|, con el único fin de no escribir más. Personalmente, no me siento tan inclinado a utilizar abreviaciones tan arcanas, pero se puede hacer. Tu tesis, tu decisión.
+
+Una advertencia, no obstante: cuida de que tus nuevos comandos no entren en conflicto con otros de otros paquetes. Esto no es mucho problema porque al tratar de hacer un |\newcommand| de un comando existente marcará error:
+
+\begin{lstlisting}[style=errores]
+Command \texttt already defined. [\newcommand{\texttt}[1]{\texttt{\hl{#1}}}]
+\end{lstlisting}
+
+Como puede que haya conflicto con instrucciones definidas en otros paquetes, estas nuevas instrucciones van en \texttt{package-conf.tex}, después de que todos los paquetes que usamos hayan sido cargados. Así podremos saber que el conflicto se da por nuestro nuevo comando y podemos idear un nuevo nombre que no se empalme con el comando presente en un paquete.
+
+Por supuesto, redefinir un comando existente también es opción, pero eso es bajo tu propio riesgo...
+
+
+
+\section{Redefinición de instrucciones}
+\label{sec:redefinicion_de_instrucciones}
+
+
+
+Quizá te sorprenda saber que ya trabajaste con redefinición de comandos. Al menos, algunos paquetes de los que agregamos en el preámbulo lo hicieron. Si no, ¿cómo sería posible la traducción? Parte de lo que hace el paquete \texttt{babel} lo hizo por medio de una redefinición de comandos. Por ejemplo, la traducción de ``Table'' a ``Tabla'' se realiza mediante:
+
+\begin{lstlisting}[style=latex]
+\renewcommand{\spanishtablename}{Tabla}
+\end{lstlisting}
+
+Si queremos que las tablas se llamen ``Tablita'', podemos redefinirlo como:
+
+\begin{lstlisting}[style=latex]
+\renewcommand{\spanishtablename}{Tablita}
+\end{lstlisting}
+
+El lugar para hacer esto es el preámbulo, después de la definición de paquetes (otra vez, el archivo \texttt{package-conf.tex}).
+
+El comando |\renewcommand| funciona de manera similar al |\newcommand| respecto al parámetro opcional y la acción. Es decir, su formato es el siguiente:
+
+\begin{lstlisting}[style=latex]
+\renewcommand{comando existente}[# de argumentos]{nueva acción}
+\end{lstlisting}
+
+La redefinición de |\spanishtablename| no tiene un valor entre corchetes porque no recibe parámetros, no haría nada con ellos. Es solo escribir un poco de texto en el documento, no tiene nada que procesar.
+
+\LaTeX{} te da la capacidad de redefinir todas sus instrucciones, incluyendo aquellas que se usan para imprimir las secciones y que dan formato al documento. Tienes mucho poder, pero también mucha responsabilidad. Ve con un poco de cautela (total, siempre está el \opcionMenu{Ctl + Z}).
+
+
+
+\section{Separación de palabras}
+\label{sec:separacion_de_palabras}
+
+
+
+De manera automática, \LaTeX{} se encarga de la segmentación de palabras. Si por alguna razón no te gusta la separación, puedes modificar el comportamiento mediante la instrucción |\hyphenation|.
+
+Por ejemplo, puedo poner aquí la palabra más larga del idioma español: electroencefalografista. Sí, está mal separada. Antes de mi redefinición, la palabra era dividida como ``electroen-cefalografista'', de manera correcta, pero ahora se dividió entre la ``t'' y la ``r'', gracias a mi redefinición:
+
+\begin{lstlisting}[style=latex]
+\hyphenation{el-e-ct-roenc-ef-al-og-raf-ista}
+\end{lstlisting}
+
+Es decir, por cada palabra que quieras cambiar su separación en sílabas puedes dar de alta una instrucción |\hyphenation| en el preámbulo.
+
+
+
+\section*{Resumen}
+
+
+
+En este capítulo vimos entornos para diversos usos: citas con \texttt{displayquote}, y columnas con \texttt{multicols} y \texttt{minipage}. También vimos que el preámbulo es más que el lugar donde se agregan paquetes, y lo usamos para configurar varias cosas, entre ellas:
+\begin{itemize}
+	\item Los márgenes del documento.
+	\item Los colores del texto o de la página.
+	\item Los enlaces para las referencias, citas, y páginas web.
+	\item Creación de nuevas instrucciones.
+	\item Redefinición de instrucciones existentes.
+\end{itemize}

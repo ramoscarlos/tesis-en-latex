@@ -1,0 +1,394 @@
+% === División de palabras ====================================================
+\hyphenation{el-e-ct-roenc-ef-al-og-raf-ista}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Definición de constantes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Las constantes aquí definidas se usan en más de una instrucción y, para evitar
+% cambiar todas las instancias, mejor se declaran una vez para afectar todos los
+% lugares donde se tengan que utilizar.
+
+\newcommand{\espacioleyenda}{2pt} % Espacio entre leyenda y figuras, listados.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Definición de colores usados en el documento (requiere xcolor) %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Definiendo un color en base a otros requiere \colorlet, no \definecolor.
+%     https://tex.stackexchange.com/a/34913
+%     https://texblog.org/2015/12/08/custom-colors-in-latex/
+% Colores de prueba (amarrillo, verde limón, claro que sí).
+\colorlet{ColorBase}{DeepPink}
+\colorlet{Prueba1}{Gold}
+\colorlet{Prueba2}{LimeGreen}
+% Colores de la portada.
+\colorlet{FondoPortada}{ColorBase!40!Black}
+\colorlet{TextoPortada}{White}
+\colorlet{FondoCodigoPortada}{ColorBase!15!Black}
+% Colores de encabezado y pie de página.
+\colorlet{PiePaginaNumeroPagina}{Black!85}
+\colorlet{PiePaginaCapitulo}{Black!70}
+% Colores del título de cada capítulo.
+\colorlet{FondoCapitulo}{FondoPortada}
+\colorlet{TextoCapitulo}{TextoPortada}
+% Color de los enlaces.
+\colorlet{Enlaces}{FondoPortada}
+% Color del resaltado para instrucciones de LaTeX.
+\definecolor{Resaltado}{rgb}{0.96, 0.96, 0.96}
+% Colores para el código.
+\colorlet{codigo_linea_margen}{ColorBase!50}
+\colorlet{codigo_fondo}{White} % Cambiado a sin fondo para poder colocar \vdots sin blanco entre líneas.
+\colorlet{codigo_numero_linea}{Black!45}
+\colorlet{codigo_base}{Black!90}
+\colorlet{codigo_cadena}{DarkGoldenrod!80}
+\colorlet{codigo_comentarios}{Green!90!Black}
+\colorlet{codigo_palabraclave}{Navy!70!Black} % Valor de impresión
+% \colorlet{codigo_palabraclave}{Navy!80} % Valor de prueba para daltónicos.
+\colorlet{codigo_identificador}{DarkRed!80}
+\colorlet{codigo_linea_resaltada}{DarkGoldenrod!10}
+% Color de las leyendas.
+\colorlet{Leyendas}{Black!85}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Configuración del paquete listings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Cambio de los nombres utilizados a español.
+\renewcommand{\lstlistingname}{Listado}
+\renewcommand{\lstlistlistingname}{Índice de listados}
+% Ajuste para aceptar caracteres del idioma español.
+\lstset{
+    literate= % Lista de símbolos en español que marcarían un error.
+    {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1  {ó}{{\'o}}1  {ú}{{\'u}}1
+    {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1  {Ó}{{\'O}}1  {Ú}{{\'U}}1
+    {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1  {ò}{{\`o}}1  {ù}{{\`u}}1
+    {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1  {Ò}{{\`O}}1  {Ù}{{\`U}}1
+    {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1  {ö}{{\"o}}1  {ü}{{\"u}}1
+    {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1  {Ö}{{\"O}}1  {Ü}{{\"U}}1
+    {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1  {ô}{{\^o}}1  {û}{{\^u}}1
+    {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1  {Ô}{{\^O}}1  {Û}{{\^U}}1
+    {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1  {Æ}{{\AE}}1  {ß}{{\ss}}1
+    {ű}{{\H{u}}}1{Ű}{{\H{U}}}1{ő}{{\H{o}}}1{Ő}{{\H{O}}}1{¡}{{!`}}1
+    {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1   {å}{{\r a}}1 {Å}{{\r A}}1
+    {€}{{\euro}}1{£}{{\pounds}}1           {«}{{\guillemotleft}}1
+    {»}{{\guillemotright}}1   {ñ}{{\~n}}1  {Ñ}{{\~N}}1 {¿}{{?`}}1
+}
+% Opciones adicionales que afectarán a todos los listados del documento.
+\lstset{
+    language={},
+    numbers=none,
+    numbersep=5pt,
+    numberstyle=\tiny\color{codigo_numero_linea},
+    backgroundcolor=\color{codigo_fondo},
+    basicstyle=\footnotesize\ttfamily\color{codigo_base},
+    commentstyle=\itshape\color{codigo_comentarios},
+    stringstyle=\color{codigo_cadena},
+    keywordstyle=\bfseries\color{codigo_palabraclave},
+    identifierstyle=\color{codigo_identificador},
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    frame=lines,
+    rulecolor=\color{codigo_linea_margen},
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    upquote=true, % Tomado de https://tex.stackexchange.com/questions/166790/how-can-i-get-straight-double-quotes-in-listings
+    abovecaptionskip=\espacioleyenda
+    % Si se usa el escapechar | las tablas marcan error por el uso en alineación.
+    % escapechar=|, %Tomado de https://tex.stackexchange.com/a/144171
+}
+% Estilo del código LaTeX utilizado exclusivamente en la portada.
+\iflulu
+\lstdefinestyle{portada}{
+    language=[LaTeX]{TeX},
+    frame={},
+    basicstyle=\Large\ttfamily\color{TextoPortada},
+    backgroundcolor={},
+    keywordstyle=\color{ColorBase!50},
+    identifierstyle=\color{TextoPortada},
+    lineskip=20pt
+}
+\else
+\lstdefinestyle{portada}{
+    language=[LaTeX]{TeX},
+    frame={},
+    basicstyle=\LARGE\ttfamily\color{TextoPortada},
+    backgroundcolor={},
+    keywordstyle=\color{ColorBase!50},
+    identifierstyle=\color{TextoPortada},
+    lineskip=20pt
+}
+\fi
+% Estilo del código LaTeX usado a lo largo del documento.
+\lstdefinestyle{latex}{
+    mathescape=true, % Usado para meter $\vdots$
+    language=[LaTeX]{TeX},
+    identifierstyle=\color{codigo_base},
+    texcsstyle=*\bfseries\color{codigo_palabraclave},
+    moretexcs={
+    % Deberían estar pero no están.
+    maketitle, part, subsection, subsubsection, paragraph, subparagraph,
+    setlength, tableofcontents, addto, contentsname, listoffigures,
+    listoftables, listfigurename, listtablename, guillemotright, guillemotright,
+    % fontenc
+    textquotedbl,
+    % textcomp
+    textquotesingle,
+    % graphicx
+    scalebox,graphicspath,includegraphics,
+    % xcolor
+    textcolor, colorlet, pagecolor, color, definecolor,
+    % geometry
+    geometry,
+    % fancyhdr
+    chaptermark, thechapter, chaptername,thepage,chapter,
+    fancyhead, fancyfoot, fancypagestyle, headrule,
+    % setspace
+    doublespacing, onehalfspacing, setstretch,
+    % caption.
+    DeclareCaptionFont, captionsetup,
+    % multirow
+    multirow,
+    % multicol
+    columnbreak,
+    % amssymb
+    therefore, hdots,
+    % mathtools
+    prescript,
+    % listings
+    lstdefinestyle, lstset, lstinputlisting, lstlistlistingname, lstlistoflistings,
+    % blindtext
+    blindtext,
+    % lipsum
+    lipsum,
+    % babel
+    spanishtablename, captionsspanish,
+    % titlesec
+    titleformat, titleformat, titlespacing,
+    % enumitem
+    setlist,
+    % hyperref
+    hypersetup, url,
+    % soulut8
+    sethlcolor, hl,
+    % Mis propios comandos.
+    espacioleyenda, margenIzquierdo, margenDerecho,
+    texttthl, instruccionlatex, hll
+    }
+}
+\lstdefinestyle{latexi}{ % LaTeX inline
+    style=latex,
+    mathescape=false,
+    basicstyle=\normalsize\ttfamily\color{codigo_base},
+    columns=fixed,
+    frame={},
+}
+% Texto rojo para resaltar errores.
+\lstdefinestyle{errores}{
+    basicstyle=\footnotesize\ttfamily\color{DarkRed!80!Black},
+    commentstyle=\color{DarkRed!80!Black},
+    keywordstyle=\color{DarkRed!80!Black},
+    identifierstyle=\color{DarkRed!80!Black},
+    mathescape=false, % Esto no puede ser true para este estilo, por el texto 'Missing $ inserted' (luego se marca un error)
+}
+% Texto amarillo para resaltar advertencias de compilación.
+\lstdefinestyle{advertencias}{
+    basicstyle=\footnotesize\ttfamily\color{DarkGoldenrod!70!Black},
+    commentstyle=\color{DarkGoldenrod!70!Black},
+    keywordstyle=\color{DarkGoldenrod!70!Black},
+    identifierstyle=\color{DarkGoldenrod!70!Black},
+    mathescape=false, % No marcar como true por uso de $.
+}
+% Definición del lenguaje BibTeX, para que tenga un poco de sintaxis.
+\lstdefinelanguage{BibTeX}{
+    keywords={%
+        @tipo_de_fuente,@article,@book,@collectedbook,@conference,@electronic,@ieeetranbstctl,%
+        @inbook,@incollectedbook,@incollection,@injournal,@inproceedings,%
+        @manual,@mastersthesis,@masterthesis,@misc,@patent,@periodical,@phdthesis,@preamble,%
+        @proceedings,@standard,@string,@techreport,@unpublished%
+    },
+    comment=[l]{\%},
+    sensitive=false
+}
+% Definición del estilo BibTeX, para el capítulo de fuentes bibliográficas.
+\lstdefinestyle{bibtex}{
+    language=BibTeX,
+    identifierstyle=\color{codigo_base},
+    texcsstyle=*\bfseries\color{codigo_palabraclave},
+    moretexcs={url}
+}
+% Permite usar las barras verticales para crear entornos en línea con el texto de estilo LaTeX.
+%     Tomado de https://tex.stackexchange.com/questions/264293/cant-escape-curly-braces-in-lstinline
+\lstMakeShortInline[style=latexi]|
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Configuración del paquete fancyhdr %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\headrule}{} % Remueve línea horizontal propia de fancyhdr.
+\fancyhfoffset[L]{\margenAdicional}
+\fancyhead[LE,CE,RE,LO,CO,RO]{} % Remover todo lo del encabezado.
+\fancyfoot[LE,CE,RE,LO,CO,RO]{} % Remover todo lo del pie de página.
+\fancyfoot[RO]{ % Para el pie de página de una página impar, a la derecha.
+    \footnotesize % Todo el pie estará en este tamaño.
+    \textcolor{PiePaginaCapitulo}{ % Color para nombre de capítulo.
+        \leftmark % Imprimir el nombre del capítulo.
+    } % Fin de cambio de color
+    \kern10pt % Dejar un espacio de 10pt respecto a lo que siga.
+    \textcolor{PiePaginaNumeroPagina}{ % Color para número de página.
+        \textbf{\thepage} % Imprimir el número de página.
+    } % Fin del otro cambio de color.
+}
+\fancyfoot[LE]{ % Para el pie de página de un página par, a la izquierda.
+    \footnotesize % Todo el pie estará en este tamaño.
+    \textcolor{PiePaginaNumeroPagina}{
+        \textbf{\thepage} % Imprime el número de página.
+    }
+    \ifnum\value{chapter}>0 % \ifnum evita "Capítulo 0" en el índice.
+        \kern10pt % Espacio entre número de página y otro texto.
+        \textcolor{PiePaginaCapitulo}{
+            \chaptername~\thechapter % Imprime "Capítulo" y número.
+        }
+    \fi % Fin del \ifnum.
+}
+\fancypagestyle{plain}{
+    \fancyhead{} % Nada en el header.
+    \renewcommand*{\headrule}{} % Eliminar la regla horizontal.
+    \fancyfoot{} % Nada en el footer.
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Configuración del paquete fncychap %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand\DOCH{ % DOCH aplica para los capitulos con número y nombre.
+\begin{adjustwidth}{-\margenIzquierdo-\margenAdicional}{-\margenDerecho}
+    \nointerlineskip%
+    \vspace{-1.625in}%
+    \settowidth{\py}{\CNoV\thechapter}%
+    \addtolength{\py}{\margenDerecho}%
+    \addtolength{\py}{0.05in}%
+    \fboxsep=0pt%
+    \colorbox{FondoCapitulo}{\rule{0pt}{1.75in}\parbox[b]{1.01\paperwidth}{\hfill}}%
+    \kern-\py\raise20pt%
+    \hbox{\color{TextoCapitulo}\CNoV\thechapter}\\%
+\end{adjustwidth}
+}
+\renewcommand\DOTI[1]{ % DOTI es para \chapter
+\begin{adjustwidth}{-\margenIzquierdo-\margenAdicional}{0in}
+    \nointerlineskip%
+    \fboxsep=\myhi%
+    \vskip-0.20in%
+    \colorbox{FondoCapitulo}{\parbox[t]{\paperwidth}{\CTV\FmTi{\color{TextoCapitulo}#1}\kern\margenDerecho\kern0.055in}}\par\nobreak%
+    \vskip-1ex%
+    \colorbox{FondoCapitulo}{\rule{0pt}{10pt}\parbox[b]{\paperwidth}{\hfill}}%
+    \vskip 30pt%
+\end{adjustwidth}
+}
+\renewcommand\DOTIS[1]{ % DOTIS aplica para los capítulos sin número y sin nombre (\chapter*).
+\begin{adjustwidth}{-\margenIzquierdo-\margenAdicional}{0in}
+    \vspace{-1.85in}
+    \fboxsep=0pt
+    \colorbox{FondoCapitulo}{\rule{0pt}{120pt}\parbox[b]{1.01\paperwidth}{\hfill}}\\%
+    \nointerlineskip%
+    \fboxsep=\myhi%`
+    \vskip-1ex%
+    \colorbox{FondoCapitulo}{\parbox[t]{\paperwidth}{\CTV\FmTi{\color{TextoCapitulo}#1}\kern\margenDerecho}}\par\nobreak%
+    \vskip-1ex%
+    \colorbox{FondoCapitulo}{\rule{0pt}{10pt}\parbox[b]{\paperwidth}{\hfill}}%
+    \vskip 30pt%
+\end{adjustwidth}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Ajustes de titlesec %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Esta línea se activa en caso de no querer números en las secciones (usar en conjunto con secnumdepth)
+% \titleformat{\section}{\normalfont\bfseries\Large}{}{0pt}{}{}
+% Modifica el espacio entre el título y el texto que tiene debajo.
+\titlespacing{\section}{-\margenAdicional}{*4}{*1.5}
+
+% SE aplica una lógica similar para la subsección.
+\titleformat*{\subsection}{\itshape\Large}
+\titlespacing{\subsection}{0in}{*3}{*1.0}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Configuración de otros paquetes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Configuración del enlaces (requiere hyperref).
+\hypersetup{colorlinks, breaklinks, urlcolor=Enlaces, citecolor=Enlaces, linkcolor=Enlaces}
+
+% Color del texto resaltado (requiere soulutf8).
+% \sethlcolor{Resaltado} % Obtenido de https://tex.stackexchange.com/a/42964
+
+% Configuración de las leyendas de figuras (requiere caption).
+\DeclareCaptionFont{color_leyenda}{\color{Leyendas}}
+\captionsetup{
+    font={small,color_leyenda}, % Color y tamaño de la leyenda.
+    skip=\espacioleyenda        % Espacio entre leyenda y figura. Default = 10pt.
+}
+
+% Ajuste del interlineado (requiere setspace).
+\setstretch{1.1875}
+
+% Elimina el espacio entre elementos de una lista (requiere enumitem).
+\setlist{noitemsep}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Otras configuraciones que afectan el comportamiento de LaTeX %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Longitud del sangrado de párrafos.
+\setlength\parindent{0.25in}
+
+% No numerar secciones (los mantenemos en el libro para dar apariencia de tesis, donde todo va numerado).
+% \setcounter{secnumdepth}{0}
+% Numerar capítulos y secciones solamente (pero no subsecciones y debajo).
+\setcounter{secnumdepth}{1}
+
+% Nombre de tabla de contenido.
+\addto\captionsspanish{\renewcommand{\contentsname}{Contenido}}
+% \setcounter{tocdepth}{1} % Capítulos y secciones en el índice.
+\setcounter{tocdepth}{2} % Capítulos, secciones, y subsecciones en el índice.
+
+% No "justificar" verticalmente (que LaTeX no busque que la última línea de todas las páginas quede donde mismo).
+\raggedbottom
+
+% Valores que afectan a cómo LaTeX maneja las líneas huérfanas (líneas que alcanzan a cruzar a otras páginas, solas).
+\widowpenalty=10000
+\clubpenalty=10000
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Nuevos comandos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Comando para encapsular texto que hace referencia a una opción de un menú de interfaz.
+\newcommand{\opcionMenu}[1]{\emph{\texttt{#1}}}
+% Puntos verticales a ser usados en los listados.
+\newcommand{\puntitoscodigo}{\scalebox{0.80}{\vdots}}
+% Parche para la doble diagonal en línea con el texto.
+\newcommand{\diagonalesCodigo}{\textcolor{codigo_palabraclave}{\textbf{\texttt{\textbackslash\textbackslash}}}}
+\newcommand{\codigo}[1]{\textcolor{codigo_palabraclave}{\textbf{\texttt{\textbackslash{}#1}}}}
+\newcommand{\comentario}[1]{\textcolor{codigo_comentarios}{{\hypersetup{linkcolor=codigo_comentarios}\emph{\texttt{#1}}}}}
+% Parte de la explicación de instrucciones.
+\newcommand{\texttthl}[1]{\texttt{\hl{#1}}}
+\newcommand{\ttlatex}[1]{\texttt{\textbackslash{}#1}}
+\newcommand{\instruccionlatex}[1]{\texttthl{\textbackslash{}#1}}
+
+\newcommand{\BibTeX}{\textsc{Bib}\TeX{}}
+\newcommand{\BibLaTeX}{\textsc{Bib}\LaTeX{}}
+
+\newcommand{\fuenteOverleaf}[1]{\footnote{Ejemplo en Overleaf, en \href{http://overleaf.ramoscarlos.com}{http://overleaf.ramoscarlos.com}, archivo \texttt{#1}.}}
+
+% Comando para hacer capítulo sin numerar, pero que aparezca en el índice.
+\newcommand\chap[1]{
+    \cleardoublepage
+    \phantomsection
+    \addcontentsline{toc}{chapter}{#1}
+    \chapter*{#1}
+}
+
+\newcommand{\lstrulet}{\noindent\textcolor{codigo_linea_margen}{\rule{\textwidth}{0.4pt}}\newline}
+\newcommand{\lstruleb}{\noindent\textcolor{codigo_linea_margen}{\rule{\textwidth}{0.4pt}}}

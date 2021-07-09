@@ -1,0 +1,190 @@
+\documentclass[10pt]{book}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Configuración relativa a márgenes y otros parámetros visuales %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newif\iflulu
+% \lulutrue % Debe ser verdadero si se planea mandar a impresión
+
+% Márgenes para impresión en Lulu, de 9x6in (con margen de recorte).
+\newcommand{\anchoDocumentoImpresion}{6.25in}
+\newcommand{\altoDocumentoImpresion}{9.25in}
+\newcommand{\margenIzquierdoImpresion}{0.4375in}
+\newcommand{\margenDerechoImpresion}{0.4375in}
+\newcommand{\margenSuperiorImpresion}{0.5625in}
+\newcommand{\margenInferiorImpresion}{0.8625in}
+\newcommand{\margenAdicionalImpresion}{0.250in}
+\newcommand{\margenAdicionalWidthImpresion}{0.21875in}
+\newcommand{\margenAdicionalSepImpresion}{0.03125in}
+% Márgenes del diseño de No Starch Press.
+\newcommand{\anchoDocumentoNoStarch}{7in}
+\newcommand{\altoDocumentoNoStarch}{9.25in}
+\newcommand{\margenIzquierdoNoStarch}{0.6875in}
+\newcommand{\margenDerechoNoStarch}{0.6875in}
+\newcommand{\margenSuperiorNoStarch}{0.625in}
+\newcommand{\margenInferiorNoStarch}{0.800in}
+\newcommand{\margenAdicionalNoStarch}{0.500in}
+\newcommand{\margenAdicionalWidthNoStarch}{0.4375in}
+\newcommand{\margenAdicionalSepNoStarch}{0.0625in}
+
+\iflulu
+    \newcommand{\anchoDocumento}{\anchoDocumentoImpresion}
+    \newcommand{\altoDocumento}{\altoDocumentoImpresion}
+    \newcommand{\margenIzquierdo}{\margenIzquierdoImpresion}
+    \newcommand{\margenDerecho}{\margenDerechoImpresion}
+    \newcommand{\margenSuperior}{\margenSuperiorImpresion}
+    \newcommand{\margenInferior}{\margenInferiorImpresion}
+    \newcommand{\margenAdicional}{\margenAdicionalImpresion}
+    \newcommand{\margenAdicionalWidth}{\margenAdicionalWidthImpresion}
+    \newcommand{\margenAdicionalSep}{\margenAdicionalSepImpresion}
+\else
+    \newcommand{\anchoDocumento}{\anchoDocumentoNoStarch}
+    \newcommand{\altoDocumento}{\altoDocumentoNoStarch}
+    \newcommand{\margenIzquierdo}{\margenIzquierdoNoStarch}
+    \newcommand{\margenDerecho}{\margenDerechoNoStarch}
+    \newcommand{\margenSuperior}{\margenSuperiorNoStarch}
+    \newcommand{\margenInferior}{\margenInferiorNoStarch}
+    \newcommand{\margenAdicional}{\margenAdicionalNoStarch}
+    \newcommand{\margenAdicionalWidth}{\margenAdicionalWidthNoStarch}
+    \newcommand{\margenAdicionalSep}{\margenAdicionalSepNoStarch}
+\fi
+
+
+% Se tuvo que cargar primero lo relativo a los márgenes para que las unidades
+% de paquetes como layout pudieran realizar sus operaciones en base a las medidas
+% configuradas por geometry. Caso contrario, aún referenciaban el tamaño carta.
+\usepackage{geometry}                   % Permite modificar los márgenes del documento.
+\geometry{ % Tamaño de hoja basado en No Starch Press.
+    verbose,
+    paperwidth=\anchoDocumento,
+    paperheight=\altoDocumento,
+    tmargin=\margenSuperior, % Margen superior.
+    bmargin=\margenInferior, % Margen inferior.
+    lmargin=\margenIzquierdo, % Margen izquierdo.
+    rmargin=\margenDerecho, % Margen derecho.
+    includemp, % Include la sección de marginpar, o la columna izquierda vacía.
+    reversemp, % Permite mover el marginpar a la izquierda (normal va a la derecha).
+    marginparwidth=\margenAdicionalWidth, % Tamaño de la columna fantasma.
+    marginparsep=\margenAdicionalSep, % Tamaño de la separación entre el texto y la columna fantasma.
+    asymmetric % Para que la columna fantasma aparezca siempre a la izquierda, si no cambia entre par e impar.
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Carga de paquetes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Capítulo 1.
+\usepackage[utf8]{inputenc}                 % Acentos directo en LaTeX.
+% Capítulo 2.
+\usepackage{textcomp}                       % Permite usar \textquotesingle
+\usepackage[T1]{fontenc}                    % Hyphenation para palabras con acentos, y uso de \textquotedbl.
+\usepackage[spanish,mexico]{babel}          % Paquete para utilizar el idioma español, con el texto "tabla".
+% Capítulo 3.
+\usepackage{graphicx}                       % Paquete para incluir imágenes y usar scalebox.
+\usepackage{rotating}                       % Paquete para usar sidewaysfigure.
+\usepackage{subcaption}                     % Permite crear subfiguras.
+% Capítulo 4.
+\usepackage{multirow}                       % Permite que celdas de una tabla abarquen múltiples filas.
+% Capítulo 5.
+\usepackage{amssymb}                        % Permite usar símbolos matemáticos, como el \therefore, y el entorno align.
+\usepackage{mathtools}                      % Instrucción prescript.
+\usepackage{cancel}                         % Permite trazar una diagonal sobre elementos cancelados de una ecuación.
+% Capítulo 6.
+\usepackage{csquotes}                       % Mostrar citas de manera bonita, con sangrado.
+\usepackage{multicol}                       % Permite introducir columnas dentro de una sección.
+% \usepackage{geometry}                     % Movido antes que otros paquetes como layout.
+\usepackage[svgnames]{xcolor}               % Colores para el código, portada, y otros.
+\usepackage[hyperfootnotes=false]{hyperref} % Paquete para usar vínculos.
+\usepackage{soulutf8}                       % Paquete para utilizar hltexttt (o definirlo).
+% Capítulo 7.
+\usepackage{listings}                       % Para incluir código fuente.
+\usepackage{lstlinebgrd}                    % Permite resaltar líneas de código dentro de un listado.
+% Capítulo 9.
+\newenvironment{abstract}{}{}               % Requerido, según https://tex.stackexchange.com/a/539606
+\usepackage{abstract}                       % Se incluye porque en el tipo 'book' no se incluye este entorno.
+% Capítulo 10.
+\usepackage{setspace}                       % Permite modificar el espacio entre líneas.
+\usepackage{fancyhdr}                       % Permite modificar encabezado y pie de página.
+\usepackage{emptypage}                      % Para eliminar encabezado y pie de páginas de páginas vacías.
+\usepackage{caption}                        % Permite cambiar el estilo de las leyendas.
+\usepackage{enumitem}                       % Eliminar separación entre elementos de una lista.
+\usepackage{changepage}                     % Para ajustar el margen del código en portada.
+\usepackage{mdframed}                       % Para colocar una caja de color (usada en portada).
+\usepackage{titlesec}                       % Permite modificar el formato de títulos (capítulo, secciones).
+\usepackage[Bjornstrup]{fncychap}           % Cambia el formato del título de cada capítulo.
+\usepackage{mathpazo}                       % Cambio de fuente base y matemática.
+\usepackage[ttdefault=true]{AnonymousPro}   % Cambio de fuente de ancho fijo (por una que soporta negritas e itálicas).
+
+% Sin explicación en el presente libro.
+\usepackage{dirtree}                        % Permite incorporar diagramas de directorios.
+\usepackage[final]{microtype}               % Mejora la tipografía.
+\usepackage{placeins}                       % Permite poner límites a la hora de tener floats libres y salvajes.
+\usepackage[hang,flushmargin]{footmisc}     % Para remover indentación de pies de página.
+
+\input{package-conf}
+
+\author{Carlos Ramos}
+
+\begin{document}
+
+\input{portada}
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\input{hoja_titulo}
+\input{copyright}
+
+\input{dedicatoria}
+
+% Impresión de la tablas: de contenido, de figuras, y de código.
+\tableofcontents
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Índice de figuras}
+\listoffigures
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Índice de listados}
+\lstlistoflistings
+
+\input{abstract}
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{ch_intro}
+\input{ch_basico}
+\input{ch_figuras}
+\input{ch_tablas}
+\input{ch_math}
+\input{ch_no_tan_basico}
+\input{ch_codigo_fuente}
+\input{ch_bibliografia}
+\input{ch_secciones_adicionales}
+\input{ch_formato_documento}
+
+\cleardoublepage % Limpiamos doble página tras el último capítulo,
+\fancyfoot[LE]{ % para eliminar el texto de "Capítulo #" en bibliografía
+	\textcolor{PiePaginaNumeroPagina}{\footnotesize\textbf{\thepage}}
+}
+
+\input{ch_comentarios_finales}
+\input{ch_agradecimientos}
+
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliografía}
+\bibliographystyle{ieeetr}
+\bibliography{bibliografia}
+
+\newpage
+\thispagestyle{plain}
+~
+
+\cleardoublepage
+
+
+\end{document}

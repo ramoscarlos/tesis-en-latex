@@ -1,0 +1,182 @@
+\chapter{Secciones adicionales}
+\label{cha:secciones_adicionales}
+
+
+
+Ahora que ya hemos cubierto el material principal, que fue lo mínimo necesario para redactar tu tesis y llevarla a buen puerto (al menos, respecto a las herramientas de escritura), podemos pasar a las minucias de los requisitos de tu tesis. Algo sobre resultados, la tabla de contenido, resumen, dedicatoria, y agradecimientos.
+
+
+
+\section{Resultados y conclusiones}
+\label{sec:resultados_y_conclusiones}
+
+
+
+No está de más decirlo, tu tesis debe llevar resultados y conclusiones. Dependiendo de la longitud de tu obra, puede ser recomendable establecer un capítulo exclusivo para los resultados y, posteriormente, finalizar con las conclusiones extraídas de los resultados obtenidos.
+
+O puede que la plantilla de tu institución determine si son dos capítulos o uno. Sin importar cómo decidas dividir la información, ambas cosas deben estar presentes. Los resultados hacen referencia a los datos duros de lo que se obtuvo, ya sea en desempeño basado en tiempo, la construcción del prototipo, o el descubrimiento de que ese camino no lleva a ningún lado.
+
+La conclusión es el valor que se extrae de esos resultados, si son buenos o malos, cómo difieren de lo esperado, y el trabajo que queda por hacer después de evaluar lo que se realizó en la investigación.
+
+Cabe aclarar un punto: los científicos e investigadores seguimos perteneciendo a la especie humana y, como tal, tenemos un sesgo hacia los resultados positivos. Es decir, y aunque digamos que no, desdeñamos un poco los proyectos que no llegan a buen puerto, o que no demuestran la hipótesis que plantearon al inicio. Por supuesto, es natural equivocarse y tener datos que demuestren que el camino elegido fue el incorrecto... pero los resultados ``negativos'' no venden\footnote{A final de cuentas, la ciencia también es un producto...}, y tampoco consiguen un puesto como SNI\footnote{SNI significa ``Sistema Nacional de Investigadores'', organismo mexicano que se encarga de investigación y divulgación. Ser un ``SNI'' es ser un investigador reconocido por dicho organismo.}.
+
+No lo olvides: siempre mostrar resultados y conclusiones. Y, en la medida de lo posible, bajo una luz que refleje el éxito de tu proyecto, tratando de enfocar los fracasos como simples alternativas que se tomaron deliberadamente para demostrar, o reafirmar, que el camino elegido en tu investigación fue el correcto (cambiar la hipótesis en base a los resultados también obra maravillas pero eso es bajo consulta con tu asesor).
+
+
+
+\section{Tabla de contenido}
+\label{sec:tabla_de_contenido}
+
+
+
+Aquí hay que aclarar algo. En Estados Unidos se le llama tabla de contenidos, o \emph{table of contents}, a la lista de títulos con su número de hoja correspondiente, mientras que aquí en México eso corresponde al índice general, o simplemente ``el índice''.
+
+Por otra parte, el índice americano, \emph{index}, corresponde a lo que en México se le conoce como índice alfabético o analítico, mismo que se presenta al final del libro, donde las palabras técnicas más importantes tienen la referencia a la página donde son mencionadas.
+
+Para este documento, así como para tu tesis, no es necesario un índice analítico. Cuando hablo de ``índice'' o de ``tabla de contenidos'', es lo mismo: la lista de secciones con su página correspondiente.
+
+Una vez hemos construído el documento haciendo uso de capítulos (|\chapter|), secciones (|\section|), subsecciones (|\subsection|), y demás, colocar el índice es realmente trivial. Se realiza con una sola instrucción:
+
+\begin{lstlisting}[style=latex]
+\tableofcontents
+\end{lstlisting}
+
+Eso es todo. Eso generará, de manera predeterminada, tu índice. Pero, ¿dónde va exactamente? Va después del |\begin{document}| pues ya debe aparecer en el documento. Depende de lo demás que tengas (como portada, declaración de originalidad, dedicatoria, entre otras), es donde la ubicarás, aunque definitivamente debe ir antes de tu |\input| del capítulo 1.
+
+Podemos agregar una modificación al índice para cambiar el título mostrado, porque ``Índice general'' no es de mi total agrado.
+
+Dado que hemos definido nuestro documento en idioma español, con el paquete \texttt{babel}, podemos redefinir el título con la siguiente instrucción:
+
+\begin{lstlisting}[style=latex]
+\addto\captionsspanish{\renewcommand{\contentsname}{Contenido}}
+\end{lstlisting}
+
+\noindent para tener el nuevo título de ``Contenido'' (o cualquier otro texto que desees).
+
+Con eso hemos terminado de agregar la tabla de contenidos, o índice, a la tesis. Sí, se actualiza cada compilación del documento y, gracias al paquete \texttt{hyperref}, también se generan referencias vinculadas a cada capítulo o sección, enlaces completamente funcionales en un documento en formato digital.
+
+
+
+\section{Índices adicionales}
+\label{sec:indices_adicionales}
+
+
+
+Puede que para tu tesis también requieras un listado de las figuras que utilizaste a lo largo del documento. He aquí otro de los beneficios de la complejidad de \LaTeX{}: el compilador puede encontrar todas las figuras y darte automáticamente el listado, con una sola instrucción.
+
+Similar a la instrucción para imprimir el índice general, te presento la instrucción para el índice de figuras:
+
+\begin{lstlisting}[style=latex]
+\listoffigures
+\end{lstlisting}
+
+¿Y si también te piden un índice de todas las tablas que incluíste en tu documento? Tampoco es problema, hay otra instrucción que genera la lista automáticamente:
+
+\begin{lstlisting}[style=latex]
+\listoftables
+\end{lstlisting}
+
+Los títulos predefinidos son ``Índice de figuras'' e ``Índice de tablas''. Si quieres cambiar su texto predefinido, puedes usar las siguientes instrucciones:
+
+\begin{lstlisting}[style=latex]
+\addto\captionsspanish{\renewcommand{\listfigurename}{Figuras}}
+\addto\captionsspanish{\renewcommand{\listtablename}{Tablas}}
+\end{lstlisting}
+
+Pero aún tenemos una lista más que podemos generar: una lista de listados, con el comando |\lstlistoflistings|. En el capítulo \ref{cha:codigo} ya realizamos la traducción del título, con:
+
+\begin{lstlisting}[style=latex]
+\renewcommand{\lstlistlistingname}{Índice de listados}
+\end{lstlisting}
+
+En el caso de los listados no tuvimos que agregar |\addto\captionsspanish| porque no es una declaración que \texttt{babel} tenga dada de alta (no está habilitado para su internacionalización).
+
+En resumen, si quieres todos los listados presentes en tu documento, basta con agregar las siguientes cuatro líneas:
+
+\begin{lstlisting}[style=latex]
+\tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
+\end{lstlisting}
+
+
+
+\section{Resumen (o \emph{Abstract})}
+
+
+
+No, este no es el resumen del capítulo, al menos no todavía. Hablo de una sección previa al inicio del cuerpo de tu tesis, el resumen o \emph{abstract} de tu obra, ese lugar donde tratas de justificar por qué tu trabajo es tan magno y revolucionario que todos deberían leerlo (o como mínimo, que baste para convencer a tu jurado de asistir a tu presentación de defensa).
+
+Después de haber puesto los índices necesarios viene el resumen de tu trabajo, mismo que debe cubrir de manera rápida qué hiciste, cómo lo hiciste, y cuáles fueron tus resultados. Sin gráficas o código, solo texto. Aquí hago hincapié en presentar resultados positivos, para que la persona que lo lea no diga ``¿y para qué lo leo si ya sé que fracasó?'' Sé sincero, ¿leerías toda una investigación que no logra ``algo bueno''?
+
+Regresando a \LaTeX. Si te tocó trabajar con una plantilla tipo \texttt{book}, he de informarte de un pequeño revés: no cuenta con el entorno \texttt{abstract} (mientras que \texttt{article}, \texttt{report}, y \texttt{memoir} sí). Una opción para no cambiar el tipo de documento, y que no interfiere con los demás tipos, es agregar el paquete \texttt{abstract}. Debido a que \texttt{book} no cuenta con este entorno, es necesario agregar una línea antes para evitar un problema en la redefinición que hace el paquete:
+
+\begin{lstlisting}[style=latex]
+\newenvironment{abstract}{}{} % Solo requerido para book.
+\usepackage{abstract}
+\end{lstlisting}
+
+Después de dar de alta el paquete, nos ubicamos justo debajo de nuestras instrucciones de índice y abrimos el entorno de \texttt{abstract}:
+
+\begin{lstlisting}[style=latex]
+  $\puntitoscodigo$
+\lstlistoflistings
+\begin{abstract}
+Esto sería el contenido del abstract...
+\end{abstract}
+\cleardoublepage
+  $\puntitoscodigo$
+\end{lstlisting}
+
+La instrucción |\cleardoublepage| se encarga de garantizar que lo que siga del resumen comience en la próxima página impar.
+
+
+
+\section{Dedicatoria}
+\label{sec:dedicatoria}
+
+
+
+La dedicatoria de este libro consta de seis líneas impresas, y su código fuente completo se muestra en el listado \ref{lst:dedicatoria}.
+
+Para empezar la dedicatoria, creamos una nueva página en la línea 1. Como no se desea que la página esté numerada, se usa la instrucción |\thispagestyle{empty}| para limpiar pies de página y encabezados (línea 2). El espacio vertical, |\vspace*| en la cuarta línea, sirve como un margen superior antes de colocar la dedicatoria.
+
+Luego, en la línea 5 se inicia el entorno \texttt{flushright}, el cual se encarga de alinear el texto a la derecha. Para la dedicatoria elegimos texto en cursivas (línea 6) y cada línea de la dedicatoria (7-9) es terminada con \codigo{\textbackslash{}} para evitar que se junte todo en una sola línea (ya sabes, \LaTeX{} y su vicio de ignorar el espacio en blanco).
+
+Finalmente, repetimos el proceso de las itálicas para la segunda parte la dedicatoria, misma que se separa verticalmente de la anterior 0.5 pulgadas (línea 12).
+
+\lstinputlisting[style=latex,numbers=left,label=lst:dedicatoria,caption={Contenido completo de la dedicatoria.}]{dedicatoria.tex}
+
+Aunque la dedicatoria es corta (en el caso de este libro son 20 líneas, con algunas líneas en blanco por comodidad), conviene separarla del archivo principal porque es una unidad autocontenida. Asumiendo que se coloca en un archivo llamado \texttt{dedicatoria.tex}, el archivo principal se puede reducir a incluirla con un |\input| antes del índice:
+
+\begin{lstlisting}[style=latex]
+\input{dedicatoria}
+
+\tableofcontents
+\end{lstlisting}
+
+
+
+\section{Agradecimientos}
+\label{sec:agradecimientos}
+
+
+
+Los agradecimientos se colocan al final, después de tus conclusiones, como un capítulo no numerado (es decir, se usa |\chapter*|). En este capítulo final se acostumbra agradecer a todos aquellos que tuvieron alguna participación que ayudó a culminar el proyecto, que posiblemente fue mucha gente.
+
+Suele incluirse a los asesores, que ayudaban a que encontraras la luz a pesar de no estar convencidos de que lo harías, a los padres, que aún guardan la ilusión de tener un ingeniero en la familia y procuran que tengas lo necesario, y a los compañeros, esos que aguantaron tus quejas durante todo el proyecto, esos que estuvieron contigo mientras maldecías y llorabas, gritando que jamás acabarías.
+
+Sí, mucha gente está involucrada en este ritual que solo un pequeño porcentaje de la población en México logra completar (a pesar de que muchas de tus amistades estén estudiando una carrera, menos de una cuarta parte concluye la universidad \cite{estudiosmexico}).
+
+Ánimo. Estás casi al final de este libro, y espero que eso también signifique que estás cerca de concluir tu tesis. Hay personas que te apoyan, que quieren ver tanto como tú la culminación de tantos años de estudio. No te olvides de ellos.
+
+
+
+\section*{Resumen}
+
+
+
+Este fue un capítulo corto, donde tratamos de incluir lo que pudiese faltar para acabar con los requisitos de la tesis.
+
+Ahora que ya está todo dispuesto, por fin es hora de realizar la tarea que hemos pospuesto desde que comenzamos a escribir: darle estilo al documento.
