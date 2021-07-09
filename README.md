@@ -3,7 +3,7 @@
 
 # LaTeX para tesis de ingeniería
 
-Un libro pensado para estudiantes de ingeniería que deben de escribir su tesis en este maravilloso sistema de composición de textos, abarcado desde la eterna pregunta de _¿por qué LaTeX?_ hasta las preguntas de _¿cómo incluyo código?_ y _¿me juras que esa ecuación se puede hacer en LaTeX?_
+Un libro pensado para estudiantes de ingeniería que deben de escribir su tesis en este maravilloso sistema de composición de textos, abarcando desde la eterna pregunta de _¿por qué LaTeX?_ hasta las preguntas de _¿cómo incluyo código?_ y _¿me juras que esa ecuación se puede hacer en LaTeX?_
 
 Copyright © 2021 [Carlos Ramos](http://ramoscarlos.com).
 
